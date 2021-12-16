@@ -1,7 +1,10 @@
 ---
 # This playbook uses the win_ping module to test connectivity to Windows hosts
+
 - name: Ping 
-  hosts: all 
+  hosts: all
+  ansible_connection: winrm
+  ansible_port: 5986
 
   tasks:
   - name: ping
