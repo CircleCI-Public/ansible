@@ -3,8 +3,9 @@
 
 - name: Ping 
   hosts: all
-  ansible_connection: winrm
-  ansible_port: 5986
+
+  vars_files:
+    - ping_vars.yml
 
   tasks:
   - name: ping
