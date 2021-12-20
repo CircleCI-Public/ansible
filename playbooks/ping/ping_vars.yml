@@ -1,9 +1,9 @@
 ---
 
-ansible_connection: ssh
+ansible_connection: winrm
 ansible_port: 5986
 ansible_winrm_server_cert_validation: ignore
 ansible_winrm_transport: basic
-become: yes
-ansible_user: circleci
+become_user: circleci
+#ansible_user: circleci
 ansible_password: =v6v12{+:o}[:_J
