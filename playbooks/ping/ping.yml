@@ -2,7 +2,7 @@
 # This playbook uses the win_ping module to test connectivity to Windows hosts
 
 - name: Ping 
-  hosts: default
+  hosts: all
 
   vars_files:
     - ping_vars.yml
