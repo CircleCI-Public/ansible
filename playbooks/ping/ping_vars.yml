@@ -3,3 +3,4 @@
 ansible_connection: winrm
 ansible_port: 5986
 ansible_winrm_server_cert_validation: ignore
+ansible_winrm_transport: basic
