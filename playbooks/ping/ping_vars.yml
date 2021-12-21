@@ -1,9 +1,8 @@
 ---
-
 ansible_connection: winrm
 ansible_winrm_server_cert_validation: ignore
 ansible_winrm_transport: basic
-# ansible_user: ansible
-# ansible_password: ky_tVVu6ygqd
+ansible_user: ansible
+ansible_password: ky_tVVu6ygqd
 ansible_port: 5986
 
