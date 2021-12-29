@@ -2,8 +2,10 @@
 # !file: playbooks/windows/win-2019/win_2019_configure.yml
 
 - name: Configure windows node
-  hosts: localhost
+  hosts: default
   connection: local
   gather_facts: false
   roles:
     - ../../../roles/windows-executor
+  vars_files:
+    - win_2019_configure_vars.yml
