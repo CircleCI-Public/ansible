@@ -1,9 +1,4 @@
----
-# tasks file for windows-executor
-- name: Install all security, critical, and rollup updates
-  win_updates:
-    category_names:
-      - SecurityUpdates
-      - CriticalUpdates
-      - UpdateRollups
-    reboot: yes
+# !file: roles/windows-executor/tasks/main.yml
+
+- name: Install windows updates
+  include: 'install_windows_updates.yml'
