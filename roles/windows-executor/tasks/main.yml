@@ -2,3 +2,6 @@
 
 - name: Install windows updates
   include: 'install_windows_updates.yml'
+
+- name: Disable windows services
+  include: 'disable_windows_services.yml'
