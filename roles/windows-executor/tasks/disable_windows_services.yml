@@ -1,4 +1,4 @@
 ---
 - name: Disable IE ESC
-  script: "../files/disable-ieesc.ps1"
+  script: "files/disable-ieesc.ps1"
   
