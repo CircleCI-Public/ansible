@@ -1,6 +1,5 @@
 #!powershell
 
-
 # Disables IE ESC
 
 function Disable-IEESC {
