@@ -1,4 +1,5 @@
 ---
 - name: Disable IE ESC
-  script: "disable-ieesc.ps1"
+  hosts: default
+  script: disable-ieesc.ps1
   
