@@ -22,7 +22,7 @@ function Disable-IEESC {
         }
         Write-Host "IE Enhanced Security Configuration (ESC) has been disabled."
     } else {
-        Write-Host "Explorer is not currently running"
+        Write-Host "Explorer is currently not running"
     }
 
 }
