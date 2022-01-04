@@ -3,4 +3,18 @@
 - name: Disable IE ESC
   script: disable_default_winservices.ps1 Disable-IEESC
 
+- name: Disable IE Welcome screen
+  script: disable_default_winservices.ps1 Disable-InternetExplorerWelcomeScreen
+
+- name: Disable UAC (User Access Control)
+  script: disable_default_winservices.ps1 Disable-UserAccessControl
+
+- name: Enable Long Paths 
+  script: disable_default_winservices.ps1 Disable-LongPaths
+
+- name: Enable .NET 3.5
+  script: disable_default_winservices.ps1 Enable-DotNet35
+
+- name: Disable network wizard
+  script: disable_default_winservices.ps1 Disable-NetworkWizard
   

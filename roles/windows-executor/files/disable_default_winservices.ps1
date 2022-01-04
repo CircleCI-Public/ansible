@@ -26,12 +26,47 @@
         Write-Host "Disabled IE Welcome screen"
     }
 
+    function Disable-UserAccessControl {
+        Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
+        Write-Host "User Access Control (UAC) has been disabled."
+    }
+    
+    function Enable-LongPaths {
+        Set-Itemproperty "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Value "1" -Force
+        Write-Host "Long Paths have been enabled."
+    }
+    
+    function Enable-DotNet35 {
+        Install-WindowsFeature Net-Framework-Core
+        Get-WindowsFeature -Name Net-Framework-Core
+        Write-Host ".NET Framework 3.5 has been enabled."
+    }
+    
+    function Disable-NetworkWizard {
+        New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Network\NewNetworkWindowOff" -Force
+        Write-Host "Network Wizard Window has been disabled."
+    }
+
+    
+
     switch ($args[0]) {
         Disable-IEESC {
             Write-Host "Called Disable-IEESC()"
         }
         Disable-InternetExplorerWelcomeScreen {
             Write-Host "Called Disable-InternetExplorerWelcomeScreen()"
+        }
+        Disable-UserAccessControl {
+            Write-Host "Called Disable-UserAccessControl()"
+        }
+        Enable-LongPaths {
+            Write-Host "Called Enable-LongPaths()"
+        }
+        Enable-DotNet35 {
+            Write-Host "Called Enable-DotNet35()"
+        }
+        Disable-NetworkWizard {
+            Write-Host "Called Disable-NetworkWizard()"
         }
     }
 
