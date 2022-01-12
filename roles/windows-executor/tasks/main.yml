@@ -5,3 +5,6 @@
 
 - name: Disable windows services
   include: 'disable_windows_services.yml'
+
+- name: Create CircleCI users
+  include: 'create_circleci_windows_users.yml'
