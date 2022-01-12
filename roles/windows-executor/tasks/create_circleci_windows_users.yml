@@ -1,7 +1,7 @@
 # !file: roles/windows-executor/tasks/create_circleci_windows_users.yml
 
 - name: Create circleci users
-  gather_facts: False
+  gather_facts: false
   tasks:
     - set_fact:
         my_pass: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
