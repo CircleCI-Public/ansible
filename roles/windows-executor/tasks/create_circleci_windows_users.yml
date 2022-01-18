@@ -3,8 +3,7 @@
 - name: Create circleci users
   win_user:
     name: circleci
-    password: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
-  set_fact:
-    my_pass: "{{ password }}"
-  debug:
-    msg: "{{ my_pass }}"
+    set_fact:
+      password: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+    debug:
+      msg: "{{ my_pass }}"
