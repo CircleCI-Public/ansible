@@ -1,7 +1,10 @@
 # !file: roles/windows-executor/tasks/create_circleci_windows_users.yml
 
 - name: Create circleci users
+  win_user:
+    name: circleci
+    password: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
   set_fact:
-    my_pass: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+    my_pass: "{{ password }}"
   debug:
     msg: "{{ my_pass }}"
