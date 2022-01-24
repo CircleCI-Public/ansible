@@ -6,4 +6,4 @@
     set_fact:
       password: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
     debug:
-      msg: "{{ my_pass }}"
+      msg: "{{ password }}"
