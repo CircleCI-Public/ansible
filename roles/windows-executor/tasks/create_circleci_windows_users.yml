@@ -2,4 +2,11 @@
 
 - name: Create circleci users
   set_fact:
-    cipassword: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+    cci_user_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+  win_user:
+    name: circleci
+    password: "{{ cci_user_pwd }}"
+    state: present
+    groups:
+      - Administrators
+
