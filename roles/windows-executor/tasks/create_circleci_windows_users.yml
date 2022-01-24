@@ -15,7 +15,7 @@
 
 - name: Create circeci-admin user 
   win_user:
-    name: circleci
+    name: circleci-admin
     password: "{{ cci_admin_pwd }}"
     state: present
     groups:
