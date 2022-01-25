@@ -1,0 +1,36 @@
+- name: Install git
+  win_chocolatey:
+    name: git
+    state: '{{ package_state }}'
+    package_params: '"/GitAndUnixToolsOnPath"'
+    version: '{{ git_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install git-lfs
+  win_chocolatey:
+    name: git-lfs
+    state: '{{ package_state }}'
+    version: '{{ gitlfs_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install 7zip.portable
+  win_chocolatey:
+    name: 7zip.portable
+    state: '{{ package_state }}'
+    version: '{{ 7zip_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install gzip
+  win_chocolatey:
+    name: gzip
+    state: '{{ package_state }}'
+    version: '{{ gzip_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install sysinternals
+  win_chocolatey:
+    name: sysinternals
+    state: '{{ package_state }}'
+    version: '{{ sysinternals_version }}'
+    pinned: '{{ pin_option }}'
+
