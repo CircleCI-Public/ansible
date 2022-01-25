@@ -21,3 +21,10 @@
     groups:
       - Administrators
 
+- name: Do not forcefully unload the users registry at user logoff in user policies of Group Policy editor
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows\System
+    name: DisableForceUnload
+    data: 1
+    type: dword
+    state: present
