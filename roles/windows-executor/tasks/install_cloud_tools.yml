@@ -19,6 +19,11 @@
     version: '{{ webpi_version }}'
     pinned: '{{ pin_option }}'
 
+- name: Add powershellget (required to add powershell repos)
+  community.windows.win_psmodule:
+    name: PowerShellGet
+    state: present
+
 - name: Register nuget repository
   community.windows.win_psrepository:
     name: Nuget
