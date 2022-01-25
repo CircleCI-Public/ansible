@@ -11,3 +11,6 @@
 
 - name: install Build Agent Prerequisites 
   include_tasks: 'install_buildagent_prereq.yml'
+
+- name: install Cloud tools
+  include_tasks: 'install_cloud_tools.yml'
