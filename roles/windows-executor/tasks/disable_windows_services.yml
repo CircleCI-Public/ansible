@@ -1,4 +1,4 @@
-# !file: roles/windows-executor/tasks/disable_windows_services.yml
+# !file: roles/windows-executor/tasks/disable_windows_services.yml?æ≥
 
 - name: Disable IE ESC
   script: disable_default_winservices.ps1 Disable-IEESC

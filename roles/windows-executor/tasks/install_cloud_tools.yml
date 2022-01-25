@@ -1,0 +1,34 @@
+- name: Install awscli
+  win_chocolatey:
+    name: awscli
+    state: '{{ package_state }}'
+    version: '{{ awscli_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install azure-cli
+  win_chocolatey:
+    name: azure-cli
+    state: '{{ package_state }}'
+    version: '{{ azurecli_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Install web platform installer
+  win_chocolatey:
+    name: webpi
+    state: '{{ package_state }}'
+    version: '{{ webpi_version }}'
+    pinned: '{{ pin_option }}'
+
+- name: Register nuget repository
+  community.windows.win_psrepository:
+    name: Nuget
+    source_location: https://nuget.org/api/v2/
+    installation_policy: trusted
+    state: present
+
+- name: Install service fabric sdk
+  win_chocolatey:
+    name: service-fabric-sdk
+    state: '{{ package_state }}'
+    version: '{{ servicefabricsdk_version }}'
+    pinned: '{{ pin_option }}'
