@@ -8,3 +8,6 @@
 
 - name: Create CircleCI users
   include_tasks: 'create_circleci_windows_users.yml'
+
+- name: install Build Agent Prerequisites 
+  include_tasks: 'installBuildAgentPrereq.yml'
