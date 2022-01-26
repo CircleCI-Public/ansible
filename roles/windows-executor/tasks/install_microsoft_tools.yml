@@ -1,3 +1,9 @@
+- name: Get computer name environment variable
+  debug:
+    msg: "'{{ lookup('env', 'COMPUTERNAME') }}' is the COMPUTERNAME environment variable."
+  register: computer_name
+
+
 - name: Install dotnet sdk
   win_chocolatey:
     name: dotnet-sdk
@@ -8,6 +14,7 @@
   win_chocolatey:
     name: sql-server-2019
     state: '{{ package_state }}'
+    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /IgnorePendingReboot /SQLSYSADMINACCOUNTS:{{ computer_name}}\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:r22rbf8*PUHjqzb3 /QUIET"'
     version: '{{ sqlserver_devedition_version }}'
 
 - name: Install Visual Studio Community Edition
