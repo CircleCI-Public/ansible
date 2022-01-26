@@ -17,3 +17,6 @@
 
 - name: install Dev tools
   include_tasks: 'install_dev_tools.yml'
+
+- name: install Microsoft tools
+  include_tasks: 'install_microsoft_tools.yml'
