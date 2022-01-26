@@ -1,0 +1,67 @@
+- name: Install dotnet sdk
+  win_chocolatey:
+    name: dotnet-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version }}'
+
+- name: Install Sql Server Developer Edition
+  win_chocolatey:
+    name: sql-server-2019
+    state: '{{ package_state }}'
+    version: '{{ sqlserver_devedition_version }}'
+
+- name: Install Visual Studio Community Edition
+  win_chocolatey:
+    name: visualstudio2019community
+    state: '{{ package_state }}'
+    version: '{{ visualstudio_community_edition_version }}'
+
+- name: Install Visual Studio Build Tools
+  win_chocolatey:
+    name: visualstudio2019buildtools
+    state: '{{ package_state }}'
+    version: '{{ visualstudio_buildtools_version }}'
+
+- name: Install Nuget command line interface
+  win_chocolatey:
+    name: nuget.commandline
+    state: '{{ package_state }}'
+    version: '{{ nuget_cli_version }}'
+
+- name: Install Windows Application Driver
+  win_chocolatey:
+    name: winappdriver
+    state: '{{ package_state }}'
+    version: '{{ winappdriver_version }}'
+
+- name: Disable Visual Studio background downloads
+  win_regedit:
+    path: HKLM:\Software\Microsoft\VisualStudio\Setup
+    name: BackgroundDownloadDisabled
+    data: 00000001
+    type: dword
+    state: present
+
+- name: Disable Visual Studio Update
+  win_regedit:
+    path: HKLM:\Policies\Microsoft\VisualStudio
+    name: SQM
+    data: 0
+    type: dword
+    state: present
+
+- name: Enable Windows Development Mode
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowDevelopmentWithoutDevLicense
+    data: 1
+    type: dword
+    state: present
+
+- name: Enable Sideloading
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowAllTrustedApps
+    data: 1
+    type: dword
+    state: present
