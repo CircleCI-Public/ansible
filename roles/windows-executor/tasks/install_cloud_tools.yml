@@ -31,16 +31,5 @@
     installation_policy: trusted
     state: present
 
-- name: Install service fabric 
-  win_chocolatey:
-    name: service-fabric
-    state: '{{ package_state }}'
-    version: '{{ servicefabric_version }}'
-    pinned: '{{ pin_option }}'
-
 - name: Install service fabric sdk
-  win_chocolatey:
-    name: service-fabric-sdk
-    state: '{{ package_state }}'
-    version: '{{ servicefabricsdk_version }}'
-    pinned: '{{ pin_option }}'
+  script: install_servicefabric_sdk.ps1
