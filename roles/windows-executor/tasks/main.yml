@@ -14,3 +14,6 @@
 
 - name: install Cloud tools
   include_tasks: 'install_cloud_tools.yml'
+
+- name: install Dev tools
+  include_tasks: 'install_dev_tools.yml'
