@@ -3,21 +3,18 @@
     name: awscli
     state: '{{ package_state }}'
     version: '{{ awscli_version }}'
-    pinned: '{{ pin_option }}'
 
 - name: Install azure-cli
   win_chocolatey:
     name: azure-cli
     state: '{{ package_state }}'
     version: '{{ azurecli_version }}'
-    pinned: '{{ pin_option }}'
 
 - name: Install web platform installer
   win_chocolatey:
     name: webpi
     state: '{{ package_state }}'
     version: '{{ webpi_version }}'
-    pinned: '{{ pin_option }}'
 
 - name: Add powershellget (required to add powershell repos)
   community.windows.win_psmodule:
