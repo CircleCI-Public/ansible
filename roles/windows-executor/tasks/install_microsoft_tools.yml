@@ -12,13 +12,13 @@
 
 - name: Install Visual Studio Community Edition
   win_chocolatey:
-    name: visualstudio2019community
+    name: visualstudio2022community
     state: '{{ package_state }}'
     version: '{{ visualstudio_community_edition_version }}'
 
 - name: Install Visual Studio Build Tools
   win_chocolatey:
-    name: visualstudio2019buildtools
+    name: visualstudio2022buildtools
     state: '{{ package_state }}'
     version: '{{ visualstudio_buildtools_version }}'
 
