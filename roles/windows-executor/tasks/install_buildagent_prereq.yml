@@ -4,14 +4,12 @@
     state: '{{ package_state }}'
     package_params: '"/GitAndUnixToolsOnPath"'
     version: '{{ git_version }}'
-    pinned: '{{ pin_option }}'
 
 - name: Install git-lfs
   win_chocolatey:
     name: git-lfs
     state: '{{ package_state }}'
     version: '{{ gitlfs_version }}'
-    pinned: '{{ pin_option }}'
 
 - name: Install 7zip.portable
   win_chocolatey:
