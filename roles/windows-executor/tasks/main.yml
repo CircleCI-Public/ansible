@@ -1,22 +1,27 @@
 # !file: roles/windows-executor/tasks/main.yml
 
-- name: Install windows updates
-  include_tasks: 'install_windows_updates.yml'
+- name: display computername
+  computer_name: "{{ lookup('env','COMPUTERNAME') }}"
+  debug:
+    msg: "{{ computer_name }}"
 
-- name: Disable windows services
-  include_tasks: 'disable_windows_services.yml'
+# - name: Install windows updates
+#  include_tasks: 'install_windows_updates.yml'
 
-- name: Create CircleCI users
-  include_tasks: 'create_circleci_windows_users.yml'
+#- name: Disable windows services
+#  include_tasks: 'disable_windows_services.yml'
 
-- name: install Build Agent Prerequisites 
-  include_tasks: 'install_buildagent_prereq.yml'
+#- name: Create CircleCI users
+#  include_tasks: 'create_circleci_windows_users.yml'
 
-- name: install Cloud tools
-  include_tasks: 'install_cloud_tools.yml'
+#- name: install Build Agent Prerequisites 
+#  include_tasks: 'install_buildagent_prereq.yml'
 
-- name: install Dev tools
-  include_tasks: 'install_dev_tools.yml'
+#- name: install Cloud tools
+#  include_tasks: 'install_cloud_tools.yml'
 
-- name: install Microsoft tools
-  include_tasks: 'install_microsoft_tools.yml'
+#- name: install Dev tools
+#  include_tasks: 'install_dev_tools.yml'
+
+#- name: install Microsoft tools
+#  include_tasks: 'install_microsoft_tools.yml'
