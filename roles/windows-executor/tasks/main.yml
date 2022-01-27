@@ -1,7 +1,6 @@
 # !file: roles/windows-executor/tasks/main.yml
-
-- name: display computername
-  computer_name: "{{ lookup('env','COMPUTERNAME') }}"
+- name: Set env variable
+  set_fact: computer_name="{{ lookup('env','COMPUTERNAME') }}"
   debug:
     msg: "{{ computer_name }}"
 
