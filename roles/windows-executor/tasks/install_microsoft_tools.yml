@@ -1,6 +1,5 @@
 - name: Get computer name environment variable
-  computer_name: "'{{ lookup('env', 'COMPUTERNAME') }}' is the COMPUTERNAME environment variable."
-  register: computer_name
+  set_fact: computer_name="{{ lookup('env','COMPUTERNAME') }}"
 
 
 - name: Install dotnet sdk
