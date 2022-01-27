@@ -1,9 +1,11 @@
 # !file: roles/windows-executor/tasks/install_windows_updates.yml
 
-- name: Install all security, critical, and rollup updates
+- name: Get computer name
   computer_name: "{{ lookup('env','COMPUTERNAME') }}"
   debug:
     msg: "{{ computer_name }}"
+    
+- name: Install all security, critical, and rollup updates
   win_updates:
     category_names:
       - SecurityUpdates
