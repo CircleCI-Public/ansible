@@ -1,10 +1,14 @@
 # !file: roles/windows-executor/tasks/main.yml
 
+- name: Do a simple ping to test winRM connection in AWS 
+  win_ping:
+
+
 # - name: Install windows updates
 #  include_tasks: 'install_windows_updates.yml'
 
-- name: Disable windows services
-  include_tasks: 'disable_windows_services.yml'
+# - name: Disable windows services
+#  include_tasks: 'disable_windows_services.yml'
 
 #- name: Create CircleCI users
 #  include_tasks: 'create_circleci_windows_users.yml'
