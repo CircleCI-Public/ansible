@@ -1,4 +1,6 @@
 # !file: roles/windows-executor/tasks/disable_windows_services.yml?æ≥
+- name: Get computer name environment variable
+  set_fact: computer_name="{{ lookup('env','COMPUTERNAME') }}"
 
 - name: Disable IE ESC
   script: disable_default_winservices.ps1 Disable-IEESC

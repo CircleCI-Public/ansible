@@ -1,7 +1,3 @@
-- name: Get computer name environment variable
-  set_fact: computer_name="{{ lookup('env','COMPUTERNAME') }}"
-
-
 - name: Install dotnet sdk
   win_chocolatey:
     name: dotnet-sdk
