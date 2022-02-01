@@ -2,9 +2,8 @@
 
  - name: Get COMPUTERNAME env. var
    debug:
-     var: ansible_env
+     var: COMPUTERNAME
 
- 
  - name: Install windows updates
    include_tasks: 'install_windows_updates.yml'
 

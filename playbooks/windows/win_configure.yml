@@ -4,7 +4,6 @@
 - name: Configure windows node
   hosts: default
   connection: local
-  gather_facts: false
   roles:
     - ../../../roles/windows-executor
   vars_files:
