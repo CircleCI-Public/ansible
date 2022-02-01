@@ -1,9 +1,5 @@
 # !file: roles/windows-executor/tasks/main.yml
 
- - name: Get COMPUTERNAME env. var
-   debug:
-     var: ansible_env.COMPUTERNAME
-
  - name: Install windows updates
    include_tasks: 'install_windows_updates.yml'
 
