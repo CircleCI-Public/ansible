@@ -1,10 +1,9 @@
 # !file: roles/windows-executor/tasks/main.yml
 
- - name: Install windows updates
-   include_tasks: 'install_windows_updates.yml'
+ #- name: Install windows updates
+ #  include_tasks: 'install_windows_updates.yml'
 
  - name: Disable windows services
-
    include_tasks: 'disable_windows_services.yml'
 
  - name: Create CircleCI users
