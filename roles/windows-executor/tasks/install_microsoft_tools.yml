@@ -43,13 +43,13 @@
     type: dword
     state: present
 
-- name: Disable Visual Studio Update
-  win_regedit:
-    path: HKLM:\Policies\Microsoft\VisualStudio
-    name: SQM
-    data: 0
-    type: dword
-    state: present
+# - name: Disable Visual Studio Update
+# win_regedit:
+#    path: HKLM:\Policies\Microsoft\VisualStudio
+#    name: SQM
+#    data: 0
+#    type: dword
+#    state: present
 
 - name: Enable Windows Development Mode
   win_regedit:
