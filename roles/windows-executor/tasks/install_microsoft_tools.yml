@@ -4,12 +4,12 @@
     state: '{{ package_state }}'
     version: '{{ dotnet_sdk_version }}'
 
-- name: Install Sql Server Developer Edition
-  win_chocolatey:
-    name: sql-server-2019
-    state: '{{ package_state }}'
-    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /SQLSYSADMINACCOUNTS:{{ ansible_env.COMPUTERNAME }}\\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:circleci /QUIET"'
-    version: '{{ sqlserver_devedition_version }}'
+# - name: Install Sql Server Developer Edition
+#  win_chocolatey:
+#    name: sql-server-2019
+#    state: '{{ package_state }}'
+#    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /SQLSYSADMINACCOUNTS:{{ ansible_env.COMPUTERNAME }}\\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:circleci /QUIET"'
+#    version: '{{ sqlserver_devedition_version }}'
 
 - name: Install Visual Studio Community Edition
   win_chocolatey:
