@@ -1,9 +1,9 @@
 # !file: roles/windows-executor/tasks/create_circleci_windows_users.yml
 
-- name: Create circleci user passwords
-  set_fact:
-    cci_user_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
-    cci_admin_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+#- name: Create circleci user passwords
+#  set_fact:
+#    cci_user_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+#    cci_admin_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
 
 - name: Create circeci user 
   win_user:
