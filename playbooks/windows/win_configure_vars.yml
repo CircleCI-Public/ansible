@@ -8,5 +8,5 @@ ansible_port: 5986
 ansible_winrm_operation_timeout_sec: 300
 ansible_winrm_read_timeout_sec: 360
 ansible_winrm_scheme: https
-cci_user_pwd: circleci
-cci_admin_pwd: circleci
+cci_user_pwd: Circleci@dmin
+cci_admin_pwd: Circleci@dmin
