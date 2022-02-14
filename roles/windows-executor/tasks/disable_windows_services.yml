@@ -20,6 +20,9 @@
 - name: Disable network wizard
   script: disable_default_winservices.ps1 Disable-NetworkWizard
 
+- name: Disable password complexity
+  script: disable_default_winservices.ps1 Disable-PasswordComplexity
+
 - name: Disable TDR
   win_regedit:
     path: HKLM:\System\CurrentControlSet\Control\GraphicsDrivers
@@ -27,4 +30,5 @@
     data: 0
     type: dword
     state: present
+
   
