@@ -47,6 +47,10 @@
         Write-Host "Network Wizard Window has been disabled."
     }
 
+    function Disable-PasswordComplexity {
+        secedit /export /cfg c:\secpol.cfg (Get-Content C:\secpol.cfg).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File C:\secpol.cfg secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY rm -force c:\secpol.cfg -confirm:$false
+    }
+
     
 
     switch ($args[0]) {
@@ -67,6 +71,9 @@
         }
         Disable-NetworkWizard {
             Write-Host "Called Disable-NetworkWizard()"
+        }
+        Disable-PasswordComplexity {
+            Write-Host "Called Disable-PasswordComplexity()"
         }
     }
 
