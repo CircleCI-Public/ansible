@@ -23,6 +23,11 @@
     state: '{{ package_state }}'
     version: '{{ visualstudio_buildtools_version }}'
 
+- name: Ensure that msbuild is in the path
+  ansible.windows.win_path:
+    elements:
+    - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
+
 - name: Install Nuget command line interface
   win_chocolatey:
     name: nuget.commandline

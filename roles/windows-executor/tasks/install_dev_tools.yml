@@ -34,11 +34,17 @@
     state: '{{ package_state }}'
     version: '{{ openjdk_version }}'
 
-- name: Install python 2.7
+- name: Install python 2.x
   win_chocolatey:
     name: python
     state: '{{ package_state }}'
-    version: '{{ python_version }}'
+    version: '{{ python_2_version }}'
+
+- name: Install python 3.x
+  win_chocolatey:
+    name: python
+    state: '{{ package_state }}'
+    version: '{{ python_3_version }}'
 
 - name: Install miniconda3
   win_chocolatey:
