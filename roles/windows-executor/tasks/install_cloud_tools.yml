@@ -19,7 +19,7 @@
 - name: Add powershellget (required to add powershell repos)
   community.windows.win_psmodule:
     name: PowerShellGet
-    state: latest
+    state: present
 
 - name: Register nuget repository
   community.windows.win_psrepository:
