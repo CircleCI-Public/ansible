@@ -21,6 +21,11 @@
     name: PowerShellGet
     state: latest
 
+- name: Add powershellget (required to add powershell repos)
+  ansible.windows.win_powershell:
+    script: |
+      Install-Module -Name PowerShellGet -Force
+
 - name: Register nuget repository
   community.windows.win_psrepository:
     name: Nuget
