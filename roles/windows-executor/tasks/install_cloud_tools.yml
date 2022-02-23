@@ -17,11 +17,6 @@
     version: '{{ webpi_version }}'
 
 - name: Add powershellget (required to add powershell repos)
-  community.windows.win_psmodule:
-    name: PowerShellGet
-    state: latest
-
-- name: Add powershellget (required to add powershell repos)
   ansible.windows.win_powershell:
     script: |
       Install-Module -Name PowerShellGet -Force
