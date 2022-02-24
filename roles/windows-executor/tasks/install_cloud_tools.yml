@@ -16,10 +16,10 @@
     state: '{{ package_state }}'
     version: '{{ webpi_version }}'
 
-- name: Install powershellget
-  ansible.windows.win_powershell:
-    script: |
-      Install-Module -Name PowerShellGet -RequiredVersion 2.2.5 -Confirm:$False -Force
+- name: Update PowerShell module to the latest version
+  community.windows.win_psmodule:
+    name: PowerShellModule
+    state: latest
 
 - name: Register nuget repository
   community.windows.win_psrepository:
