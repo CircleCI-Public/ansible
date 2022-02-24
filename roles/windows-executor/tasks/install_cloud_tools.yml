@@ -16,8 +16,8 @@
     state: '{{ package_state }}'
     version: '{{ webpi_version }}'
 
-- name: Install powershellget
-  script: install_powershellget.ps1
+#- name: Install powershellget
+#  script: install_powershellget.ps1
 
 - name: Register nuget repository
   community.windows.win_psrepository:
