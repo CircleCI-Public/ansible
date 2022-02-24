@@ -19,8 +19,10 @@
 - name: Install PowershellGet
   ansible.windows.win_powershell:
     script: |
-      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 
-      Install-Module PowerShellGet -RequiredVersion 2.2.4 -SkipPublisherCheck
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
+      Install-Package -Name PackageManagement -MinimumVersion 1.4.7 -Force -Confirm:$false -Source PSGallery
+      Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
 
 - name: Register nuget repository
   community.windows.win_psrepository:
