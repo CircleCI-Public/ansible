@@ -19,7 +19,7 @@
 - name: Install powershellget
   ansible.windows.win_powershell:
     script: |
-      Install-Module -Name PowerShellGet -RequiredVersion 2.2.5 -Force
+      Install-Module -Name PowerShellGet -RequiredVersion 2.2.5 -Confirm:$False -Force
 
 - name: Register nuget repository
   community.windows.win_psrepository:
