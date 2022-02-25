@@ -3,10 +3,12 @@
 - name: Install PowershellGet
   ansible.windows.win_powershell:
     script: |
-      # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
       # Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
-      Install-Package -Name PackageManagement -Force -Confirm:$false
-      Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
+      #Install-Package -Name PackageManagement -Force -Confirm:$false
+      #Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
+      Install-Package -Name PackageManagement -Force
+      Install-Package -Name PowershellGet -Force -Verbose
 
 - name: Register nuget repository
   community.windows.win_psrepository:
