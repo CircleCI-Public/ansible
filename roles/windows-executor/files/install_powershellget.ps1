@@ -1,7 +1,5 @@
-[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-
-Install-PackageProvider -Name NuGet -Force
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted -ErrorAction Stop
-Register-PSRepository -Default
-Install-Module -Name PowerShellGet -RequiredVersion 2.2.5 -Force
-Update-Module -Name PowerShellGet
+Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
+Install-Package -Name PackageManagement -Force -Confirm:$false
+Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
