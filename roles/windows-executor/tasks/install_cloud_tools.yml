@@ -20,8 +20,8 @@
   ansible.windows.win_powershell:
     script: |
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-      Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
-      Install-Package -Name PackageManagement -MinimumVersion 1.4.7 -Force -Confirm:$false -Source PSGallery
+      # Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
+      Install-Package -Name PackageManagement -Force -Confirm:$false
       Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
 
 - name: Register nuget repository
