@@ -1,7 +1,10 @@
 # !file: roles/windows-executor/tasks/install_windows_updates.yml
 
 - name: Install PowershellGet
-  script: install_powershellget.ps1
+  ansible.windows.win_powershell:
+    script: |
+      Install-PackageProvider -Name NuGet -Force
+      Install-Module PowerShellGet -Force -AllowClobber -Confirm:$false
 
 - name: Register nuget repository
   community.windows.win_psrepository:
