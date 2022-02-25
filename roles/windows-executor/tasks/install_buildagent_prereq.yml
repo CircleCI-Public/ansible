@@ -1,3 +1,16 @@
+- name: Install PowershellGet
+  ansible.windows.win_powershell:
+    script: |
+      Install-PackageProvider -Name NuGet -Force
+      Install-Module PowerShellGet -Force -AllowClobber -Confirm:$false
+
+- name: Register nuget repository
+  community.windows.win_psrepository:
+    name: Nuget
+    source_location: https://nuget.org/api/v2/
+    installation_policy: trusted
+    state: present
+
 - name: Install git
   win_chocolatey:
     name: git
