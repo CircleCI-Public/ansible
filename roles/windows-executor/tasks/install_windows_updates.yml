@@ -1,5 +1,20 @@
 # !file: roles/windows-executor/tasks/install_windows_updates.yml
 
+- name: Install PowershellGet
+  ansible.windows.win_powershell:
+    script: |
+      # [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+      # Set-Variable -Name 'ConfirmPreference' -Value 'None' -Scope Global
+      Install-Package -Name PackageManagement -Force -Confirm:$false
+      Install-Package -Name PowershellGet -Force -Verbose -Confirm:$false
+
+- name: Register nuget repository
+  community.windows.win_psrepository:
+    name: Nuget
+    source_location: https://nuget.org/api/v2/
+    installation_policy: trusted
+    state: present
+
 - name: Install all security, critical, and rollup updates
   win_updates:
     category_names:
