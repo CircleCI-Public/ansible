@@ -71,4 +71,3 @@
   win_chocolatey:
     name: choco install docker-desktop
     state: '{{ package_state }}'
-    version: '{{ docker_version }}'
