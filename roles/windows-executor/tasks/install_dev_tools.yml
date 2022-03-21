@@ -69,5 +69,6 @@
 
 - name: Install docker desktop
   win_chocolatey:
-    name: choco install docker-desktop
+    name: docker-desktop
     state: '{{ package_state }}'
+    version: '{{ docker_version }}'
