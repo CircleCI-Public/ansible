@@ -72,3 +72,8 @@
     name: docker-desktop
     state: '{{ package_state }}'
     version: '{{ docker_version }}'
+  register: docker_install_response
+
+- name: Reboot when the docker-desktop install requires it
+  ansible.windows.win_reboot:
+  when: docker_install_response.reboot_required

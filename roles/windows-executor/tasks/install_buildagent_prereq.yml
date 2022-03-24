@@ -42,11 +42,5 @@
     state: '{{ package_state }}'
     version: '{{ sysinternals_version }}'
 
-- name: install the Win32-OpenSSH service
-  win_chocolatey:
-    name: openssh
-    package_params: /SSHServerFeature
-    state: '{{ package_state }}'
-
 
 
