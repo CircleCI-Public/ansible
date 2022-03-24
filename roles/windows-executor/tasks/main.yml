@@ -20,3 +20,6 @@
 
  - name: install Microsoft tools
    include_tasks: 'install_microsoft_tools.yml'
+
+ - name: Reboot the machine
+   ansible.windows.win_reboot:
