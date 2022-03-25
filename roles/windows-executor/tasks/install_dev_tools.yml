@@ -67,10 +67,6 @@
     state: '{{ package_state }}'
     version: '{{ ruby_version }}'
 
-- name: Install docker desktop
-  win_chocolatey:
-    name: docker-desktop
-    state: '{{ package_state }}'
-    version: '{{ docker_version }}'
+
 
 
