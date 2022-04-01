@@ -9,4 +9,5 @@ python_2_version: 2.7.11
 python_3_version: 3.10.2
 nodejs_version: 17.4.0
 ruby_version: 3.1.0.1
-docker_version: 4.6.0
+docker_version: 20.10.14
+nvm_version: 1.1.9
