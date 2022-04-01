@@ -67,6 +67,19 @@
     state: '{{ package_state }}'
     version: '{{ ruby_version }}'
 
+- name: Install docker engine
+  win_chocolatey:
+    name: docker-engine
+    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
+    state: '{{ package_state }}'
+    version: '{{ docker_version }}'
+
+- name: Install nvm.portable
+  win_chocolatey:
+    name: nvm.portable
+    state: '{{ package_state }}'
+    version: '{{ nvm_version }}'
+
 
 
 
