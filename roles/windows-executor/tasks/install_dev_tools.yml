@@ -80,6 +80,16 @@
     state: '{{ package_state }}'
     version: '{{ nvm_version }}'
 
+- name: Install docker
+  ansible.windows.win_powershell:
+    script: |
+      Install-Module DockerMsftProvider -Force
+      Install-Package Docker -ProviderName DockerMsftProvider -Force
+
+- name: Docker requires a reboot. Reboot the machine
+  ansible.windows.win_reboot:
+
+
 
 
 
