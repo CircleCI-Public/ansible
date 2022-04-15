@@ -1,0 +1,2 @@
+- name: run ping test 
+   - ping
