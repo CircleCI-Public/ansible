@@ -1,0 +1,7 @@
+---
+# !file: playbooks/linux/linux_configure_vars.yml
+
+ansible_connection: ssh
+ansible_port: 22
+ansible_become: yes
+ansible_user: ubuntu

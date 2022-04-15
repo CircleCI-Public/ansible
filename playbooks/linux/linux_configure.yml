@@ -1,0 +1,10 @@
+---
+# !file: playbooks/linux/linux_configure.yml
+
+- name: Configure linux node
+  hosts: default
+  connection: local
+  roles:
+    - ../../../roles/linux-executor
+  vars_files:
+    - linux_configure_vars.yml

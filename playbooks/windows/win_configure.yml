@@ -1,5 +1,5 @@
 ---
-# !file: playbooks/windows/win-2019/win_configure.yml
+# !file: playbooks/windows/win_configure.yml
 
 - name: Configure windows node
   hosts: default
