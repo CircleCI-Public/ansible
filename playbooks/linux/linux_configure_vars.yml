@@ -5,3 +5,5 @@ ansible_connection: ssh
 ansible_port: 22
 ansible_become: yes
 ansible_user: ubuntu
+host_key_checking: False
+become_method: sudo
