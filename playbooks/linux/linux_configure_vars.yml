@@ -1,12 +1,6 @@
 ---
 # !file: playbooks/linux/linux_configure_vars.yml
 
-ansible_connection: ssh
-ansible_port: 22
-become: yes
-become_user: root
-host_key_checking: False
+remote_user: ubuntu
 become_method: sudo
-ansible_ssh_private_key_file: ~/.ssh/id_rsa
-user: ubuntu
-ansible_user: ubuntu
+become: yes
