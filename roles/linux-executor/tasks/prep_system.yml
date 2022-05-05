@@ -1,0 +1,40 @@
+- name: Remove packages we no longer need
+  apt:
+      autoremove: yes
+      autoclean: yes
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+    cache_valid_time: 86400 #One day
+
+- name: Remove snapd - it inteferes with what we want such as .deb Firefox
+  apt:
+    pkg: snapd
+    state: absent
+  become: true
+
+- name: Update Timezone to UTC
+  file:
+    src: /usr/share/zoneinfo/Etc/UTC
+    dest: /etc/localtime
+    state: link
+
+- name: set languate in .bashrc
+  ansible.builtin.lineinfile:
+    path: '{{ circleci_home }}/.bashrc'
+    line: "export LANG=C.UTF-8"
+    create: yes
+
+- name: Always install the latest config
+  ansible.builtin.lineinfile:
+    path: /etc/dpkg/dpkg.cfg
+    line: "force-confnew"
+    create: yes
+
+- name: deploy new apt config
+  copy:
+    src: ../files/apt.conf
+    dest: /etc/apt/apt.conf
