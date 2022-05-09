@@ -1,4 +1,6 @@
 - name: Remove packages we no longer need
+  become: true
+  become_method: sudo
   apt:
       autoremove: yes
       autoclean: yes
