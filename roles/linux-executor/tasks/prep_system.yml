@@ -31,12 +31,16 @@
     create: yes
 
 - name: Always install the latest config
+  become: true
+  become_method: sudo
   ansible.builtin.lineinfile:
     path: /etc/dpkg/dpkg.cfg
     line: "force-confnew"
     create: yes
 
 - name: deploy new apt config
+  become: true
+  become_method: sudo
   copy:
     src: ../files/apt.conf
     dest: /etc/apt/apt.conf
