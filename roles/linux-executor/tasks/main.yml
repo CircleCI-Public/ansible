@@ -1,4 +1,4 @@
 # !file: roles/linux-executor/tasks/linux_ping.yml
 
   - name: ping test
-    include_tasks: 'linux_ping.yml'
+    include_tasks: 'prep_system.yml'
