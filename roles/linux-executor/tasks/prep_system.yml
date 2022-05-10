@@ -25,7 +25,7 @@
     state: link
 
 - name: set languate in .bashrc
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: '{{ circleci_home }}/.bashrc'
     line: "export LANG=C.UTF-8"
     create: yes
@@ -33,7 +33,7 @@
 - name: Always install the latest config
   become: true
   become_method: sudo
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /etc/dpkg/dpkg.cfg
     line: "force-confnew"
     create: yes
@@ -44,3 +44,65 @@
   copy:
     src: ../files/apt.conf
     dest: /etc/apt/apt.conf
+
+- name: set languate in .bashrc
+  lineinfile:
+    path: '{{ circleci_home }}/.bashrc'
+    line: "export LANG=C.UTF-8"
+    create: yes
+
+- name: set noninteractive
+  lineinfile:
+    path: /etc/sudoers.d/env_keep
+    line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
+
+- name: update apt packages
+  become: true
+  apt:
+    update_cache: yes
+
+- name: Install software-properties-common
+  apt:
+    name: software-properties-common
+    state: present
+
+- name: Add git-core repository from PPA
+  apt_repository:
+    repo: ppa:git-core/ppa
+
+- name: Add universe repository
+  apt_repository:
+    repo: universe
+
+- name: Install core packages
+  apt:
+    pkg:
+      - autoconf
+      - build-essential
+      - cmake
+      - curl
+      - dpkg-repack
+      - ffmpeg
+      - gfortran
+      - git
+      - gnupg2
+      - imagemagick
+      - libarchive-tools
+      - libicu-dev
+      - liblapack-dev
+      - lzop
+      - make
+      - mercurial
+      - protobuf-compiler
+      - unzip
+      - zip
+    state: latest
+    update_cache: true
+
+- name: configure ulimit
+  blockinfile:
+    path: /etc/security/limits.d/01-openfiles.conf
+    block: | 
+      soft    nofile          65536
+      hard    nofile          65536
+    create: yes
