@@ -67,10 +67,14 @@
     state: present
 
 - name: Add git-core repository from PPA
+  become: true
+  become_method: sudo
   apt_repository:
     repo: ppa:git-core/ppa
 
 - name: Add universe repository
+  become: true
+  become_method: sudo
   apt_repository:
     repo: universe
 
