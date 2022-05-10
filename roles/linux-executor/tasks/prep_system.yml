@@ -62,6 +62,8 @@
     update_cache: yes
 
 - name: Install software-properties-common
+  become: true
+  become_method: sudo
   apt:
     name: software-properties-common
     state: present
