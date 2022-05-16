@@ -24,7 +24,7 @@
     dest: /etc/localtime
     state: link
 
-- name: set languate in .bashrc
+- name: set language in .bashrc
   lineinfile:
     path: '{{ circleci_home }}/.bashrc'
     line: "export LANG=C.UTF-8"
@@ -109,6 +109,6 @@
   blockinfile:
     path: /etc/security/limits.d/01-openfiles.conf
     block: | 
-      soft    nofile          65536
-      hard    nofile          65536
+      *               soft    nofile          65536
+      *               hard    nofile          65536
     create: yes
