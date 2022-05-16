@@ -77,8 +77,7 @@
 - name: Add universe repository
   become: true
   become_method: sudo
-  apt_repository:
-    repo: universe
+  shell: add-apt-repository universe
 
 - name: Install core packages
   apt:
