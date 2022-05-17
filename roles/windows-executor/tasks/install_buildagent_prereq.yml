@@ -1,3 +1,5 @@
+# !file: roles/windows-executor/tasks/install_buildagent_prereq.yml
+
 - name: Install PowershellGet
   ansible.windows.win_powershell:
     script: |

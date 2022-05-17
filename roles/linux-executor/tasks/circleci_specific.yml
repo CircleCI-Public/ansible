@@ -1,0 +1,36 @@
+# !file: roles/linux-executor/tasks/circleci_specific.yml
+
+- name: redirect output (.bash_profile)
+  lineinfile:
+    path: "{{ circleci_home }}/.bash_profile"
+    line: 'source ~/.bashrc &>/dev/null'
+    create: yes
+
+- name: redirect output (.bashrc)
+  lineinfile:
+    path: "{{ circleci_home }}/.bashrc"
+    line: 'source ~/.circlerc &>/dev/null'
+    create: yes
+
+- name: source BASH_ENV via .bashrc
+  lineinfile:
+    path: "{{ circleci_home }}/.bashrc"
+    line: 'if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi'
+    create: yes
+
+- name: Change ownership of .bash_profile
+  file:
+    path: "{{ circleci_home }}/.bash_profile" 
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+
+- name: Change ownership of .bashrc
+  file:
+    path: "{{ circleci_home }}/.bashrc" 
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+
+- name: Add universe repository
+  become: true
+  become_method: sudo
+  shell: add-apt-repository universe

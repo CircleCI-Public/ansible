@@ -1,3 +1,5 @@
+# !file: roles/linux-executor/tasks/prep_system.yml
+
 - name: Remove packages we no longer need
   become: true
   become_method: sudo
@@ -26,8 +28,8 @@
 
 - name: set language in .bashrc
   lineinfile:
-    path: '{{ circleci_home }}/.bashrc'
-    line: "export LANG=C.UTF-8"
+    path: "{{ circleci_home }}/.bashrc"
+    line: 'export LANG=C.UTF-8'
     create: yes
 
 - name: Always install the latest config
@@ -35,7 +37,7 @@
   become_method: sudo
   lineinfile:
     path: /etc/dpkg/dpkg.cfg
-    line: "force-confnew"
+    line: 'force-confnew'
     create: yes
 
 - name: deploy new apt config
@@ -47,8 +49,8 @@
 
 - name: set languate in .bashrc
   lineinfile:
-    path: '{{ circleci_home }}/.bashrc'
-    line: "export LANG=C.UTF-8"
+    path: "{{ circleci_home }}/.bashrc"
+    line: 'export LANG=C.UTF-8'
     create: yes
 
 - name: set noninteractive

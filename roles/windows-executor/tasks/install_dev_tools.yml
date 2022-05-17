@@ -1,3 +1,5 @@
+# !file: roles/windows-executor/tasks/install_dev_tools.yml
+
 - name: Install nunit-console-runner
   win_chocolatey:
     name: nunit-console-runner
