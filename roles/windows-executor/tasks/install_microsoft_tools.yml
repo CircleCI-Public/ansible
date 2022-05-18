@@ -1,3 +1,5 @@
+# !file: roles/windows-executor/tasks/install_microsoft_tools.yml
+
 - name: Install dotnet sdk
   win_chocolatey:
     name: dotnet-sdk

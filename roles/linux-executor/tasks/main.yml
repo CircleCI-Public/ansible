@@ -1,4 +1,7 @@
-# !file: roles/linux-executor/tasks/linux_ping.yml
+# !file: roles/linux-executor/tasks/main.yml
 
-  - name: ping test
+  - name: prep system - install base requirements
     include_tasks: 'prep_system.yml'
+
+  - name: prep system - install circleci specific requirements
+    include_tasks: 'circleci_specific.yml'

@@ -1,3 +1,5 @@
+# !file: roles/windows-executor/tasks/install_cloud_tools.yml
+
 - name: Install awscli
   win_chocolatey:
     name: awscli
