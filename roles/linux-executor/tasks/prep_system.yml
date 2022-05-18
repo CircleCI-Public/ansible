@@ -47,12 +47,6 @@
     src: ../files/apt.conf
     dest: /etc/apt/apt.conf
 
-- name: set languate in .bashrc
-  lineinfile:
-    path: "{{ circleci_home }}/.bashrc"
-    line: 'export LANG=C.UTF-8'
-    create: yes
-
 - name: set noninteractive
   lineinfile:
     path: /etc/sudoers.d/env_keep
