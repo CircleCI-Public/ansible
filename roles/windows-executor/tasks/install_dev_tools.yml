@@ -82,6 +82,11 @@
     state: '{{ package_state }}'
     version: '{{ nvm_version }}'
 
+- name: Remove nodejs directory due to nvm issues 
+  ansible.windows.win_file:
+    path: '{{ nodejs_dir }}'
+    state: absent
+
 - name: Install docker
   ansible.windows.win_powershell:
     script: |
