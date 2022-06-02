@@ -1,5 +1,5 @@
-awscli_version: 2.4.13
-azurecli_version: 2.32.0
+awscli_version: 2.7.4
+azurecli_version: 2.37.0
 webpi_version: 5.1
 servicefabric_version: 8.2.1363
 servicefabricsdk_version: 5.2.1363
