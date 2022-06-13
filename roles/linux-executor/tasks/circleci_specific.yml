@@ -52,5 +52,36 @@
     owner: "{{ circleci_user }}"
     state: directory
 
+- name: Create and configure ssh_config
+  blockinfile:
+    path: '/etc/ssh/ssh_config'
+    create: yes
+    block: |
+      Host *
+      StrictHostKeyChecking no
+      HashKnownHosts no
+      SendEnv LANG LC_*
+
+- name: Some optimizations for the sshd daemon
+  lineinfile:
+    path: '/etc/ssh/sshd_config'
+    search_string: 'PasswordAuthentication yes'
+    line: 'PasswordAuthentication no'
+    backup: yes
+
+- name: Some more optimizations for the sshd daemon
+  blockinfile:
+    path: '/etc/ssh/sshd_config'
+    backup: yes
+    block: |
+      UseDns no
+      MaxStartups 1000
+      MaxSessions 1000
+      PermitTunnel yes
+      AddressFamily inet
+
+  
+   
+
 
 
