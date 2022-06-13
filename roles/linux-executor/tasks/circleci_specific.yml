@@ -34,3 +34,20 @@
   become: true
   become_method: sudo
   shell: add-apt-repository universe
+
+- name: Configure .circlecirc
+  blockinfile:
+    path: "{{ circleci_home }}/.circlecirc"
+    owner: "{{ circleci_user }}"
+    block: |
+      export GIT_ASKPASS=echo
+      export SSH_ASKPASS=false
+      export PATH=~/bin:$PATH
+      export CIRCLECI_PKG_DIR="/opt/circleci"
+
+- name: Create /bin directory
+  file:
+    path: "{{ circleci_home }}/bin"
+    owner: "{{ circleci_user }}"
+    state: directory 
+
