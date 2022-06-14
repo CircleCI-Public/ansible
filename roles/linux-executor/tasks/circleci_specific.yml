@@ -80,6 +80,60 @@
       PermitTunnel yes
       AddressFamily inet
 
+- name: Install xvfb
+  become: true
+  become_method: sudo
+  apt:
+    name: xvfb
+    state: present
+
+- name: Install xfwm4
+  become: true
+  become_method: sudo
+  apt:
+    name: xfwm4
+    state: present
+
+- name: Configure xvfb service
+  blockinfile:
+    path: '/etc/systemd/system/xvfb.service'
+    backup: yes
+    block: |
+      [Unit]
+      Description=XVFB Service
+      After=network.target
+
+      [Service]
+      ExecStart=/usr/bin/Xvfb :99 -screen 0 1280x1024x24
+      Type=simple
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Change permissions on xvfb.service
+  file:
+    path: '/etc/systemd/system/xvfb.service'
+    mode: '0644'
+
+- name: set display settings in .circlecirc
+  lineinfile:
+    path: "{{ circleci_home }}/.circlecirc"
+    line: 'export DISPLAY=:99'
+    create: yes
+
+- name: Enable xvfb.service
+  systemd:
+    name: 'xvfb.service'
+    enabled: yes
+
+- name: Start xvfb.service
+  systemd:
+    name: 'xvfb.service'
+    state: started
+
+
+
+
   
    
 
