@@ -53,6 +53,8 @@
     state: directory
 
 - name: Create and configure ssh_config
+  become: true
+  become_method: sudo
   blockinfile:
     path: '/etc/ssh/ssh_config'
     create: yes
@@ -63,13 +65,18 @@
       SendEnv LANG LC_*
 
 - name: Some optimizations for the sshd daemon
+  become: true
+  become_method: sudo
   lineinfile:
     path: '/etc/ssh/sshd_config'
     search_string: 'PasswordAuthentication yes'
     line: 'PasswordAuthentication no'
+    create: yes
     backup: yes
 
 - name: Some more optimizations for the sshd daemon
+  become: true
+  become_method: sudo
   blockinfile:
     path: '/etc/ssh/sshd_config'
     backup: yes
@@ -95,9 +102,12 @@
     state: present
 
 - name: Configure xvfb service
+  become: true
+  become_method: sudo
   blockinfile:
     path: '/etc/systemd/system/xvfb.service'
     backup: yes
+    create: yes
     block: |
       [Unit]
       Description=XVFB Service
@@ -111,6 +121,8 @@
       WantedBy=multi-user.target
 
 - name: Change permissions on xvfb.service
+  become: true
+  become_method: sudo
   file:
     path: '/etc/systemd/system/xvfb.service'
     mode: '0644'
@@ -122,11 +134,15 @@
     create: yes
 
 - name: Enable xvfb.service
+  become: true
+  become_method: sudo
   systemd:
     name: 'xvfb.service'
     enabled: yes
 
 - name: Start xvfb.service
+  become: true
+  become_method: sudo
   systemd:
     name: 'xvfb.service'
     state: started
