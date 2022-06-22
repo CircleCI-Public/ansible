@@ -147,11 +147,23 @@
     name: 'xvfb.service'
     state: started
 
+- name: Add an apt key by id from a keyserver
+  become: true
+  become_method: sudo
+  shell: |
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-key 514A2AD631A57A16DD0047EC749D6EEC0353B12C
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-key 58118E89F3A912897C070ADBF76221572C52609D
 
+- name: A tweak to make selenium tests stable
+  lineinfile:
+    path: "{{ circleci_home }}/.circlecirc"
+    line: 'export DBUS_SESSION_BUS_ADDRESS=/dev/null'
+    create: yes
 
-
-  
-   
-
-
-
+- name: Allow iptable rules to be saved
+  become: true
+  become_method: sudo
+  shell: |
+    echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+    echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+    apt-get -y install iptables-persistent
