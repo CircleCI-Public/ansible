@@ -1,7 +1,10 @@
 # !file: roles/linux-executor/tasks/main.yml
 
-  - name: prep system - install base requirements
+  - name: install base requirements
     include_tasks: 'prep_system.yml'
 
-  - name: prep system - install circleci specific requirements
+  - name: install circleci specific requirements
     include_tasks: 'circleci_specific.yml'
+
+  - name: install java
+    include_tasks: 'install_java.yml'
