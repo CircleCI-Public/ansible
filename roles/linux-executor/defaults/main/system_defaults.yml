@@ -1,4 +1,2 @@
 circleci_user: circleci
 circleci_home: '/home/{{ circleci_user }}'
-become: true
-become_method: sudo
