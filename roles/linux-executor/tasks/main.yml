@@ -8,3 +8,6 @@
 
   - name: install java
     include_tasks: 'install_java.yml'
+
+  - name: install maven
+    include_tasks: 'install_maven.yml'
