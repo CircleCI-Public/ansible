@@ -1,0 +1,25 @@
+# !file: roles/linux-executor/tasks/install_firefox.yml
+- block:
+  - name: Setup apt-pinning so we can still get a deb of Firefox instead of a snap - firefox.list
+    lineinfile:
+      path: '/etc/apt/sources.list.d/firefox.list'
+      line: 'deb http://us.archive.ubuntu.com/ubuntu/ focal-updates main'
+      create: yes
+      
+  - name: Setup apt-pinning so we can still get a deb of Firefox instead of a snap - firefox.pref
+    blockinfile:
+      path: '/etc/apt/preferences.d/firefox.pref'
+      create: yes
+      block: |
+        Package: firefox
+        Pin: release n=focal
+        Pin-Priority: 500
+
+  - name: Install firefox
+    apt:
+      name: 'firefox={{ firefox_version }}'
+      state: present
+      update_cache: yes
+
+  become: true
+  become_method: sudo
