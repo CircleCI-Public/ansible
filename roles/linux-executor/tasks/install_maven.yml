@@ -1,0 +1,25 @@
+# !file: roles/linux-executor/tasks/install_maven.yml
+- block:
+  - name: Download maven
+    get_url:
+      url: 'http://apache.osuosl.org/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz'
+      dest: '/tmp/maven.tar.gz'
+
+  - name: Extract maven
+    unarchive:
+      src: '/tmp/maven.tar.gz'
+      dest: '/usr/local'
+
+  - name: Create a maven symbolic link
+    file:
+      src: '/usr/local/apache-maven-{{maven_version}}'
+      dest: '/usr/local/apache-maven'
+      state: link
+
+  - name: Remove maven tar file
+    file:
+      path: '/tmp/maven.tar.gz'
+      state: absent
+
+  become: true
+  become_method: sudo
