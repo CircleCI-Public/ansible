@@ -23,3 +23,20 @@
 
   become: true
   become_method: sudo
+
+- name: Create maven .m2 directory
+  file:
+    path: "{{ circleci_home }}/.m2"
+    owner: "{{ circleci_user }}"
+    state: directory
+
+- name: Configure maven in .circlecirc
+  blockinfile:
+    path: "{{ circleci_home }}/.circlecirc"
+    owner: "{{ circleci_user }}"
+    create: yes
+    block: |
+      export M2_HOME=/usr/local/apache-maven
+      export MAVEN_OPTS=-Xmx2048m
+      export PATH=$M2_HOME/bin:$PATH
+      
