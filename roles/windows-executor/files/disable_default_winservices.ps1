@@ -28,7 +28,21 @@
     }
 
     function Disable-UserAccessControl {
-        Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000 -Force
+        Write-Host "Diabling User Access Control (UAC)"
+
+        Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
+        $token_path = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System"
+        $token_prop_name = "LocalAccountTokenFilterPolicy"
+        $token_key = Get-Item -Path $token_path
+        $token_value = $token_key.GetValue($token_prop_name, $null)
+
+        if ($token_value -ne 1) {
+            Write-Host "Setting LocalAccountTokenFilterPolicy to 1"
+            if ($null -ne $token_value) {
+                Remove-ItemProperty -Path $token_path -Name $token_prop_name
+            }
+            New-ItemProperty -Path $token_path -Name $token_prop_name -Value 1 -PropertyType DWORD > $null
+        } 
         Write-Host "User Access Control (UAC) has been disabled."
     }
     
