@@ -20,7 +20,8 @@
   win_chocolatey:
     name: visualstudio2022community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --passive --locale en-US'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    timeout: 5400
     version: '{{ visualstudio_community_edition_version }}'
 
 - name: Install Visual Studio Build Tools
