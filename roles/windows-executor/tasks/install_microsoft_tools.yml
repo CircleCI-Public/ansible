@@ -13,11 +13,14 @@
 #    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /SQLSYSADMINACCOUNTS:{{ ansible_env.COMPUTERNAME }}\\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:circleci /QUIET"'
 #    version: '{{ sqlserver_devedition_version }}'
 
+- name: Reboot the machine after install dotnet sdk
+  ansible.windows.win_reboot:
+
 - name: Install Visual Studio Community Edition
   win_chocolatey:
     name: visualstudio2022community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --passive --locale en-US'
     version: '{{ visualstudio_community_edition_version }}'
 
 - name: Install Visual Studio Build Tools
