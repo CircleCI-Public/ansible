@@ -15,6 +15,9 @@
   - name: install gradle
     include_tasks: 'install_gradle.yml'
 
+  - name: install ant
+    include_tasks: 'install_ant.yml'
+
   - name: install firefox
     include_tasks: 'install_firefox.yml'
 
