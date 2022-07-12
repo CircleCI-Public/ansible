@@ -1,6 +1,6 @@
 # !file: roles/linux-executor/tasks/install_ant.yml
 
-- name: Install google chrome
+- name: Install ant
   become: true
   become_method: sudo
   apt:
