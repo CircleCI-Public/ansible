@@ -1,0 +1,22 @@
+# !file: roles/linux-executor/tasks/install_gradle.yml
+- block:
+  - name: Download gradle
+    get_url:
+      url: 'https://services.gradle.org/distributions/gradle-{{ gradle_version }}-bin.zip'
+      dest: '/tmp/gradle.zip'
+
+  - name: Extract gradle
+    unarchive:
+      src: '/tmp/gradle.zip'
+      dest: '/usr/local'
+
+  - name: Set gradle path
+    lineinfile:
+      path: '{{ circleci_home }}/.circlecirc'
+      line: 'export PATH=\$PATH:/usr/local/gradle-{{ gradle_version }}/bin'
+      create: yes
+
+  - name: Remove gradle zip file
+    file:
+      path: '/tmp/gradle.zip'
+      state: absent
