@@ -20,3 +20,6 @@
     file:
       path: '/tmp/gradle.zip'
       state: absent
+
+  become: true
+  become_method: sudo
