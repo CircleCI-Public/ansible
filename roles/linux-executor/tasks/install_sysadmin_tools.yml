@@ -1,0 +1,9 @@
+# !file: roles/linux-executor/tasks/install_sysadmin_tools.yml
+
+- name: Install htop
+  become: true
+  become_method: sudo
+  apt:
+    name: 'htop'
+    state: present
+    update_cache: yes
