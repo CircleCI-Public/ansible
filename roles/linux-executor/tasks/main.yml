@@ -12,6 +12,9 @@
   - name: install maven
     include_tasks: 'install_maven.yml'
 
+  - name: install gradle
+    include_tasks: 'install_gradle.yml'
+
   - name: install firefox
     include_tasks: 'install_firefox.yml'
 
