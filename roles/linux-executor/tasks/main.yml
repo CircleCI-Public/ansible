@@ -1,28 +1,31 @@
 # !file: roles/linux-executor/tasks/main.yml
 
-  - name: install base requirements
-    include_tasks: 'prep_system.yml'
+- name: install base requirements
+  include_tasks: "prep_system.yml"
 
-  - name: install circleci specific requirements
-    include_tasks: 'circleci_specific.yml'
+- name: install circleci specific requirements
+  include_tasks: "circleci_specific.yml"
 
-  - name: install java
-    include_tasks: 'install_java.yml'
+- name: install java
+  include_tasks: "install_java.yml"
 
-  - name: install maven
-    include_tasks: 'install_maven.yml'
+- name: install maven
+  include_tasks: "install_maven.yml"
 
-  - name: install gradle
-    include_tasks: 'install_gradle.yml'
+- name: install gradle
+  include_tasks: "install_gradle.yml"
 
-  - name: install ant
-    include_tasks: 'install_ant.yml'
+- name: install ant
+  include_tasks: "install_ant.yml"
 
-  - name: install firefox
-    include_tasks: 'install_firefox.yml'
+- name: install firefox
+  include_tasks: "install_firefox.yml"
 
-  - name: install chrome
-    include_tasks: 'install_chrome.yml'
+- name: install chrome
+  include_tasks: "install_chrome.yml"
 
-  - name: install sys admin tools
-    include_tasks: 'install_sysadmin_tools.yml'
+- name: install sys admin tools
+  include_tasks: "install_sysadmin_tools.yml"
+
+- name: install dev tools
+  include_tasks: "install_devtools.yml"
