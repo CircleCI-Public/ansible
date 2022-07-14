@@ -1,6 +1,6 @@
 # !file: roles/linux-executor/tasks/install_yq.yml
 
-- name: Install yq
+- name: Install yq.
   become: true
   become_method: sudo
   apt:

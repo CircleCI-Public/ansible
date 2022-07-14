@@ -32,6 +32,6 @@
 
 - name: install jq
   include_tasks: "install_jq.yml"
-
-- name: install yq
-  include_tasks: "install_yq.yml"
+# Take to Ricardo about yq. Getting package not found errors. Commenting out for now
+# - name: install yq
+#  include_tasks: "install_yq.yml"
