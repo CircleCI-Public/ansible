@@ -1,0 +1,17 @@
+# !file: roles/linux-executor/tasks/install_devtools.yml
+
+- name: Install devtools
+  become: true
+  become_method: sudo
+  apt:
+    name:
+      - ack-grep
+      - emacs
+      - gdb
+      - lsof
+      - nano
+      - tmux
+      - vim
+      - tightvncserver
+    state: present
+    update_cache: yes
