@@ -1,0 +1,9 @@
+# !file: roles/linux-executor/tasks/install_yq.yml
+
+- name: Install yq.
+  become: true
+  become_method: sudo
+  apt:
+    name: "yq"
+    state: present
+    update_cache: yes
