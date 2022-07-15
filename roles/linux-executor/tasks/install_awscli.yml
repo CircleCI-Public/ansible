@@ -3,13 +3,13 @@
 - block:
     - name: download awscli
       get_url:
-        url: "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
-        dest: "/tmp/awscliv2.zip"
+        url: 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip'
+        dest: '/tmp/awscliv2.zip'
 
     - name: extract awscli
       unarchive:
-        src: "/tmp/awscliv2.zip"
-        dest: "/tmp"
+        src: '/tmp/awscliv2.zip'
+        dest: '/tmp'
 
     - name: install awscli
       shell: |
@@ -18,12 +18,12 @@
 
     - name: remove awscli
       file:
-        path: "/tmp/awscliv2.zip"
+        path: '/tmp/awscliv2.zip'
         state: absent
 
     - name: configure AWS_PAGER in .circlecirc
       lineinfile:
-        path: "{{ circleci_home }}/.circlecirc"
+        path: '{{ circleci_home }}/.circlecirc'
         line: 'export AWS_PAGER=""'
         create: yes
 
