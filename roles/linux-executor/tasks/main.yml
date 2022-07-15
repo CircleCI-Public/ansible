@@ -39,3 +39,6 @@
 
 - name: install gcloud
   include_tasks: "install_gcloud.yml"
+
+- name: install awscli
+  include_tasks: "install_awscli.yml"
