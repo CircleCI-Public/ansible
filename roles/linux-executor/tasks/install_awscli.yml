@@ -13,12 +13,19 @@
 
     - name: install awscli
       shell: |
+        cd /tmp
         ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
 
     - name: remove awscli
       file:
         path: "/tmp/awscliv2.zip"
         state: absent
+
+    - name: configure AWS_PAGER in .circlecirc
+      lineinfile:
+        path: "{{ circleci_home }}/.circlecirc"
+        line: 'export AWS_PAGER=""'
+        create: yes
 
   become: true
   become_method: sudo
