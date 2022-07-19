@@ -1,0 +1,5 @@
+nodejs_versions:
+  - 16.14.2
+  - 18.0.0
+
+nvm_dir: '/opt/circleci/.nvm'
