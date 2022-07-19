@@ -1,0 +1,31 @@
+# !file: roles/linux-executor/tasks/install_heroku.yml
+
+- block:
+    - name: Download heroku
+      get_url:
+        url: 'https://cli-assets.heroku.com/install-ubuntu.sh'
+        dest: '/tmp/heroku.sh'
+
+    - name: Run heroku install script
+      script: '/tmp/heroku.sh'
+
+    - name: Make /.config directory
+      file:
+        path: '{{ circleci_home }}/.config'
+        state: directory
+
+    - name: Change ownership of /.config
+      file:
+        path: '{{ circleci_home }}/.config'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        state: directory
+        recurse: yes
+
+  become: true
+  become_method: sudo
+
+- name: Display heroku version
+  become_user: '{{ circleci_user }}'
+  become: true
+  shell: heroku --version
