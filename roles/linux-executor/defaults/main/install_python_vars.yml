@@ -1,0 +1,5 @@
+python_versions:
+  - 2.7.18
+  - 3.10.3
+
+pyenv_dir: '/opt/circleci/.pyenv'
