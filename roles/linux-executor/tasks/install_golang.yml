@@ -1,0 +1,59 @@
+# !file: roles/linux-executor/tasks/install_golang.yml
+
+- block:
+    - name: Download golang
+      get_url:
+        url: 'http://golang.org/dl/go{{ golang_version }}.linux-amd64.tar.gz'
+        dest: '/tmp/golang.tar.gz'
+
+    - name: Extract golang
+      unarchive:
+        src: '/tmp/golang.tar.gz'
+        dest: '/usr/local'
+
+    - name: Change ownership of /usr/local/go
+      file:
+        path: '/usr/local/go'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        state: directory
+        recurse: yes
+
+    - name: Change ownership of /usr/local/go directory
+      file:
+        path: '/usr/local/go'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        state: directory
+        recurse: yes
+
+    - name: Make /.go_workspace directory
+      file:
+        path: '{{ circleci_home }}/.go_workspace'
+        state: directory
+
+    - name: Change ownership of .go_workspace directory
+      file:
+        path: '{{ circleci_home }}/.go_workspace'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        state: directory
+        recurse: yes
+
+    - name: configure golang
+      blockinfile:
+        path: '{{ circleci_home }}/.circlecirc'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        create: yes
+        block: |
+          export PATH=~/.go_workspace/bin:/usr/local/go/bin:$PATH
+          export GOPATH=~/.go_workspace:/usr/local/go_workspace
+
+    - name: Remove golang tar file
+      file:
+        path: '/tmp/golang.tar.gz'
+        state: absent
+
+  become: true
+  become_method: sudo
