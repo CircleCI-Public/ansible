@@ -47,7 +47,7 @@
           export PATH=$PYENV_ROOT/bin:$PATH
           export PATH=$PYENV_ROOT/shims:$PATH
 
-    - name: Install pyenv dependencies
+    - name: Install python versions
       shell: |
         ls -al {{ pyenv_dir }}/bin
         source {{ circleci_home }}/.circlecirc

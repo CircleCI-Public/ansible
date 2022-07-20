@@ -5,6 +5,7 @@
 
 - name: install circleci specific requirements
   include_tasks: 'circleci_specific.yml'
+
 #- name: install java
 #  include_tasks: "install_java.yml"
 
@@ -86,8 +87,11 @@
 #- name: install nodejs
 #  include_tasks: 'install_nodejs.yml'
 
-- name: install yarn
-  include_tasks: 'install_yarn.yml'
+#- name: install yarn
+#  include_tasks: 'install_yarn.yml'
 
-- name: install golang
-  include_tasks: 'install_golang.yml'
+#- name: install golang
+#  include_tasks: 'install_golang.yml'
+
+- name: install ruby
+  include_tasks: 'install_ruby.yml'
