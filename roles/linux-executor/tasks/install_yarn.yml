@@ -1,0 +1,9 @@
+# !file: roles/linux-executor/tasks/install_yarn.yml
+
+- name: install yarn
+  become: true
+  become_method: sudo
+  shell: |
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt install --no-install-recommends yarn
