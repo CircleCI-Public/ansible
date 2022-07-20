@@ -1,0 +1,4 @@
+ruby_version: 3.1.2
+rvm_dir: '/opt/circleci/.rvm'
+rvmrc_file: '{{ circleci_home }}/.rvmrc'
+gemrc_file: '{{ circleci_home }}/.gemrc'

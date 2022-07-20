@@ -1,0 +1,45 @@
+# !file: roles/linux-executor/tasks/install_ruby.yml
+
+- block:
+    - name: Install rbenv
+      apt:
+        name: 'rbenv'
+        state: present
+        update_cache: yes
+
+    - name: add .rbenv/bin to path
+      blockinfile:
+        path: '~/.bashrc'
+        create: yes
+        block: |
+          export PATH="{{ circleci_home }}/.rbenv/bin:$PATH"
+          eval "$(rbenv init -)"
+
+    - name: configure .gemrc
+      blockinfile:
+        path: '{{ gemrc_file }}'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        create: yes
+        block: |
+          :sources:
+          - https://rubygems.org
+          gem:  --no-ri --no-rdoc
+
+    - name: install ruby
+      become: true
+      become_method: sudo
+      shell: |
+        git clone https://github.com/rbenv/ruby-build.git
+        PREFIX=/usr/local sudo ./ruby-build/install.sh
+        rbenv install {{ ruby_version }}
+        rbenv global {{ ruby_version }}
+
+    - name: Install rubygems (ruby-dev)
+      apt:
+        name: ruby-dev
+        state: present
+        update_cache: yes
+
+  become: true
+  become_method: sudo
