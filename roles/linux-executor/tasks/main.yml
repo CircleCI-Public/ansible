@@ -5,7 +5,6 @@
 
 - name: install circleci specific requirements
   include_tasks: 'circleci_specific.yml'
-
 #- name: install java
 #  include_tasks: "install_java.yml"
 
@@ -81,5 +80,8 @@
 #- name: install awscli
 #  include_tasks: 'install_awscli.yml'
 
-- name: install python
-  include_tasks: 'install_python.yml'
+#- name: install python
+#  include_tasks: 'install_python.yml'
+
+- name: install nodejs
+  include_tasks: 'install_nodejs.yml'
