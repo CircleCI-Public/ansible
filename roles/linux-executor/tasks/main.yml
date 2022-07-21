@@ -6,8 +6,8 @@
 - name: install circleci specific requirements
   include_tasks: 'circleci_specific.yml'
 
-#- name: install java
-#  include_tasks: "install_java.yml"
+- name: install java
+  include_tasks: 'install_java.yml'
 
 #- name: install maven
 #  include_tasks: "install_maven.yml"
@@ -96,5 +96,9 @@
 #- name: install ruby
 #  include_tasks: 'install_ruby.yml'
 
+- name: install scala
+  include_tasks: 'install_scala.yml'
+
 - name: install clojure
   include_tasks: 'install_clojure.yml'
+
