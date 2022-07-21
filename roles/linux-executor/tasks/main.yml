@@ -45,8 +45,8 @@
 #- name: install heroku
 #  include_tasks: 'install_heroku.yml'
 
-#- name: install java
-#  include_tasks: 'install_java.yml'
+- name: install java
+  include_tasks: 'install_java.yml'
 
 #- name: install maven
 #  include_tasks: 'install_maven.yml'
@@ -93,5 +93,8 @@
 #- name: install golang
 #  include_tasks: 'install_golang.yml'
 
-- name: install ruby
-  include_tasks: 'install_ruby.yml'
+#- name: install ruby
+#  include_tasks: 'install_ruby.yml'
+
+- name: install clojure
+  include_tasks: 'install_clojure.yml'
