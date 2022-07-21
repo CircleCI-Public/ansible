@@ -1,52 +1,32 @@
 # !file: roles/linux-executor/tasks/install_java.yml
 - block:
-  - name: Add openjdk from PPA
-    shell: add-apt-repository ppa:openjdk-r/ppa
+    - name: Add openjdk from PPA
+      shell: add-apt-repository ppa:openjdk-r/ppa
 
-  - name: Install java 11
-    apt:
-      name: openjdk-11-jdk
-      state: present
-      update_cache: yes
+    - name: Install java
+      apt:
+        name: openjdk-{{ item }}-jdk
+        state: present
+        update_cache: yes
+      with_items: '{{ java_versions }}'
 
-  - name: set java 11 link
-    community.general.alternatives:
-      name: java
-      path: '/usr/lib/jvm/java-11-openjdk-amd64/bin/java'
+    - name: set java links
+      community.general.alternatives:
+        name: java
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-amd64/bin/java'
+      with_items: '{{ java_versions }}'
 
-  - name: set javac 11 link
-    community.general.alternatives:
-      name: javac
-      path: '/usr/lib/jvm/java-11-openjdk-amd64/bin/javac'
+    - name: set javac links
+      community.general.alternatives:
+        name: javac
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-amd64/bin/javac'
+      with_items: '{{ java_versions }}'
 
-  - name: set javadoc 11 link
-    community.general.alternatives:
-      name: javadoc
-      path: '/usr/lib/jvm/java-11-openjdk-amd64/bin/javadoc'
-
-  - name: update apt packages
-    apt:
-      update_cache: yes
-
-  - name: Install java 17
-    apt:
-      name: openjdk-17-jdk
-      state: present
-
-  - name: set java 17 link
-    community.general.alternatives:
-      name: java
-      path: '/usr/lib/jvm/java-17-openjdk-amd64/bin/java'
-
-  - name: set javac 17 link
-    community.general.alternatives:
-      name: javac
-      path: '/usr/lib/jvm/java-17-openjdk-amd64/bin/javac'
-
-  - name: set javadoc 17 link
-    community.general.alternatives:
-      name: javadoc
-      path: '/usr/lib/jvm/java-17-openjdk-amd64/bin/javadoc'
+    - name: set javadoc links
+      community.general.alternatives:
+        name: javadoc
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-amd64/bin/javadoc'
+      with_items: '{{ java_versions }}'
 
   become: true
   become_method: sudo
