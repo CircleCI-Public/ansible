@@ -1,0 +1,20 @@
+# !file: roles/linux-executor/tasks/install_clojure.yml
+
+- block:
+    - name: download clojure
+      get_url:
+        url: 'https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein'
+        dest: '{{ lein_dir }}'
+
+    - name: Change permissions on /usr/local/bin/lein
+      file:
+        path: '{{ lein_dir }}/lein'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+        mode: a+x
+
+    - name: force lein dependencies to download
+      shell: lein -v
+
+  become: true
+  become_method: sudo
