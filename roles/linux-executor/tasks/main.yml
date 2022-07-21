@@ -93,5 +93,8 @@
 #- name: install golang
 #  include_tasks: 'install_golang.yml'
 
-- name: install ruby
-  include_tasks: 'install_ruby.yml'
+#- name: install ruby
+#  include_tasks: 'install_ruby.yml'
+
+- name: install scala
+  include_tasks: 'install_scala.yml'
