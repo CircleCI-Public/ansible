@@ -102,8 +102,11 @@
 #- name: install clojure
 #  include_tasks: 'install_clojure.yml'
 
-- name: install socat
-  include_tasks: 'install_socat.yml'
+#- name: install socat
+#  include_tasks: 'install_socat.yml'
 
-- name: install nsenter
-  include_tasks: 'install_nsenter.yml'
+#- name: install nsenter
+#  include_tasks: 'install_nsenter.yml'
+
+- name: install docker
+  include_tasks: 'install_docker.yml'
