@@ -26,10 +26,10 @@
     - name: Install docker and docker compose (*put versions back here eventually)
       apt:
         name:
-          - docker-ce={{ docker_version}}
-          - docker-ce-cli={{ docker_version}}
-          - containerd.io={{ containerd_version }}
-          - docker-compose-plugin={{ docker_compose_version }}
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
         state: present
         update_cache: yes
 
