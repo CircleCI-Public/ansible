@@ -107,3 +107,6 @@
 
 #- name: install nsenter
 #  include_tasks: 'install_nsenter.yml'
+
+- name: install docker
+  include_tasks: 'install_docker.yml'
