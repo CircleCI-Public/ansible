@@ -96,9 +96,14 @@
 #- name: install ruby
 #  include_tasks: 'install_ruby.yml'
 
-- name: install scala
-  include_tasks: 'install_scala.yml'
+#- name: install scala
+#  include_tasks: 'install_scala.yml'
 
-- name: install clojure
-  include_tasks: 'install_clojure.yml'
+#- name: install clojure
+#  include_tasks: 'install_clojure.yml'
 
+- name: install socat
+  include_tasks: 'install_socat.yml'
+
+- name: install nsenter
+  include_tasks: 'install_nsenter.yml'
