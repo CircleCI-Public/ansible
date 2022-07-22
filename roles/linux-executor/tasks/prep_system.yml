@@ -1,113 +1,98 @@
 # !file: roles/linux-executor/tasks/prep_system.yml
 
-- name: Remove packages we no longer need
+- block:
+    - name: Remove packages we no longer need
+      apt:
+        autoremove: yes
+        autoclean: yes
+
+    - name: Update and upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+        cache_valid_time: 86400 #One day
+
+    - name: Remove snapd - it inteferes with what we want such as .deb Firefox
+      apt:
+        pkg: snapd
+        state: absent
+
+    - name: Update Timezone to UTC
+      file:
+        src: /usr/share/zoneinfo/Etc/UTC
+        dest: /etc/localtime
+        state: link
+
+    - name: set language in .bashrc
+      lineinfile:
+        path: '{{ circleci_home }}/.bashrc'
+        line: 'export LANG=C.UTF-8'
+        create: yes
+
+    - name: Always install the latest config
+      lineinfile:
+        path: /etc/dpkg/dpkg.cfg
+        line: 'force-confnew'
+        create: yes
+
+    - name: deploy new apt config
+      copy:
+        src: ../files/apt.conf
+        dest: /etc/apt/apt.conf
+
+    - name: set noninteractive
+      lineinfile:
+        path: /etc/sudoers.d/env_keep
+        line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
+
+    - name: update apt packages
+      apt:
+        update_cache: yes
+
+    - name: Install software-properties-common
+      apt:
+        name: software-properties-common
+        state: present
+
+    - name: Add git-core repository from PPA
+      apt_repository:
+        repo: ppa:git-core/ppa
+
+    - name: Add universe repository
+      shell: add-apt-repository universe
+
+    - name: Install core packages
+      apt:
+        pkg:
+          - autoconf
+          - build-essential
+          - cmake
+          - curl
+          - dpkg-repack
+          - ffmpeg
+          - gfortran
+          - git
+          - gnupg2
+          - imagemagick
+          - libarchive-tools
+          - libicu-dev
+          - liblapack-dev
+          - lzop
+          - make
+          - mercurial
+          - protobuf-compiler
+          - unzip
+          - zip
+        state: latest
+        update_cache: true
+
+    - name: configure ulimit
+      blockinfile:
+        path: /etc/security/limits.d/01-openfiles.conf
+        block: |
+          *               soft    nofile          65536
+          *               hard    nofile          65536
+        create: yes
+
   become: true
   become_method: sudo
-  apt:
-      autoremove: yes
-      autoclean: yes
-
-- name: Update and upgrade apt packages
-  become: true
-  apt:
-    upgrade: yes
-    update_cache: yes
-    cache_valid_time: 86400 #One day
-
-- name: Remove snapd - it inteferes with what we want such as .deb Firefox
-  apt:
-    pkg: snapd
-    state: absent
-  become: true
-
-- name: Update Timezone to UTC
-  file:
-    src: /usr/share/zoneinfo/Etc/UTC
-    dest: /etc/localtime
-    state: link
-
-- name: set language in .bashrc
-  lineinfile:
-    path: "{{ circleci_home }}/.bashrc"
-    line: 'export LANG=C.UTF-8'
-    create: yes
-
-- name: Always install the latest config
-  become: true
-  become_method: sudo
-  lineinfile:
-    path: /etc/dpkg/dpkg.cfg
-    line: 'force-confnew'
-    create: yes
-
-- name: deploy new apt config
-  become: true
-  become_method: sudo
-  copy:
-    src: ../files/apt.conf
-    dest: /etc/apt/apt.conf
-
-- name: set noninteractive
-  lineinfile:
-    path: /etc/sudoers.d/env_keep
-    line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
-
-- name: update apt packages
-  become: true
-  apt:
-    update_cache: yes
-
-- name: Install software-properties-common
-  become: true
-  become_method: sudo
-  apt:
-    name: software-properties-common
-    state: present
-
-- name: Add git-core repository from PPA
-  become: true
-  become_method: sudo
-  apt_repository:
-    repo: ppa:git-core/ppa
-
-- name: Add universe repository
-  become: true
-  become_method: sudo
-  shell: add-apt-repository universe
-
-- name: Install core packages
-  become: true
-  become_method: sudo
-  apt:
-    pkg:
-      - autoconf
-      - build-essential
-      - cmake
-      - curl
-      - dpkg-repack
-      - ffmpeg
-      - gfortran
-      - git
-      - gnupg2
-      - imagemagick
-      - libarchive-tools
-      - libicu-dev
-      - liblapack-dev
-      - lzop
-      - make
-      - mercurial
-      - protobuf-compiler
-      - unzip
-      - zip
-    state: latest
-    update_cache: true
-
-- name: configure ulimit
-  become: true
-  become_method: sudo
-  blockinfile:
-    path: /etc/security/limits.d/01-openfiles.conf
-    block: | 
-      *               soft    nofile          65536
-      *               hard    nofile          65536
-    create: yes

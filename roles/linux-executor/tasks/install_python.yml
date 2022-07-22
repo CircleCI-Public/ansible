@@ -47,9 +47,16 @@
           export PATH=$PYENV_ROOT/bin:$PATH
           export PATH=$PYENV_ROOT/shims:$PATH
 
+    - name: add pyenv /bin to path
+      blockinfile:
+        path: '~/.bashrc'
+        create: yes
+        block: |
+          export PATH="{{ pyenv_dir }}/bin:{{ pyenv_dir }}/shims:$PATH"
+          eval "$(pyenv init -)"
+
     - name: Install python versions
       shell: |
-        ls -al {{ pyenv_dir }}/bin
         source {{ circleci_home }}/.circlecirc
         {{ pyenv_dir }}/bin/pyenv install {{ item }}
         {{ pyenv_dir }}/bin/pyenv global {{ item }}
