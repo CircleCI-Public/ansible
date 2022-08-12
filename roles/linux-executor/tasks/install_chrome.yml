@@ -13,7 +13,7 @@
 
   - name: Install google chrome
     apt:
-      name: 'google-chrome-stable={{ chrome_version }}'
+      name: 'google-chrome-stable'
       state: present
       update_cache: yes
 
