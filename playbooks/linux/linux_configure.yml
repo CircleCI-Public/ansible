@@ -2,7 +2,7 @@
 # !file: playbooks/linux/linux_configure.yml
 
 - name: Configure linux node
-  hosts: default
+  hosts: all
   connection: local
   roles:
     - ../../../roles/linux-executor
