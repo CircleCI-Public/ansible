@@ -22,7 +22,7 @@
 
     - name: configure nvm
       blockinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
         create: yes
@@ -35,7 +35,7 @@
         export NVM_DIR="{{ nvm_dir }}"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
         [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        source {{ circleci_home }}/.circlecirc
+        source {{ circleci_home }}/.circlerc
         nvm install {{ item }}
         rm -rf {{ circleci_home }}/nvm/src
         hash -r
@@ -48,7 +48,7 @@
         npm install -g nodeunit
         npm install -g mocha
         hash -r
-        nvm alias default 16.14.2
+        nvm alias default 16.16.0
       with_items: '{{ nodejs_versions }}'
 
   become: true

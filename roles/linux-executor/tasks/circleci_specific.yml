@@ -34,9 +34,9 @@
     - name: Add universe repository
       shell: add-apt-repository universe
 
-    - name: Create and configure .circlecirc
+    - name: Create and configure .circlerc
       blockinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
         create: yes
         block: |
@@ -112,9 +112,9 @@
         path: '/etc/systemd/system/xvfb.service'
         mode: '0644'
 
-    - name: set display settings in .circlecirc
+    - name: set display settings in .circlerc
       lineinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         line: 'export DISPLAY=:99'
         create: yes
 
@@ -135,7 +135,7 @@
 
     - name: A tweak to make selenium tests stable
       lineinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         line: 'export DBUS_SESSION_BUS_ADDRESS=/dev/null'
         create: yes
 
