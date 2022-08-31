@@ -1,5 +1,7 @@
 ---
 # !file: playbooks/linux/linux_configure_vars.yml
 
-remote_user: ubuntu
+remote_user: circleci
+ssh_private_key_file: ~/project/gce_googlecompute.pem
+ssh_authorized_key_file: ~/.ssh/id_rsa.pub
 become_method: sudo
