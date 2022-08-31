@@ -61,14 +61,13 @@
           HashKnownHosts no
           SendEnv LANG LC_*
           
-    # ignore for now, as this requires a new version of ansible
-    # - name: Some optimizations for the sshd daemon
-    #   lineinfile:
-    #     path: '/etc/ssh/sshd_config'
-    #     search_string: 'PasswordAuthentication yes'
-    #     line: 'PasswordAuthentication no'
-    #     create: yes
-    #     backup: yes
+    - name: Some optimizations for the sshd daemon
+      lineinfile:
+        path: '/etc/ssh/sshd_config'
+        search_string: 'PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        create: yes
+        backup: yes
 
     - name: Some more optimizations for the sshd daemon
       blockinfile:

@@ -10,19 +10,18 @@
     getent:
       database: group
 
-  # ignore for now as non-unique parameter needs an updated version of ansible
-  # - name: Ensure aws group exists
-  #   group:
-  #     name: aws-sudoers
-  #     gid: 1001
-  #     non-unique: yes
-  #   when: "'aws-sudoers' not in ansible_facts.getent_group"
+  - name: Ensure aws group exists
+    group:
+      name: aws-sudoers
+      gid: 1001
+      non_unique: yes
+    when: "'aws-sudoers' not in ansible_facts.getent_group"
 
   - name: Ensure circleci group exists
     group:
       name: circleci
       gid: 1002
-      non-unique: yes
+      non_unique: yes
     when: "'circleci' not in ansible_facts.getent_group"
 
   - name: Ensure circleci user exists
