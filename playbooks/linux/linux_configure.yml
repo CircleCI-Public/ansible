@@ -8,3 +8,24 @@
     - ../../../roles/linux-executor
   vars_files:
     - linux_configure_vars.yml
+  pre_tasks:
+    - name: install pip
+      apt:
+        pkg: 
+          - python3-pip
+        update_cache: yes
+
+    - name: install full ansible
+      shell: |
+        python3 -m pip install ansible
+        
+    - name: add community.general
+      shell: |
+        ansible-galaxy collection install community.general
+    
+    - name: add iptables
+      shell: |
+        ansible-galaxy install chmduquesne.iptables_persistent
+        
+  become: true
+  become_method: sudo
