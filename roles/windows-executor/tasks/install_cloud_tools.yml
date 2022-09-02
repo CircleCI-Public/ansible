@@ -5,18 +5,21 @@
     name: awscli
     state: '{{ package_state }}'
     version: '{{ awscli_version }}'
+    force: yes
 
 - name: Install azure-cli
   win_chocolatey:
     name: azure-cli
     state: '{{ package_state }}'
     version: '{{ azurecli_version }}'
+    force: yes
 
 - name: Install web platform installer
   win_chocolatey:
     name: webpi
     state: '{{ package_state }}'
     version: '{{ webpi_version }}'
+    force: yes
 
 - name: Install service fabric sdk
   script: install_servicefabric_sdk.ps1
