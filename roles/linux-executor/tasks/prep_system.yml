@@ -13,7 +13,8 @@
         cache_valid_time: 86400 #One day
 
     - name: Grab uuid for extra kernel modules
-      command: dmidecode --string system-uuid
+      shell: |
+        dmidecode --string system-uuid
       register: system_uuid
 
     - name: Ensure extra AWS modules are installed
