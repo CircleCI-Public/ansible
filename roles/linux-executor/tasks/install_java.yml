@@ -30,3 +30,7 @@
 
   become: true
   become_method: sudo
+
+  collections:
+    - community.general.alternatives
+    
