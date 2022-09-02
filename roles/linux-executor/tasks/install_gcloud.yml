@@ -50,10 +50,3 @@
 
   become: true
   become_method: sudo
-
-- name: Configure gcloud
-  shell: |
-    /opt/google/google-cloud-sdk/bin/gcloud config set --installation component_manager/disable_update_check true
-    /opt/google/google-cloud-sdk/bin/gcloud config set disable_usage_reporting false
-  become_user: "{{ circleci_user }}"
-  become: true
