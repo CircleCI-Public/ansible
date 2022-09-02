@@ -34,7 +34,7 @@
       git:
         repo: 'https://github.com/yyuu/pyenv.git'
         dest: '{{ pyenv_dir }}'
-        version: v2.2.5
+        version: "{{ pyenv_version }}"
 
     - name: configure pyenv
       blockinfile:
