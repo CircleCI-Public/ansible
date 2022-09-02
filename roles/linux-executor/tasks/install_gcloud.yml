@@ -44,7 +44,7 @@
 
     - name: Set gcloud path
       lineinfile:
-        path: "{{ circleci_home }}/.circlecirc"
+        path: "{{ circleci_home }}/.circlerc"
         line: "export PATH=/opt/google/google-cloud-sdk/bin:$PATH"
         create: yes
 

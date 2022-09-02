@@ -12,7 +12,7 @@
 
   - name: Set gradle path
     lineinfile:
-      path: '{{ circleci_home }}/.circlecirc'
+      path: '{{ circleci_home }}/.circlerc'
       line: 'export PATH=\$PATH:/usr/local/gradle-{{ gradle_version }}/bin'
       create: yes
 
