@@ -13,7 +13,7 @@
   - name: Set gradle path
     lineinfile:
       path: '{{ circleci_home }}/.circlerc'
-      line: 'export PATH=\$PATH:/usr/local/gradle-{{ gradle_version }}/bin'
+      line: 'export PATH=$PATH:/usr/local/gradle-{{ gradle_version }}/bin'
       create: yes
 
   - name: Remove gradle zip file
