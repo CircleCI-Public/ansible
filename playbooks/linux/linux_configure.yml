@@ -3,6 +3,7 @@
 
 - name: Configure linux node
   hosts: default
+  become: yes
   roles:
     - ../../../roles/linux-executor
   vars_files:
