@@ -19,6 +19,7 @@
     state: '{{ package_state }}'
     package_params: '"/GitAndUnixToolsOnPath"'
     version: '{{ git_version }}'
+    force: yes
 
 - name: Install git-lfs
   win_chocolatey:
