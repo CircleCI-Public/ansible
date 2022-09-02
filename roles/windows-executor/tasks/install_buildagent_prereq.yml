@@ -26,6 +26,7 @@
     name: git-lfs
     state: '{{ package_state }}'
     version: '{{ gitlfs_version }}'
+    force: yes
 
 - name: Install 7zip.portable
   win_chocolatey:
