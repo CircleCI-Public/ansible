@@ -5,36 +5,42 @@
     name: nunit-console-runner
     state: '{{ package_state }}'
     version: '{{ nunit_console_runner_version }}'
+    force: yes
 
 - name: Install nano
   win_chocolatey:
     name: nano
     state: '{{ package_state }}'
     version: '{{ nano_version }}'
+    force: yes
 
 - name: Install vim
   win_chocolatey:
     name: vim
     state: '{{ package_state }}'
     version: '{{ vim_version }}'
+    force: yes
 
 - name: Install jq
   win_chocolatey:
     name: jq
     state: '{{ package_state }}'
     version: '{{ jq_version }}'
+    force: yes
 
 - name: Install golang
   win_chocolatey:
     name: golang
     state: '{{ package_state }}'
     version: '{{ golang_version }}'
+    force: yes
 
 - name: Install openjdk (java)
   win_chocolatey:
     name: openjdk
     state: '{{ package_state }}'
     version: '{{ openjdk_version }}'
+    force: yes
 
 - name: Install python 2.x
   win_chocolatey:
@@ -56,18 +62,21 @@
     package_params: '"/AddToPath:1"'
     state: '{{ package_state }}'
     version: '{{ miniconda3_version }}'
+    force: yes
 
 - name: Install nodejs
   win_chocolatey:
     name: nodejs
     state: '{{ package_state }}'
     version: '{{ nodejs_version }}'
+    force: yes
 
 - name: Install ruby
   win_chocolatey:
     name: ruby
     state: '{{ package_state }}'
     version: '{{ ruby_version }}'
+    force: yes
 
 - name: Install docker engine
   win_chocolatey:
@@ -75,12 +84,14 @@
     package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
     state: '{{ package_state }}'
     version: '{{ docker_version }}'
+    force: yes
 
 - name: Install nvm.portable
   win_chocolatey:
     name: nvm.portable
     state: '{{ package_state }}'
     version: '{{ nvm_version }}'
+    force: yes
 
 - name: Remove nodejs directory due to nvm issues 
   ansible.windows.win_file:

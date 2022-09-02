@@ -5,6 +5,7 @@
     name: dotnet-sdk
     state: '{{ package_state }}'
     version: '{{ dotnet_sdk_version }}'
+    force: yes
 
 #- name: Install Sql Server Developer Edition
 #  win_chocolatey:
@@ -23,6 +24,7 @@
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     timeout: 5400
     version: '{{ visualstudio_community_edition_version }}'
+    force: yes
 
 - name: Install Visual Studio Build Tools
   win_chocolatey:
@@ -30,6 +32,7 @@
     state: '{{ package_state }}'
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     version: '{{ visualstudio_buildtools_version }}'
+    force: yes
 
 - name: Ensure that msbuild is in the path
   ansible.windows.win_path:
@@ -41,12 +44,14 @@
     name: nuget.commandline
     state: '{{ package_state }}'
     version: '{{ nuget_cli_version }}'
+    force: yes
 
 - name: Install Windows Application Driver
   win_chocolatey:
     name: winappdriver
     state: '{{ package_state }}'
     version: '{{ winappdriver_version }}'
+    force: yes
 
 - name: Disable Visual Studio background downloads
   win_regedit:

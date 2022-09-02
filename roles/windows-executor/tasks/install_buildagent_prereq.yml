@@ -33,18 +33,21 @@
     name: 7zip.portable
     state: '{{ package_state }}'
     version: '{{ 7zip_version }}'
+    force: yes
 
 - name: Install gzip
   win_chocolatey:
     name: gzip
     state: '{{ package_state }}'
     version: '{{ gzip_version }}'
+    force: yes
 
 - name: Install sysinternals
   win_chocolatey:
     name: sysinternals
     state: '{{ package_state }}'
     version: '{{ sysinternals_version }}'
+    force: yes
 
 
 
