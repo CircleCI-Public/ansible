@@ -3,7 +3,6 @@
 
 - name: Configure linux node
   hosts: default
-  connection: local
   roles:
     - ../../../roles/linux-executor
   vars_files:
