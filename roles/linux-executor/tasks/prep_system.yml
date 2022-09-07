@@ -44,6 +44,7 @@
       lineinfile:
         path: /etc/sudoers.d/env_keep
         line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
+        create: yes
 
     - name: update apt packages
       apt:
