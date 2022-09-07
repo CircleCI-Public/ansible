@@ -59,8 +59,8 @@
       apt_repository:
         repo: ppa:git-core/ppa
 
-    - name: Add universe repository
-      shell: add-apt-repository universe
+    #- name: Add universe repository
+    #  shell: add-apt-repository universe
 
     - name: Install core packages
       apt:
