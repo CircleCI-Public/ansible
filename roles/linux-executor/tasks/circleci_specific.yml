@@ -31,9 +31,6 @@
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
 
-    - name: Add universe repository
-      shell: add-apt-repository universe
-
     - name: Create and configure .circlecirc
       blockinfile:
         path: '{{ circleci_home }}/.circlecirc'
