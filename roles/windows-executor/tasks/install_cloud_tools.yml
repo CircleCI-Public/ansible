@@ -23,14 +23,14 @@
 
 - name: Install service fabric
   win_chocolatey:
-    name: service-fabric-sdk
+    name: service-fabric
     state: '{{ package_state }}'
     version: '{{ servicefabric_version }}'
     force: yes
 
 - name: Install service fabric sdk
   win_chocolatey:
-    name: service-fabric
+    name: service-fabric-sdk
     state: '{{ package_state }}'
     version: '{{ servicefabricsdk_version }}'
     force: yes
