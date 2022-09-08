@@ -100,8 +100,3 @@
 
 - name: Docker requires a reboot. Reboot the machine
   ansible.windows.win_reboot:
-
-
-
-
-

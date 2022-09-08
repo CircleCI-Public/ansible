@@ -41,5 +41,3 @@
   ansible.windows.win_powershell:
     script: |
       Get-WindowsFeature
-
-  
