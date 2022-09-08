@@ -21,13 +21,6 @@
     version: '{{ webpi_version }}'
     force: yes
 
-- name: Install service fabric
-  win_chocolatey:
-    name: service-fabric
-    state: '{{ package_state }}'
-    version: '{{ servicefabric_version }}'
-    force: yes
-
 - name: Install service fabric sdk
   win_chocolatey:
     name: service-fabric-sdk
