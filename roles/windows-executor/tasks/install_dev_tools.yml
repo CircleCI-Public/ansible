@@ -42,13 +42,6 @@
     version: '{{ openjdk_version }}'
     force: yes
 
-- name: Install python 2.x
-  win_chocolatey:
-    name: python
-    state: '{{ package_state }}'
-    version: '{{ python_2_version }}'
-    allow_multiple: yes
-
 - name: Install python 3.x
   win_chocolatey:
     name: python
@@ -98,11 +91,12 @@
     path: '{{ nodejs_dir }}'
     state: absent
 
-- name: Install docker
-  ansible.windows.win_powershell:
-    script: |
-      Install-Module DockerMsftProvider -Force
-      Install-Package Docker -ProviderName DockerMsftProvider -Force
+- name: Install docker desktop
+  win_chocolatey:
+    name: docker-desktop
+    state: '{{ package_state }}'
+    version: '{{ docker_desktop_version }}'
+    force: yes
 
 - name: Docker requires a reboot. Reboot the machine
   ansible.windows.win_reboot:

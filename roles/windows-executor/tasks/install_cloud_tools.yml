@@ -22,4 +22,8 @@
     force: yes
 
 - name: Install service fabric sdk
-  script: install_servicefabric_sdk.ps1
+  win_chocolatey:
+    name: service-fabric-sdk
+    state: '{{ package_state }}'
+    version: '{{ servicefabricsdk_version }}'
+    force: yes
