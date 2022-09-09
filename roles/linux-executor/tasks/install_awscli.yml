@@ -21,9 +21,9 @@
         path: '/tmp/awscliv2.zip'
         state: absent
 
-    - name: configure AWS_PAGER in .circlecirc
+    - name: configure AWS_PAGER in .circlerc
       lineinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         line: 'export AWS_PAGER=""'
         create: yes
 

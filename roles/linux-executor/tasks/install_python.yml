@@ -38,7 +38,7 @@
 
     - name: configure pyenv
       blockinfile:
-        path: '{{ circleci_home }}/.circlecirc'
+        path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
         create: yes
@@ -57,7 +57,7 @@
 
     - name: Install python versions
       shell: |
-        source {{ circleci_home }}/.circlecirc
+        source {{ circleci_home }}/.circlerc
         {{ pyenv_dir }}/bin/pyenv install {{ item }}
         {{ pyenv_dir }}/bin/pyenv global {{ item }}
         {{ pyenv_dir }}/bin/pyenv rehash
