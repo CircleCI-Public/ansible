@@ -29,15 +29,3 @@
     type: dword
     state: present
 
-- name: Enable Hyper-V
-  ansible.windows.win_powershell:
-    script: |
-      Install-WindowsFeature -Name Hyper-V -IncludeManagementTools -Restart
-
-- name: Reboot the machine after enabling Hyper-V
-  ansible.windows.win_reboot:
-
-- name: Display windows features to check if Hyper-V is enabled
-  ansible.windows.win_powershell:
-    script: |
-      Get-WindowsFeature
