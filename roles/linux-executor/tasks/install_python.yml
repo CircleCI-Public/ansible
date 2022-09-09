@@ -41,6 +41,8 @@
         path: '{{ circleci_home }}/.circlecirc'
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
+        marker_begin: "PYTHON START"
+        marker_end: "PYTHON END"
         create: yes
         block: |
           export PYENV_ROOT={{ pyenv_dir }}

@@ -11,6 +11,8 @@
       blockinfile:
         path: '~/.bashrc'
         create: yes
+        marker_begin: "RUBY START"
+        marker_end: "RUBY END"
         block: |
           export PATH="{{ circleci_home }}/.rbenv/bin:$PATH"
           eval "$(rbenv init -)"
