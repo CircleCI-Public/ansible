@@ -8,6 +8,9 @@
         create: yes
 
     - name: redirect output (.bashrc)
+      shell: echo 'source ~/.circlerc &>/dev/null' > '{{ circleci_home }}/.bashrc'
+
+    - name: check if line is in file
       lineinfile:
         path: '{{ circleci_home }}/.bashrc'
         line: 'source ~/.circlerc &>/dev/null'
@@ -38,6 +41,8 @@
       blockinfile:
         path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
+        marker_begin: "CCI SPECIFIC START"
+        marker_end: "CCI SPECIFIC END"
         create: yes
         block: |
           export GIT_ASKPASS=echo
