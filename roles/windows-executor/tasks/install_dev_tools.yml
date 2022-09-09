@@ -91,12 +91,11 @@
     path: '{{ nodejs_dir }}'
     state: absent
 
-- name: Install docker desktop
-  win_chocolatey:
-    name: docker-desktop
-    state: '{{ package_state }}'
-    version: '{{ docker_desktop_version }}'
-    force: yes
+- name: Install docker
+  ansible.windows.win_powershell:
+    script: |
+      Install-Module DockerMsftProvider -Force
+      Install-Package Docker -ProviderName DockerMsftProvider -Force
 
 - name: Docker requires a reboot. Reboot the machine
   ansible.windows.win_reboot:
