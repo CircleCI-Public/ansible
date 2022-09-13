@@ -25,6 +25,8 @@
         path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
+        marker_begin: "NODE START"
+        marker_end: "NODE END"
         create: yes
         block: |
           export NVM_DIR={{ nvm_dir }}

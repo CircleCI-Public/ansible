@@ -45,6 +45,8 @@
         path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
         group: '{{ circleci_user }}'
+        marker_begin: "GOLANG START"
+        marker_end: "GOLANG END"
         create: yes
         block: |
           export PATH=~/.go_workspace/bin:/usr/local/go/bin:$PATH

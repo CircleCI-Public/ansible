@@ -34,6 +34,8 @@
   blockinfile:
     path: "{{ circleci_home }}/.circlerc"
     owner: "{{ circleci_user }}"
+    marker_begin: "MAVEN BEGIN"
+    marker_end: "MAVEN END"
     create: yes
     block: |
       export M2_HOME=/usr/local/apache-maven
