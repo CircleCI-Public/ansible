@@ -30,9 +30,9 @@
     owner: "{{ circleci_user }}"
     state: directory
 
-- name: Configure maven in .circlecirc
+- name: Configure maven in .circlerc
   blockinfile:
-    path: "{{ circleci_home }}/.circlecirc"
+    path: "{{ circleci_home }}/.circlerc"
     owner: "{{ circleci_user }}"
     create: yes
     block: |
