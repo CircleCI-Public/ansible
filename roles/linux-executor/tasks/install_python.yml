@@ -23,17 +23,13 @@
   become_method: sudo
 
 - block:
-    - name: Clone pyenv repo
+    - name: Clone and checkout pyenv version
+      environment:
+        TMPDIR: "{{ pyenv_dir }}/tmp"
       git:
         repo: 'https://github.com/yyuu/pyenv.git'
         dest: '{{ pyenv_dir }}'
         single_branch: yes
-        version: master
-
-    - name: Checkout pyenv version
-      git:
-        repo: 'https://github.com/yyuu/pyenv.git'
-        dest: '{{ pyenv_dir }}'
         version: "{{ pyenv_version }}"
 
     - name: Configure pyenv
