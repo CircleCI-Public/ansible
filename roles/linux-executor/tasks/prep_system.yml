@@ -103,6 +103,7 @@
           - protobuf-compiler
           - unzip
           - zip
+          - acl
         state: latest
         update_cache: true
 
