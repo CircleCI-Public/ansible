@@ -25,7 +25,7 @@
     when: "'circleci' not in ansible_facts.getent_group"
 
   - name: Ensure circleci user exists
-    user:
+    ansible.builtin.user:
       name: circleci
       comment: CircleCI
       uid: 1001
@@ -56,3 +56,6 @@
 
   become: true
   become_method: sudo
+
+  collections:
+    - ansible.builtin.user
