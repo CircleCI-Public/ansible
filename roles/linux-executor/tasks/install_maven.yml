@@ -21,9 +21,6 @@
       path: '/tmp/maven.tar.gz'
       state: absent
 
-  become: true
-  become_method: sudo
-
 - name: Create maven .m2 directory
   file:
     path: "{{ circleci_home }}/.m2"
@@ -41,4 +38,7 @@
       export M2_HOME=/usr/local/apache-maven
       export MAVEN_OPTS=-Xmx2048m
       export PATH=$M2_HOME/bin:$PATH
-      
+
+  become: true
+  become_method: sudo
+  
