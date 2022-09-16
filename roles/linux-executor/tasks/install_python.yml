@@ -23,20 +23,16 @@
   become_method: sudo
 
 - block:
-    - name: clone pyenv repo
+    - name: Clone and checkout pyenv version
+      environment:
+        TMPDIR: "{{ pyenv_dir }}/tmp"
       git:
         repo: 'https://github.com/yyuu/pyenv.git'
         dest: '{{ pyenv_dir }}'
         single_branch: yes
-        version: master
-
-    - name: checkout pyenv version
-      git:
-        repo: 'https://github.com/yyuu/pyenv.git'
-        dest: '{{ pyenv_dir }}'
         version: "{{ pyenv_version }}"
 
-    - name: configure pyenv
+    - name: Configure pyenv
       blockinfile:
         path: '{{ circleci_home }}/.circlerc'
         owner: '{{ circleci_user }}'
@@ -45,16 +41,10 @@
         marker_end: "PYTHON END"
         create: yes
         block: |
-          export PYENV_ROOT={{ pyenv_dir }}
+          export PYENV_ROOT="{{ pyenv_dir }}"
           export PATH=$PYENV_ROOT/bin:$PATH
           export PATH=$PYENV_ROOT/shims:$PATH
-
-    - name: add pyenv /bin to path
-      blockinfile:
-        path: '~/.bashrc'
-        create: yes
-        block: |
-          export PATH="{{ pyenv_dir }}/bin:{{ pyenv_dir }}/shims:$PATH"
+          eval "$(pyenv init --path)"
           eval "$(pyenv init -)"
 
     - name: Install python versions
@@ -68,11 +58,11 @@
         pip install -U pep8
       with_items: '{{ python_versions }}'
 
-  become_user: '{{ circleci_user }}'
   become: true
+  become_user: '{{ circleci_user }}'
+  become_method: sudo
 
 - name: set pyenv global versions
   become: true
   become_method: sudo
-  shell: sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ item }}
-  with_items: '{{ python_versions }}'
+  shell: sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}
