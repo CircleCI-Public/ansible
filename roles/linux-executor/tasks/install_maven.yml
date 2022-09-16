@@ -21,23 +21,23 @@
       path: '/tmp/maven.tar.gz'
       state: absent
 
-- name: Create maven .m2 directory
-  file:
-    path: "{{ circleci_home }}/.m2"
-    owner: "{{ circleci_user }}"
-    state: directory
+  - name: Create maven .m2 directory
+    file:
+      path: "{{ circleci_home }}/.m2"
+      owner: "{{ circleci_user }}"
+      state: directory
 
-- name: Configure maven in .circlerc
-  blockinfile:
-    path: "{{ circleci_home }}/.circlerc"
-    owner: "{{ circleci_user }}"
-    marker_begin: "MAVEN BEGIN"
-    marker_end: "MAVEN END"
-    create: yes
-    block: |
-      export M2_HOME=/usr/local/apache-maven
-      export MAVEN_OPTS=-Xmx2048m
-      export PATH=$M2_HOME/bin:$PATH
+  - name: Configure maven in .circlerc
+    blockinfile:
+      path: "{{ circleci_home }}/.circlerc"
+      owner: "{{ circleci_user }}"
+      marker_begin: "MAVEN BEGIN"
+      marker_end: "MAVEN END"
+      create: yes
+      block: |
+        export M2_HOME=/usr/local/apache-maven
+        export MAVEN_OPTS=-Xmx2048m
+        export PATH=$M2_HOME/bin:$PATH
 
   become: true
   become_method: sudo
