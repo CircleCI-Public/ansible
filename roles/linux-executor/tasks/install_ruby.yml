@@ -9,7 +9,7 @@
 
     - name: add .rbenv/bin to path
       blockinfile:
-        path: '~/.bashrc'
+        path: "{{ circleci_home }}/.circlerc"
         create: yes
         marker_begin: "RUBY START"
         marker_end: "RUBY END"
@@ -34,15 +34,13 @@
         state: present
         update_cache: yes
 
-  become: true
-  become_method: sudo
+    - name: install ruby
+      shell: |
+        git clone https://github.com/rbenv/ruby-build.git
+        PREFIX=/usr/local sudo ./ruby-build/install.sh
+        rbenv install {{ ruby_version }}
+        rbenv global {{ ruby_version }}
 
-- name: install ruby
   become: true
   become_user: "{{ circleci_user }}"
   become_method: sudo
-  shell: |
-    git clone https://github.com/rbenv/ruby-build.git
-    PREFIX=/usr/local sudo ./ruby-build/install.sh
-    rbenv install {{ ruby_version }}
-    rbenv global {{ ruby_version }}
