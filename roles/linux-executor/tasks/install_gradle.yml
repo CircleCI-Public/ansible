@@ -9,6 +9,7 @@
     unarchive:
       src: '/tmp/gradle.zip'
       dest: '/usr/local'
+    when: not ansible_check_mode
 
   - name: Set gradle path
     lineinfile:
