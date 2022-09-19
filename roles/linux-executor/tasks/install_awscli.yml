@@ -10,6 +10,7 @@
       unarchive:
         src: '/tmp/awscliv2.zip'
         dest: '/tmp'
+      when: not ansible_check_mode
 
     - name: install awscli
       shell: |

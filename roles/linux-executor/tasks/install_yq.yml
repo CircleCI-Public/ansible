@@ -15,6 +15,7 @@
       unarchive:
         src: '/tmp/yq.tar.gz'
         dest: '/tmp/yq'
+      when: not ansible_check_mode
 
     - name: list files
       shell: |

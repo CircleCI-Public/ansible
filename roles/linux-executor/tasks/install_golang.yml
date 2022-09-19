@@ -10,6 +10,7 @@
       unarchive:
         src: '/tmp/golang.tar.gz'
         dest: '/usr/local'
+      when: not ansible_check_mode
 
     - name: Change ownership of /usr/local/go
       file:
