@@ -9,6 +9,7 @@
     unarchive:
       src: '/tmp/maven.tar.gz'
       dest: '/usr/local'
+    when: not ansible_check_mode
 
   - name: Create a maven symbolic link
     file:
