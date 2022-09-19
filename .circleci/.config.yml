@@ -1,0 +1,15 @@
+version: 2.1
+
+workflows:
+  main:
+    jobs:
+      - ansible-check
+
+jobs:
+  ansible-check:
+    docker:
+      - image: cimg/deploy:2022.09.1
+    
+    steps:
+      - checkout
+      - run: ansible-playbook -i ansible/playbooks/linux/hosts ansible/playbooks/linux/linux_configure.yml --check
