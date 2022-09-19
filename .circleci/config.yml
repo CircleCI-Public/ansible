@@ -12,4 +12,4 @@ jobs:
     
     steps:
       - checkout
-      - run: ansible-playbook -i ansible/playbooks/linux/hosts ansible/playbooks/linux/linux_configure.yml --check
+      - run: ansible-playbook -i project/playbooks/linux/hosts project/playbooks/linux/linux_configure.yml --check
