@@ -89,34 +89,6 @@
         state: latest
         update_cache: true
 
-    - name: Check for /dev/mem
-      stat:
-        path: "/dev/mem"
-      register: dev_mem
-
-
-    - name: Grab uuid for extra kernel modules
-      shell: |
-        dmidecode --string system-uuid
-      register: system_uuid
-      when: dev_mem.stat.exists
-
-    - name: Ensure extra AWS modules are installed
-      apt:
-        pkg:
-          - linux-modules-extra-aws
-      when: 
-        - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
-        - dev_mem.stat.exists
-
-    - name: Ensure extra GCP modules are installed
-      apt:
-        pkg:
-          - linux-modules-extra-gcp
-      when: 
-        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
-        - dev_mem.stat.exists
-
     - name: configure ulimit
       blockinfile:
         path: /etc/security/limits.d/01-openfiles.conf
@@ -124,6 +96,35 @@
           *               soft    nofile          65536
           *               hard    nofile          65536
         create: yes
+    - name: Check for /dev/mem
+      stat:
+        path: "/dev/mem"
+      register: dev_mem
+
+  become: true
+  become_method: sudo
+
+- block:
+  - name: Grab uuid for extra kernel modules
+    shell: |
+      dmidecode --string system-uuid
+    register: system_uuid
+
+  - name: Ensure extra AWS modules are installed
+    apt:
+      pkg:
+        - linux-modules-extra-aws
+    when: 
+      - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
+
+  - name: Ensure extra GCP modules are installed
+    apt:
+      pkg:
+        - linux-modules-extra-gcp
+    when: 
+      - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
+
+  when: dev_mem.stat.exists
 
   become: true
   become_method: sudo
