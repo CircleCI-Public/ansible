@@ -114,13 +114,13 @@
       apt:
         pkg:
           - linux-modules-extra-aws
-      when: system_uuid.stdout is search("ec2.*") or system_uuid.stdout is search("EC2.*")
+      when: system_uuid.stdout is search("ec2*") or system_uuid.stdout is search("EC2*")
 
     - name: Ensure extra GCP modules are installed
       apt:
         pkg:
           - linux-modules-extra-gcp
-      when: system_uuid.stdout is not search("ec2.*") or system_uuid.stdout is not search("EC2.*")
+      when: system_uuid.stdout is not search("ec2*") or system_uuid.stdout is not search("EC2*")
 
   when: dev_mem.stat.exists
 
