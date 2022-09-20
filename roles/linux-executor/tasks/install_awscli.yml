@@ -14,7 +14,7 @@
     - name: install awscli
       shell: |
         cd /tmp
-        ./aws/install -i /usr/local/aws-cli -b /usr/local/bin
+        ./aws/install --update -i /usr/local/aws-cli -b /usr/local/bin
 
     - name: remove awscli
       file:

@@ -120,8 +120,7 @@
       apt:
         pkg:
           - linux-modules-extra-gcp
-      when: 
-        - system_uuid.stdout is not search("ec2.*") or system_uuid.stdout is not search("EC2.*")
+      when: system_uuid.stdout is not search("ec2.*") or system_uuid.stdout is not search("EC2.*")
 
   when: dev_mem.stat.exists
 
