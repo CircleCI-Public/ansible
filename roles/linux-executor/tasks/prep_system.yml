@@ -105,24 +105,24 @@
   become_method: sudo
 
 - block:
-  - name: Grab uuid for extra kernel modules
-    shell: |
-      dmidecode --string system-uuid
-    register: system_uuid
+    - name: Grab uuid for extra kernel modules
+      shell: |
+        dmidecode --string system-uuid
+      register: system_uuid
 
-  - name: Ensure extra AWS modules are installed
-    apt:
-      pkg:
-        - linux-modules-extra-aws
-    when: 
-      - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
+    - name: Ensure extra AWS modules are installed
+      apt:
+        pkg:
+          - linux-modules-extra-aws
+      when: 
+        - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
 
-  - name: Ensure extra GCP modules are installed
-    apt:
-      pkg:
-        - linux-modules-extra-gcp
-    when: 
-      - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
+    - name: Ensure extra GCP modules are installed
+      apt:
+        pkg:
+          - linux-modules-extra-gcp
+      when: 
+        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
 
   when: dev_mem.stat.exists
 
