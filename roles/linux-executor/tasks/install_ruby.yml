@@ -34,13 +34,16 @@
         state: present
         update_cache: yes
 
-    - name: install ruby
-      shell: |
-        git clone https://github.com/rbenv/ruby-build.git
-        PREFIX=/usr/local sudo ./ruby-build/install.sh
-        rbenv install {{ ruby_version }}
-        rbenv global {{ ruby_version }}
+  become: true
+  become_method: sudo
 
+- name: install ruby
   become: true
   become_user: "{{ circleci_user }}"
   become_method: sudo
+  shell: |
+    git clone https://github.com/rbenv/ruby-build.git
+    PREFIX=/usr/local sudo ./ruby-build/install.sh
+    rbenv install {{ ruby_version }}
+    rbenv global {{ ruby_version }}
+    
