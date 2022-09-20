@@ -121,7 +121,7 @@
         pkg:
           - linux-modules-extra-gcp
       when: 
-        - system_uuid.stdout is not "ec2.*" or system_uuid.stdout is not "EC2.*"
+        - system_uuid.stdout is not search("ec2.*") or system_uuid.stdout is not search("EC2.*")
 
   when: dev_mem.stat.exists
 
