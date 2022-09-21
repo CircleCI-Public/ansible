@@ -1,8 +1,6 @@
 # !file: roles/linux-executor/tasks/install_nodejs.yml
 - block:
     - name: Install nodejs dependencies
-      become: true
-      become_method: sudo
       shell: apt-get install build-essential libssl-dev make g++ curl libssl-dev
 
     - name: Download nvm script
@@ -31,26 +29,31 @@
         block: |
           export NVM_DIR={{ nvm_dir }}
           source {{ nvm_dir }}/nvm.sh
+          export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
     - name: Install nodejs and common items
-      shell: |
-        export NVM_DIR="{{ nvm_dir }}"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-        source {{ circleci_home }}/.circlerc
-        nvm install {{ item }}
-        rm -rf {{ circleci_home }}/nvm/src
-        hash -r
-        nvm use {{ item }}
-        npm install -g npm
-        npm install -g coffee-script
-        npm install -g grunt
-        npm install -g bower
-        npm install -g grunt-cli
-        npm install -g nodeunit
-        npm install -g mocha
-        hash -r
-        nvm alias default 16.16.0
+      shell:
+        cmd:
+          cat <<EOF
+          source {{ circleci_home }}/.circlerc
+          nvm install {{ item }}
+          rm -rf {{ circleci_home }}/nvm/src
+          hash -r
+          nvm use {{ item }}
+          npm install -g npm
+          npm install -g coffee-script
+          npm install -g grunt
+          npm install -g bower
+          npm install -g grunt-cli
+          npm install -g nodeunit
+          npm install -g mocha
+          hash -r
+          nvm alias default 16.16.0
+          EOF | sudo -H -i -u {{ circleci_user }} bash
+      args:
+        executable: /bin/bash
       with_items: '{{ nodejs_versions }}'
 
   become: true
