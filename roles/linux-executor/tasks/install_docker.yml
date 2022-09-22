@@ -6,7 +6,7 @@
         name:
           - ca-certificates
           - curl
-          - gnupg
+          - gnupg-agent
           - lsb-release
         state: present
         update_cache: yes
@@ -44,6 +44,11 @@
         path: /var/run/docker.sock
         owner: "{{ circleci_user }}"
         group: docker
+        force: yes
+    
+    - name: add circleci to docker group
+      shell:
+        sudo usermod -aG docker circleci
 
   become: true
   become_method: sudo
