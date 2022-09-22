@@ -54,8 +54,8 @@
 - name: install nodejs
   include_tasks: 'install_nodejs.yml'
 
-- name: install yarn
-  include_tasks: 'install_yarn.yml'
+# - name: install yarn
+#   include_tasks: 'install_yarn.yml'
 
 - name: install golang
   include_tasks: 'install_golang.yml'
