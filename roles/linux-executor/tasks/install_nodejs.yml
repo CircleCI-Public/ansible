@@ -11,6 +11,8 @@
     - name: Create nvm dir
       file:
         path: '{{ nvm_dir }}'
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
         state: directory
 
     - name: Run nvm install script
@@ -34,24 +36,22 @@
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
     - name: Install nodejs and common items
-      shell:
-        cmd:
-          cat <<EOF
-          source {{ circleci_home }}/.circlerc
-          nvm install {{ item }}
-          rm -rf {{ circleci_home }}/nvm/src
-          hash -r
-          nvm use {{ item }}
-          npm install -g npm
-          npm install -g coffee-script
-          npm install -g grunt
-          npm install -g bower
-          npm install -g grunt-cli
-          npm install -g nodeunit
-          npm install -g mocha
-          hash -r
-          nvm alias default 16.16.0
-          EOF | sudo -H -i -u {{ circleci_user }} bash
+      shell: |
+        source {{ circleci_home }}/.circlerc
+        nvm install {{ item }}
+        rm -rf {{ circleci_home }}/nvm/src
+        hash -r
+        nvm use {{ item }}
+        npm install -g npm
+        npm install -g coffee-script
+        npm install -g grunt
+        npm install -g bower
+        npm install -g grunt-cli
+        npm install -g nodeunit
+        npm install -g mocha
+        npm install -g yarn@{{ yarn_version }}
+        hash -r
+        nvm alias default 16.16.0
       args:
         executable: /bin/bash
       with_items: '{{ nodejs_versions }}'
