@@ -20,10 +20,11 @@
       shell: |
         ls -al /tmp/yq
 
-    - name: copy yq files
+    - name: copy yq files and make it executable
       copy:
         src: '/tmp/yq/yq_linux_amd64'
         dest: '/usr/local/bin/yq'
+        mode: a+x
 
   become: true
   become_method: sudo
