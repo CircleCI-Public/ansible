@@ -72,8 +72,8 @@
 - name: install nsenter
   include_tasks: 'install_nsenter.yml'
 
-- name: install docker
-  include_tasks: 'install_docker.yml'
+# - name: install docker
+#   include_tasks: 'install_docker.yml'
 
 - name: configure dpkg
   include_tasks: 'configure_dpkg.yml'
