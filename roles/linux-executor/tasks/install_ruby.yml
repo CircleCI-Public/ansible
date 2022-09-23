@@ -46,4 +46,3 @@
     PREFIX=/usr/local sudo ./ruby-build/install.sh
     rbenv install {{ ruby_version }}
     rbenv global {{ ruby_version }}
-    

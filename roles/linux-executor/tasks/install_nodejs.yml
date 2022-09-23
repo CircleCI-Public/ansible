@@ -1,8 +1,6 @@
 # !file: roles/linux-executor/tasks/install_nodejs.yml
 - block:
     - name: Install nodejs dependencies
-      become: true
-      become_method: sudo
       shell: apt-get install build-essential libssl-dev make g++ curl libssl-dev
 
     - name: Download nvm script
@@ -13,6 +11,8 @@
     - name: Create nvm dir
       file:
         path: '{{ nvm_dir }}'
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
         state: directory
 
     - name: Run nvm install script
@@ -31,12 +31,12 @@
         block: |
           export NVM_DIR={{ nvm_dir }}
           source {{ nvm_dir }}/nvm.sh
+          export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+          [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
     - name: Install nodejs and common items
-      shell: |
-        export NVM_DIR="{{ nvm_dir }}"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+      shell:
         source {{ circleci_home }}/.circlerc
         nvm install {{ item }}
         rm -rf {{ circleci_home }}/nvm/src
@@ -49,8 +49,11 @@
         npm install -g grunt-cli
         npm install -g nodeunit
         npm install -g mocha
+        npm install -g yarn@{{ yarn_version }}
         hash -r
         nvm alias default 16.16.0
+      args:
+        executable: /bin/bash
       with_items: '{{ nodejs_versions }}'
 
   become: true
