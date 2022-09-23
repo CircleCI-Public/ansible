@@ -23,13 +23,13 @@
         $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         grep -ri docker /etc/apt
 
-    - name: Install docker and docker compose (*put versions back here eventually)
+    - name: Install docker and docker compose
       apt:
         name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-          - docker-compose-plugin
+          - docker-ce={{ docker_version }}
+          - docker-ce-cli={{ docker_version }}
+          - containerd.io={{ containerd_version }}
+          - docker-compose-plugin={{ docker_compose_version }}
         state: present
         update_cache: yes
 
