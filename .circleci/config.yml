@@ -1,0 +1,43 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.1.1
+  aws-cli: circleci/aws-cli@3.1
+  node: circleci/node@5.0.2
+
+workflows:
+  main:
+    jobs:
+      - ansible-check
+
+jobs:
+  ansible-check:
+    docker:
+      - image: cimg/deploy:2022.09.1  
+    steps:
+      - checkout
+      - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml
+      - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml --check
+      - run: |
+          cd ~
+          git clone https://github.com/Jalexchen/sample-python-cfd
+          cd sample-python-cfd
+      - run: pyenv global 3.10.5
+      - python/install-packages:
+          app-dir: ~/project/sample-python-cfd
+          pkg-manager: pip
+      - run:
+          name: Run tests
+          command: pytest
+      - run: |
+          cd ~
+          git clone https://github.com/CircleCI-Public/sample-javascript-cfd
+          cd sample-javascript-cfd
+      - node/install-packages:
+          pkg-manager: "yarn"
+          app-dir: ~/project/sample-javascript-cfd
+      - run:
+          name: Run tests
+          command: |
+            cd sample-javascript-cfd 
+            yarn run test:unit
