@@ -9,20 +9,20 @@
 - name: install circleci specific requirements
   include_tasks: 'circleci_specific.yml'
 
-# - name: install java
-#   include_tasks: 'install_java.yml'
+- name: install java
+  include_tasks: 'install_java.yml'
 
-# - name: install maven
-#   include_tasks: 'install_maven.yml'
+- name: install maven
+  include_tasks: 'install_maven.yml'
 
-# - name: install gradle
-#   include_tasks: 'install_gradle.yml'
+- name: install gradle
+  include_tasks: 'install_gradle.yml'
 
-# - name: install ant
-#   include_tasks: 'install_ant.yml'
+- name: install ant
+  include_tasks: 'install_ant.yml'
 
-# - name: install firefox
-#   include_tasks: 'install_firefox.yml'
+- name: install firefox
+  include_tasks: 'install_firefox.yml'
 
 - name: install chrome
   include_tasks: 'install_chrome.yml'
@@ -33,8 +33,8 @@
 - name: install dev tools
   include_tasks: 'install_devtools.yml'
 
-# - name: install jq
-#   include_tasks: 'install_jq.yml'
+- name: install jq
+  include_tasks: 'install_jq.yml'
 
 - name: install yq
   include_tasks: 'install_yq.yml'
@@ -42,32 +42,32 @@
 - name: install gcloud
   include_tasks: 'install_gcloud.yml'
 
-# - name: install awscli
-#   include_tasks: 'install_awscli.yml'
+- name: install awscli
+  include_tasks: 'install_awscli.yml'
 
-# - name: install heroku
-#   include_tasks: 'install_heroku.yml'
+- name: install heroku
+  include_tasks: 'install_heroku.yml'
 
 - name: install python
   include_tasks: 'install_python.yml'
 
-# - name: install nodejs
-#   include_tasks: 'install_nodejs.yml'
+- name: install nodejs
+  include_tasks: 'install_nodejs.yml'
 
-# - name: install yarn
-#   include_tasks: 'install_yarn.yml'
+- name: install yarn
+  include_tasks: 'install_yarn.yml'
 
-# - name: install golang
-#   include_tasks: 'install_golang.yml'
+- name: install golang
+  include_tasks: 'install_golang.yml'
 
-# - name: install ruby
-#   include_tasks: 'install_ruby.yml'
+- name: install ruby
+  include_tasks: 'install_ruby.yml'
 
-# - name: install scala
-#   include_tasks: 'install_scala.yml'
+- name: install scala
+  include_tasks: 'install_scala.yml'
 
-# - name: install clojure
-#   include_tasks: 'install_clojure.yml'
+- name: install clojure
+  include_tasks: 'install_clojure.yml'
 
 - name: install socat
   include_tasks: 'install_socat.yml'
