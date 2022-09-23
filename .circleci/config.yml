@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml
       - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml --check
-      # - run: source ~/.circlerc
+      - run: |
           cd ~
           git clone https://github.com/Jalexchen/sample-python-cfd
           cd sample-python-cfd
