@@ -16,9 +16,10 @@ jobs:
       - image: cimg/deploy:2022.09.1  
     steps:
       - checkout
+      - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml --check
       - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml
       - run: ansible-playbook -i ~/project/playbooks/linux/hosts ~/project/playbooks/linux/linux_configure.yml --check
-      - run: |
+      - run: source ~/.circlerc
           cd ~
           git clone https://github.com/Jalexchen/sample-python-cfd
           cd sample-python-cfd
