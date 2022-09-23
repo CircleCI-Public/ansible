@@ -6,7 +6,7 @@
         name:
           - ca-certificates
           - curl
-          - gnupg
+          - gnupg-agent
           - lsb-release
         state: present
         update_cache: yes
@@ -26,10 +26,10 @@
     - name: Install docker and docker compose (*put versions back here eventually)
       apt:
         name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-          - docker-compose-plugin
+          - docker-ce={{ docker_version }}
+          - docker-ce-cli={{ docker_version }}
+          - containerd.io={{ containerd_version }}
+          - docker-compose-plugin={{ docker_compose_version }}
         state: present
         update_cache: yes
 
@@ -38,6 +38,17 @@
         curl -fL https://raw.githubusercontent.com/docker/compose-switch/master/install_on_linux.sh | sh
         chmod +x /usr/local/bin/compose-switch
         update-alternatives --install /usr/local/bin/docker-compose docker-compose /usr/local/bin/compose-switch 99
+    
+    - name: add circleci as owner for docker daemon
+      file:
+        path: /var/run/docker.sock
+        owner: "{{ circleci_user }}"
+        group: docker
+        force: yes
+
+    - name: add circleci to docker group
+      shell:
+        sudo usermod -aG docker {{ circleci_user }}
 
   become: true
   become_method: sudo
