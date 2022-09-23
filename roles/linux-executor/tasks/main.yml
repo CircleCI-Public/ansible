@@ -24,8 +24,8 @@
 - name: install firefox
   include_tasks: 'install_firefox.yml'
 
-# - name: install chrome
-#   include_tasks: 'install_chrome.yml'
+- name: install chrome
+  include_tasks: 'install_chrome.yml'
 
 - name: install sys admin tools
   include_tasks: 'install_sysadmin_tools.yml'
