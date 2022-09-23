@@ -15,6 +15,7 @@
       unarchive:
         src: "/tmp/gcloud.tar.gz"
         dest: "/opt/google"
+      when: not ansible_check_mode
 
     - name: Change ownership of /opt/google
       file:
