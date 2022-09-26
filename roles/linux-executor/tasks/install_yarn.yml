@@ -1,0 +1,10 @@
+# !file: roles/linux-executor/tasks/install_yarn.yml
+
+- name: install yarn
+  become: true
+  become_method: sudo
+  shell:
+    source {{ circleci_home }}/.circlerc
+    curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version "{{ yarn_version }}"
+  args:
+    executable: /bin/bash
