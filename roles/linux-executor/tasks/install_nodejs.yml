@@ -19,7 +19,11 @@
       script: '/tmp/nvm.sh'
       environment:
         NVM_DIR: '{{ nvm_dir }}'
+  
+  become: true
+  become_method: sudo
 
+- block:
     - name: configure nvm
       blockinfile:
         path: '{{ circleci_home }}/.circlerc'
@@ -57,4 +61,15 @@
       with_items: '{{ nodejs_versions }}'
 
   become: true
+  become_user: "{{ circleci_user }}"
   become_method: sudo
+
+- name: set permissions for nvm_dir
+  become: true
+  become_method: sudo
+  file:
+    path: "{{ nvm_dir }}"
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+    state: directory
+    recurse: yes
