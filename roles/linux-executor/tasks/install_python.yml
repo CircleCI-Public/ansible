@@ -65,5 +65,4 @@
 - name: set pyenv global versions
   become: true
   become_method: sudo
-  shell: sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ item }}
-  with_items: '{{ python_versions }}'
+  shell: sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}
