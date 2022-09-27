@@ -12,25 +12,6 @@
         update_cache: yes
         cache_valid_time: 86400 #One day
 
-    - name: Grab uuid for extra kernel modules
-      shell: |
-        dmidecode --string system-uuid
-      register: system_uuid
-
-    - name: Ensure extra AWS modules are installed
-      apt:
-        pkg:
-          - linux-modules-extra-aws
-      when: 
-        - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
-
-    - name: Ensure extra GCP modules are installed
-      apt:
-        pkg:
-          - linux-modules-extra-gcp
-      when: 
-        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
-
     - name: Remove snapd - it inteferes with what we want such as .deb Firefox
       apt:
         pkg: snapd
@@ -114,6 +95,33 @@
           *               soft    nofile          65536
           *               hard    nofile          65536
         create: yes
+    - name: Check for /dev/mem
+      stat:
+        path: "/dev/mem"
+      register: dev_mem
+
+  become: true
+  become_method: sudo
+
+- block:
+    - name: Grab uuid for extra kernel modules
+      shell: |
+        dmidecode --string system-uuid
+      register: system_uuid
+
+    - name: Ensure extra AWS modules are installed
+      apt:
+        pkg:
+          - linux-modules-extra-aws
+      when: system_uuid.stdout is search("ec2*") or system_uuid.stdout is search("EC2*")
+
+    - name: Ensure extra GCP modules are installed
+      apt:
+        pkg:
+          - linux-modules-extra-gcp
+      when: system_uuid.stdout.find('ec2*') = -1 or system_uuid.stdout.find('EC2*') = -1
+
+  when: dev_mem.stat.exists
 
   become: true
   become_method: sudo
