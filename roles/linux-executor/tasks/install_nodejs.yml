@@ -36,7 +36,7 @@
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
     - name: Install nodejs and common items
-      shell:
+      shell: |
         source {{ circleci_home }}/.circlerc
         nvm install {{ item }}
         rm -rf {{ circleci_home }}/nvm/src
@@ -49,6 +49,7 @@
         npm install -g grunt-cli
         npm install -g nodeunit
         npm install -g mocha
+        npm install -g yarn@{{ yarn_version }}
         hash -r
         nvm alias default 16.16.0
       args:
