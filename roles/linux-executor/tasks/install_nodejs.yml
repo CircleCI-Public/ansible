@@ -49,7 +49,6 @@
         npm install -g grunt-cli
         npm install -g nodeunit
         npm install -g mocha
-        npm install -g yarn@{{ yarn_version }}
         hash -r
         nvm alias default 16.16.0
       args:
