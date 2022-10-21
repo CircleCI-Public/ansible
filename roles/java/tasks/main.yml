@@ -1,0 +1,35 @@
+---
+- block:
+    - name: Add openjdk from PPA
+      ansible.builtin.shell: add-apt-repository ppa:openjdk-r/ppa
+
+    - name: Install java
+      ansible.builtin.apt:
+        name: openjdk-{{ item }}-jdk
+        state: present
+        update_cache: yes
+      with_items: '{{ java_versions }}'
+
+    - name: Set java links
+      community.general.alternatives:
+        name: java
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/java'
+      with_items: '{{ java_versions }}'
+
+    - name: set javac links
+      community.general.alternatives:
+        name: javac
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javac'
+      with_items: '{{ java_versions }}'
+
+    - name: set javadoc links
+      community.general.alternatives:
+        name: javadoc
+        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javadoc'
+      with_items: '{{ java_versions }}'
+
+  become: true
+
+  collections:
+    - community.general.alternatives
+    
