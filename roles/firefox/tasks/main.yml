@@ -1,0 +1,45 @@
+---
+- block:
+  - name: Add mozilla ppa
+    ansible.builtin.apt_repository:
+      repo: "ppa:mozillateam/ppa"
+      state: present
+
+  # Because 22.04 now uses snap, these removals and resetting of repositories is needed to download firefox
+  - name: Remove firefox via shell 
+    ansible.builtin.shell:
+      apt remove firefox
+
+  - name: Remove firefox with apt module
+    ansible.builtin.apt:
+      pkg: firefox
+      state: absent
+      purge: true
+
+  - name: Blacklist snap firefox
+    ansible.builtin.blockinfile:
+      path: '/etc/apt/preferences'
+      create: yes
+      block: |
+        Package: firefox
+        Pin: version 1:1snap1-0ubuntu2
+        Pin-Priority: 99
+
+  - name: Prioritze apt/debian download of firefox
+    ansible.builtin.blockinfile:
+      path: '/etc/apt/preferences.d/mozilla-firefox'
+      marker_begin: "firefox"
+      marker_end: "firefox"
+      create: yes
+      block: |
+        Package: *
+        Pin: release o=LP-PPA-mozillateam
+        Pin-Priority: 1001
+
+  - name: Install firefox
+    ansible.builtin.apt:
+      name: 'firefox'
+      state: present
+      update_cache: yes
+
+  become: true
