@@ -1,0 +1,8 @@
+---
+- name: Install ant
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - ant
+    state: present
+    update_cache: yes

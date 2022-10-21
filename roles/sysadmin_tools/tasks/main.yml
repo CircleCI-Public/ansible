@@ -1,0 +1,8 @@
+---
+- name: Install htop
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - htop
+    state: present
+    update_cache: yes

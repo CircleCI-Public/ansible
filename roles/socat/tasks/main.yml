@@ -1,0 +1,8 @@
+---
+- name: Install socat
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - socat
+    state: present
+    update_cache: yes

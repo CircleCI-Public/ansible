@@ -1,0 +1,15 @@
+---
+- name: Install devtool packages
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - ack-grep
+      - emacs
+      - gdb
+      - lsof
+      - nano
+      - tmux
+      - vim
+      - tightvncserver
+    state: latest
+    update_cache: true
