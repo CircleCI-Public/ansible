@@ -1,0 +1,134 @@
+---
+- block:
+    - name: redirect output (.bash_profile)
+      ansible.builtin.lineinfile:
+        path: '{{ circleci_home }}/.bash_profile'
+        line: 'source ~/.bashrc &>/dev/null'
+        create: yes
+
+    - name: redirect output (.bashrc)
+      ansible.builtin.shell: echo 'source ~/.circlerc &>/dev/null' > '{{ circleci_home }}/.bashrc'
+
+    - name: check if line is in file
+      ansible.builtin.blockinfile:
+        path: '{{ circleci_home }}/.bashrc'
+        block: 
+          source ~/.circlerc &>/dev/null
+          if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi          
+        create: yes
+
+    - name: Change ownership of .bash_profile
+      ansible.builtin.file:
+        path: '{{ circleci_home }}/.bash_profile'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+
+    - name: Change ownership of .bashrc
+      ansible.builtin.file:
+        path: '{{ circleci_home }}/.bashrc'
+        owner: '{{ circleci_user }}'
+        group: '{{ circleci_user }}'
+
+    - name: Create and configure .circlerc
+      ansible.builtin.blockinfile:
+        path: '{{ circleci_home }}/.circlerc'
+        owner: '{{ circleci_user }}'
+        group: "{{ circleci_user }}"
+        marker_begin: "CCI SPECIFIC START"
+        marker_end: "CCI SPECIFIC END"
+        block: |
+          export GIT_ASKPASS=echo
+          export SSH_ASKPASS=false
+          export PATH=~/bin:$PATH
+          export CIRCLECI_PKG_DIR="/opt/circleci"
+          # Display settings for xvfb
+          export DISPLAY=:99
+          # Make Selenium tests more stable
+          export DBUS_SESSION_BUS_ADDRESS=/dev/null
+        create: yes
+
+    - name: Create /bin directory
+      ansible.builtin.file:
+        path: '{{ circleci_home }}/bin'
+        owner: '{{ circleci_user }}'
+        group: "{{ circleci_user }}"
+        state: directory
+
+    - name: Create and configure ssh_config
+      ansible.builtin.blockinfile:
+        path: '/etc/ssh/ssh_config'
+        block: |
+          Host *
+          StrictHostKeyChecking no
+          HashKnownHosts no
+          SendEnv LANG LC_*
+        create: yes
+          
+    - name: Some optimizations for the sshd daemon
+      ansible.builtin.lineinfile:
+        path: '/etc/ssh/sshd_config'
+        search_string: 'PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+        create: yes
+        backup: yes
+
+    - name: Some more optimizations for the sshd daemon
+      ansible.builtin.blockinfile:
+        path: '/etc/ssh/sshd_config'
+        backup: yes
+        block: |
+          UseDns no
+          MaxStartups 1000
+          MaxSessions 1000
+          PermitTunnel yes
+          AddressFamily inet
+        create: yes
+
+    - name: Install xvfb
+      ansible.builtin.apt:
+        pkg:
+          - xvfb
+          - xfwm4
+        state: latest
+        update_cache: true
+
+    - name: Configure xvfb service
+      ansible.builtin.blockinfile:
+        path: '/etc/systemd/system/xvfb.service'
+        block: |
+          [Unit]
+          Description=XVFB Service
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/bin/Xvfb :99 -screen 0 1280x1024x24
+          Type=simple
+
+          [Install]
+          WantedBy=multi-user.target
+        create: yes
+        backup: yes
+
+    - name: Change permissions on xvfb.service
+      ansible.builtin.file:
+        path: '/etc/systemd/system/xvfb.service'
+        mode: '0644'
+
+    - name: Enable xvfb.service
+      ansible.builtin.systemd:
+        name: 'xvfb.service'
+        enabled: yes
+        state: started
+
+    - name: Add an apt key by id from a keyserver
+      ansible.builtin.shell: |
+        apt-key adv --keyserver keyserver.ubuntu.com --recv-key 514A2AD631A57A16DD0047EC749D6EEC0353B12C
+        apt-key adv --keyserver keyserver.ubuntu.com --recv-key 58118E89F3A912897C070ADBF76221572C52609D
+
+    - name: Allow iptable rules to be saved
+      ansible.builtin.shell: |
+        echo iptables-persistent iptables-persistent/autosave_v4 boolean true | sudo debconf-set-selections
+        echo iptables-persistent iptables-persistent/autosave_v6 boolean true | sudo debconf-set-selections
+        apt-get -y install iptables-persistent
+
+  become: true
