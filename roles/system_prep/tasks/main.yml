@@ -1,0 +1,59 @@
+---
+- block:
+  - name: Get available users
+    getent:
+      database: passwd
+
+  - name: Get available groups
+    getent:
+      database: group
+
+  - name: Ensure aws group exists
+    group:
+      name: aws-sudoers
+      gid: 1001
+      non_unique: yes
+    when: "'aws-sudoers' not in ansible_facts.getent_group"
+
+  - name: Ensure circleci group exists
+    group:
+      name: "{{ circleci_user }}"
+      gid: 1002
+      non_unique: yes
+    when: "'circleci' not in ansible_facts.getent_group"
+
+  - name: Ensure circleci user exists
+    ansible.builtin.user:
+      name: "{{ circleci_user }}"
+      comment: CircleCI
+      uid: 1001
+      shell: /bin/bash
+      group: "{{ circleci_user }}"
+      groups: aws-sudoers,adm,audio,cdrom,dialout,dip,floppy,lxd,netdev,plugdev,video,ubuntu
+      append: yes
+      password_lock: yes
+    when: "'circleci' not in ansible_facts.getent_passwd"
+  
+  - name: Ensure .ssh directory exists for circleci user
+    ansible.builtin.file:
+      path: "{{ circleci_home }}/.ssh"
+      owner: "{{ circleci_user }}"
+      group: "{{ circleci_user }}"
+      state: directory
+
+  - name: Ensure aws-sudoers group has passwordless sudo
+    ansible.builtin.lineinfile:
+      path: "/etc/sudoers.d/aws-sudoers"
+      line: "%aws-sudoers ALL=(ALL:ALL) NOPASSWD:ALL"
+      create: yes
+
+  - name: Ensure circleci user has passwordless sudo
+    ansible.builtin.lineinfile:
+      path: "/etc/sudoers.d/circleci"
+      line: "circleci ALL=(ALL:ALL) NOPASSWD:ALL"
+      create: yes
+
+  become: true
+
+  collections:
+    - ansible.builtin.user
