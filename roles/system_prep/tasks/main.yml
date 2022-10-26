@@ -1,4 +1,13 @@
 ---
+- name: Register machine architecture
+  become: true
+  ansible.builtin.shell: dpkg --print-architecture
+  register: arch_string
+
+- name: Set fact for architecture
+  ansible.builtin.set_fact:
+    arch: "{{ arch_string.stdout }}"
+
 - block:
   - name: Get available users
     getent:

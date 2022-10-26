@@ -5,10 +5,10 @@
       url: 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
       state: present
 
-  - name: Add downloadlink for debian chrome to source list
+  - name: Add download link for debian chrome to source list
     ansible.builtin.lineinfile:
       path: '/etc/apt/sources.list.d/google-chrome.list'
-      line: 'deb [arch={{ arch }}] http://dl.google.com/linux/chrome/deb/ stable main'
+      line: 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main'
       create: yes
 
   - name: Install google chrome
@@ -33,3 +33,4 @@
       chromedriver --version
 
   become: true
+  when: arch == "amd64" or arch == "x86_64"
