@@ -1,0 +1,6 @@
+---
+circleci_user: circleci
+circleci_home: /home/circleci
+java_versions:
+  - 11
+  - 17
