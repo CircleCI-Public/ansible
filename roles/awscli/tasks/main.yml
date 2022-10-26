@@ -1,0 +1,31 @@
+---
+- block:
+  # will need to account for arch
+    - name: download awscli
+      get_url:
+        url: 'https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip'
+        dest: '/tmp/awscliv2.zip'
+
+    - name: extract awscli
+      unarchive:
+        src: '/tmp/awscliv2.zip'
+        dest: '/tmp'
+
+    - name: install awscli
+      shell: |
+        cd /tmp
+        ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
+        || ./aws/install --update -i /usr/local/aws-cli -b /usr/local/bin
+
+    - name: remove awscli
+      file:
+        path: '/tmp/awscliv2.zip'
+        state: absent
+
+    - name: configure AWS_PAGER in .circlerc
+      lineinfile:
+        path: '{{ circleci_home }}/.circlerc'
+        line: 'export AWS_PAGER=""'
+        create: yes
+
+  become: true
