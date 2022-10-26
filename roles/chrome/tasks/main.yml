@@ -1,0 +1,35 @@
+---
+- block:
+  - name: Add APT signing key for linux chrome
+    ansible.builtin.apt_key:
+      url: 'https://dl-ssl.google.com/linux/linux_signing_key.pub'
+      state: present
+
+  - name: Add downloadlink for debian chrome to source list
+    ansible.builtin.lineinfile:
+      path: '/etc/apt/sources.list.d/google-chrome.list'
+      line: 'deb [arch={{ arch }}] http://dl.google.com/linux/chrome/deb/ stable main'
+      create: yes
+
+  - name: Install google chrome
+    ansible.builtin.apt:
+      name: 'google-chrome-stable'
+      state: present
+      update_cache: yes
+
+  - name: Disable sandboxing - it conflicts with unprivileged lxc containers
+    ansible.builtin.shell: |
+      sed -i 's|HERE/chrome"|HERE/chrome" --disable-setuid-sandbox --enable-logging --no-sandbox|g' \
+                "/opt/google/chrome/google-chrome"
+
+  - name: Install chromedriver
+    ansible.builtin.shell: |
+      CHROMEDRIVER_RELEASE=$(google-chrome --version | awk '{print $3}' | awk -F'.' '{print $1"."$2"."$3}')
+      CHROMEDRIVER_VERSION=$(curl --silent --show-error --location --fail --retry 4 --retry-delay 5 http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_RELEASE})
+      curl --silent --show-error --location --fail --retry 4 --retry-delay 5 --output /tmp/chromedriver.zip "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+      unzip -p /tmp/chromedriver.zip > /usr/local/bin/chromedriver
+      chmod +x /usr/local/bin/chromedriver
+      rm -rf /tmp/chromedriver.zip
+      chromedriver --version
+
+  become: true
