@@ -1,0 +1,18 @@
+---
+- block:
+    - name: Download clojure
+      ansible.builtin.get_url:
+        url: "https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein"
+        dest: "{{ lein_dir }}"
+
+    - name: Change permissions on /usr/local/bin/lein
+      ansible.builtin.file:
+        path: "{{ lein_dir }}/lein"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        mode: a+x
+
+    - name: Force lein dependencies to download
+      ansible.builtin.shell: lein -v
+
+  become: true
