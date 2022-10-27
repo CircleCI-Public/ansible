@@ -1,0 +1,32 @@
+---
+- block:
+    - name: Install sbt
+      ansible.builtin.apt:
+        deb: https://scala.jfrog.io/artifactory/debian/sbt-{{ sbt_version }}.deb
+
+    - name: Remove sbt .deb file
+      ansible.builtin.file:
+        path: 'sbt-{{ sbt_version }}.deb'
+        state: absent
+    
+    - name: Create and set permissions for sbt cache
+      ansible.builtin.file:
+        path: "{{ circleci_home }}/.cache"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        state: directory
+
+    - name: Create and set permissions for sbt
+      ansible.builtin.file:
+        path: "{{ circleci_home }}/.sbt"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        state: directory
+        
+    - name: Display sbt version
+      ansible.builtin.shell: sbt -V
+
+    - name: Display sbt version (circleci user)
+      ansible.builtin.shell: sudo -u {{ circleci_user }} sbt -V
+
+  become: true
