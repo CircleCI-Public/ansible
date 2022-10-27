@@ -1,0 +1,4 @@
+---
+circleci_user: circleci
+circleci_home: /home/circleci
+golang_version: 1.18.4
