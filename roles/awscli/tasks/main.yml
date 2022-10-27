@@ -1,29 +1,35 @@
 ---
 - block:
-  # will need to account for arch
-    - name: download awscli
-      get_url:
-        url: 'https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip'
+    - name: Download awscli (arm64)
+      ansible.builtin.get_url:
+        url: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
         dest: '/tmp/awscliv2.zip'
+      when: arch == "arm64" or arch == "aarch64"
 
-    - name: extract awscli
-      unarchive:
+    - name: Download awscli (amd64)
+      ansible.builtin.get_url:
+        url: "https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_facts.architecture }}.zip"
+        dest: '/tmp/awscliv2.zip'
+      when: arch == "amd64" or arch == "x86_64"
+
+    - name: Extract awscli
+      ansible.builtin.unarchive:
         src: '/tmp/awscliv2.zip'
         dest: '/tmp'
 
-    - name: install awscli
-      shell: |
+    - name: Install awscli
+      ansible.builtin.shell: |
         cd /tmp
         ./aws/install -i /usr/local/aws-cli -b /usr/local/bin \
         || ./aws/install --update -i /usr/local/aws-cli -b /usr/local/bin
 
-    - name: remove awscli
-      file:
+    - name: Remove awscli
+      ansible.builtin.file:
         path: '/tmp/awscliv2.zip'
         state: absent
 
-    - name: configure AWS_PAGER in .circlerc
-      lineinfile:
+    - name: Configure AWS_PAGER in .circlerc
+      ansible.builtin.lineinfile:
         path: '{{ circleci_home }}/.circlerc'
         line: 'export AWS_PAGER=""'
         create: yes

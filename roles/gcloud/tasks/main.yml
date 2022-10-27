@@ -1,8 +1,4 @@
 ---
-- name: Register correct architecture
-  ansible.builtin.shell: dpkg --print-architecture
-  register: dpkg_architecture
-
 - block:
     - name: Create /opt/google directory
       ansible.builtin.file:
@@ -15,13 +11,13 @@
       ansible.builtin.get_url:
         url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-arm.tar.gz"
         dest: "/tmp/gcloud.tar.gz"
-      when: dpkg_architecture.rc == arm64
+      when: arch == "arm64" or arch == "aarch64"
 
     - name: Download gcloud (amd64)
       ansible.builtin.get_url:
-        url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-x86_64.tar.gz"
+        url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-{{ ansible_facts.architecture }}.tar.gz"
         dest: "/tmp/gcloud.tar.gz"
-      when: dpkg_architecture.rc == amd64
+      when: arch == "amd64" or arch == "x86_64"
 
     - name: Extract gcloud
       ansible.builtin.unarchive:
