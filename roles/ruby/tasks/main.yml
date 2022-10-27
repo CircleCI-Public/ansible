@@ -1,0 +1,57 @@
+---
+- block:
+    - name: Install rbenv
+      ansible.builtin.apt:
+        pkg:
+          - rbenv
+        state: present
+        update_cache: yes
+
+    - name: Add .rbenv/bin to path
+      ansible.builtin.blockinfile:
+        path: "{{ circleci_home }}/.circlerc"
+        create: yes
+        marker_begin: "RUBY START"
+        marker_end: "RUBY END"
+        block: |
+          export PATH="{{ circleci_home }}/.rbenv/bin:$PATH"
+          eval "$(rbenv init -)"
+
+    - name: Configure permissions for ruby
+      ansible.builtin.file:
+        path: "{{ ruby_dir }}"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        recurse: true
+        state: directory
+
+    - name: Configure .gemrc
+      ansible.builtin.blockinfile:
+        path: "{{ gemrc_file }}"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        create: yes
+        block: |
+          :sources:
+          - https://rubygems.org
+          gem:  --no-ri --no-rdoc
+
+    - name: Install rubygems (ruby-dev)
+      ansible.builtin.apt:
+        pkg:
+        - ruby-dev
+        state: present
+        update_cache: yes
+
+  become: true
+
+- name: Install ruby
+  become: true
+  become_user: "{{ circleci_user }}"
+  become_method: sudo
+  ansible.builtin.shell: |
+    git clone https://github.com/rbenv/ruby-build.git
+    PREFIX=/usr/local sudo ./ruby-build/install.sh
+    rbenv install "{{ ruby_version }}"
+    rbenv global "{{ ruby_version }}"
+    eval "$(rbenv init -)"
