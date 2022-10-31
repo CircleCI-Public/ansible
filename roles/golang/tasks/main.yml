@@ -9,6 +9,7 @@
       ansible.builtin.unarchive:
         src: "/tmp/golang.tar.gz"
         dest: "/usr/local"
+        remote_src: yes
 
     - name: Change ownership of /usr/local/go
       ansible.builtin.file:
