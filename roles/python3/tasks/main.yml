@@ -28,21 +28,10 @@
         state: latest
         update_cache: yes
 
-  become: true
-
-- name: Clone and checkout pyenv version
-  become: true
-  become_user: "{{ circleci_user }}"
-  become_method: sudo
-  environment:
-    TMPDIR: "{{ pyenv_dir }}/tmp"
-  ansible.builtin.git:
-    repo: "https://github.com/yyuu/pyenv.git"
-    dest: "{{ pyenv_dir }}"
-    single_branch: yes
-    version: "{{ pyenv_version }}"
-
-- block:
+    - name: Clone and checkout pyenv version
+      ansible.builtin.shell:
+        "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
+        
     - name: Configure pyenv
       ansible.builtin.blockinfile:
         path: "{{ circleci_home }}/.circlerc"
@@ -55,16 +44,19 @@
           eval "$(pyenv init --path)"
           eval "$(pyenv init -)"
 
-    - name: Set pyenv global versions
-      ansible.builtin.shell: "sudo -H -i -u {{ circleci_user }} | {{ item }}"
-      args:
-        executable: /bin/bash
-      with_items: "{{ pyenv_global_versions }}"
+    - name: Install Python
+      become_user: "{{ circleci_user }}"
+      pyenv:
+        versions: "{{ python }}"
+        default: "{{ defaults.python }}"
+    
+    - name: Set Python for subsequent tasks
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
 
-    - name: Set pyenv items
-      ansible.builtin.shell: "sudo -H -i -u {{ circleci_user }} | {{ item }}"
-      args:
-        executable: /bin/bash
-      with_items: "{{ pyenv_items }}"
+    - name: Install Pip Packages
+      become_user: "{{ circleci_user }}"
+      ansible.builtin.shell: "{{ item }}"
+      with_items: "{{ pip_items }}"
 
   become: true

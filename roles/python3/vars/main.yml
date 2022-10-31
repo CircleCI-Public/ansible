@@ -9,15 +9,8 @@ python3_version: 3.10.5
 pyenv_version: "v2.3.3"
 pyenv_dir: "/opt/circleci/.pyenv"
 
-pyenv_global_versions:
-  - source {{ circleci_home }}/.circlerc
-  - "{{ pyenv_dir }}/bin/pyenv install {{ python_versions }}"
-  - "{{ pyenv_dir }}/bin/pyenv global {{ python_versions }}"
-
-pyenv_items:
-  - "{{ pyenv_dir }}/bin/pyenv rehash"
+pip_items:
   - pip install -U virtualenv
   - pip install -U nose
   - pip install -U pep8
-  - "{{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
   
