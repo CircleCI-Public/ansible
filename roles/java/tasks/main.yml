@@ -8,28 +8,96 @@
         name: openjdk-{{ item }}-jdk
         state: present
         update_cache: yes
-      with_items: '{{ java_versions }}'
+      with_items: "{{ java_versions }}"
 
     - name: Set java links
       community.general.alternatives:
         name: java
-        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/java'
-      with_items: '{{ java_versions }}'
+        path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/java"
+      with_items: "{{ java_versions }}"
 
-    - name: set javac links
+    - name: Set javac links
       community.general.alternatives:
         name: javac
-        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javac'
-      with_items: '{{ java_versions }}'
+        path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javac"
+      with_items: "{{ java_versions }}"
 
-    - name: set javadoc links
+    - name: Set javadoc links
       community.general.alternatives:
         name: javadoc
-        path: '/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javadoc'
-      with_items: '{{ java_versions }}'
+        path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javadoc"
+      with_items: "{{ java_versions }}"
 
   become: true
 
   collections:
     - community.general.alternatives
+
+# maven and gradle are consistently used with gradle, therefore we will include them together
+- block:
+  - name: Download maven
+    ansible.builtin.get_url:
+      url: "http://apache.osuosl.org/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz"
+      dest: "/tmp/maven.tar.gz"
+
+  - name: Extract maven
+    ansible.builtin.unarchive:
+      src: "/tmp/maven.tar.gz"
+      dest: "/usr/local"
+      remote_src: yes
+
+  - name: Create a maven symbolic link
+    ansible.builtin.file:
+      src: "/usr/local/apache-maven-{{maven_version}}"
+      dest: "/usr/local/apache-maven"
+      state: link
+
+  - name: Remove maven tar file
+    ansible.builtin.file:
+      path: "/tmp/maven.tar.gz"
+      state: absent
+
+  - name: Create maven .m2 directory
+    ansible.builtin.file:
+      path: "{{ circleci_home }}/.m2"
+      owner: "{{ circleci_user }}"
+      group: "{{ circleci_user }}"
+      state: directory
+
+  - name: Configure maven in .circlerc
+    ansible.builtin.blockinfile:
+      path: "{{ circleci_home }}/.circlerc"
+      marker_begin: "MAVEN BEGIN"
+      marker_end: "MAVEN END"
+      block: |
+        export M2_HOME=/usr/local/apache-maven
+        export MAVEN_OPTS=-Xmx2048m
+        export PATH=$M2_HOME/bin:$PATH
+
+  become: true
+
+- block:
+  - name: Download gradle
+    ansible.builtin.get_url:
+      url: "https://services.gradle.org/distributions/gradle-{{ gradle_version }}-bin.zip"
+      dest: "/tmp/gradle.zip"
+
+  - name: Extract gradle
+    ansible.builtin.unarchive:
+      src: "tmp/gradle.zip"
+      dest: "/usr/local"
+      remote_src: yes
+
+  - name: Set gradle path
+    ansible.builtin.lineinfile:
+      path: "{{ circleci_home }}/.circlerc"
+      line: "export PATH=$PATH:/usr/local/gradle-{{ gradle_version }}/bin"
+      create: yes
+
+  - name: Remove gradle zip file
+    ansible.builtin.file:
+      path: "/tmp/gradle.zip"
+      state: absent
+
+  become: true
     

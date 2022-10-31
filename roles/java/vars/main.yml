@@ -4,3 +4,9 @@ circleci_home: /home/circleci
 java_versions:
   - 11
   - 17
+
+# maven variables
+maven_version: 3.8.6
+
+# gradle variables
+gradle_version: 7.5
