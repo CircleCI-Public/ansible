@@ -14,6 +14,7 @@
       ansible.builtin.unarchive:
         src: '/tmp/yq.tar.gz'
         dest: '/tmp/yq'
+        remote_src: yes
 
     - name: List files
       ansible.builtin.shell: |
@@ -24,5 +25,6 @@
         src: '/tmp/yq/yq_linux_{{ arch }}'
         dest: '/usr/local/bin/yq'
         mode: a+x
+        remote_src: yes
 
   become: true

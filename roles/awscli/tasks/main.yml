@@ -16,6 +16,7 @@
       ansible.builtin.unarchive:
         src: '/tmp/awscliv2.zip'
         dest: '/tmp'
+        remote_src: yes
 
     - name: Install awscli
       ansible.builtin.shell: |

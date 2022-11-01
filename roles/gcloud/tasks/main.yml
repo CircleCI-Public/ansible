@@ -23,6 +23,7 @@
       ansible.builtin.unarchive:
         src: "/tmp/gcloud.tar.gz"
         dest: "/opt/google"
+        remote_src: yes
 
     - name: Configure gcloud
       ansible.builtin.shell: |
