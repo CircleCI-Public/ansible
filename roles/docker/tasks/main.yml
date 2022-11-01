@@ -32,7 +32,6 @@
           - docker-compose-plugin={{ docker_compose_version }}
         state: present
         allow_downgrade: yes
-        allow_change_held_packages: yes
         force: yes
         update_cache: yes
 
