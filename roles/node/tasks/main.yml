@@ -57,30 +57,16 @@
         recurse: true
         state: directory
 
-    - name: Start nvm and install node
-      become: true
+    - name: Install NodeJS
       become_user: "{{ circleci_user }}"
-      ansible.builtin.shell: "source {{ nvm_dir }}/nvm.sh && nvm install {{ item }} && nvm use {{ item }}"
-      args:
-        executable: /bin/bash
-        chdir: "{{ nvm_dir }}"
-      with_items: "{{ nodejs_versions }}"
-      
-    - name: Set alias for default node version
-      become: true
-      become_user: "{{ circleci_user }}"
-      ansible.builtin.shell: "source {{ nvm_dir }}/nvm.sh nvm alias default {{ nodejs_lts }}"
-      args:
-        executable: /bin/bash
-
-    - name: Install common items
-      become: true
-      become_user: "{{ circleci_user }}"
-      ansible.builtin.shell: "source {{ nvm_dir }}/nvm.sh npm install -g {{ item }}"
-      args:
-        executable: /bin/bash
-      with_items: "{{ node_items }}"
+      nvm:
+        versions: "{{ node }}"
+        default: "{{ defaults.node }}"
+        npm: "{{ npm }}"
 
   when: nvm_installed.rc == 1
 
   become: true
+
+  collections:
+    - community.general
