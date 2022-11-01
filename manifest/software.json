@@ -1,0 +1,30 @@
+{
+  "ruby": [
+    "3.1.2"
+  ],
+  "node": [
+    "16.16.0",
+    "current"
+  ],
+  "npmGlobal": [
+    "npm",
+    "coffeescript",
+    "bower",
+    "grunt-cli",
+    "nodeunit",
+    "mocha",
+    "yarn"
+  ],
+  "npmLocal": [
+    "grunt"
+],
+  "python": [
+    "2.7.18",
+    "3.10.5"
+  ],
+  "defaults": {
+    "ruby": "3.1.2",
+    "node": "16.16.0",
+    "python": "3.10.5"
+  }
+}
