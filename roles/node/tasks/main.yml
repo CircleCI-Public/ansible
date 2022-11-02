@@ -35,7 +35,7 @@
 
     - name: Configure nvm
       ansible.builtin.blockinfile:
-        path: "{{ circleici_home }}/.circlerc"
+        path: "{{ circleci_home }}/.circlerc"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         marker_begin: "NODE START"
