@@ -4,12 +4,6 @@
         autoremove: yes
         autoclean: yes
 
-    - name: Update and upgrade apt packages
-      ansible.builtin.apt:
-        upgrade: true
-        update_cache: true
-        cache_valid_time: 86400 #One day
-
     - name: Remove snapd - it inteferes with what we want such as .deb Firefox
       ansible.builtin.apt:
         pkg: snapd
