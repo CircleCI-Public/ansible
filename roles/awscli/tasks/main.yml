@@ -14,8 +14,8 @@
 
     - name: Extract awscli
       ansible.builtin.unarchive:
-        src: '/tmp/awscliv2.zip'
-        dest: '/tmp'
+        src: "/tmp/awscliv2.zip"
+        dest: "/tmp"
         remote_src: yes
 
     - name: Install awscli
@@ -26,12 +26,12 @@
 
     - name: Remove awscli
       ansible.builtin.file:
-        path: '/tmp/awscliv2.zip'
+        path: "/tmp/awscliv2.zip"
         state: absent
 
     - name: Configure AWS_PAGER in .circlerc
       ansible.builtin.lineinfile:
-        path: '{{ circleci_home }}/.circlerc'
+        path: "{{ circleci_home }}/.circlerc"
         line: 'export AWS_PAGER=""'
         create: yes
 

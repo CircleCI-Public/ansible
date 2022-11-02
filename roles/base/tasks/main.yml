@@ -21,26 +21,26 @@
         dest: /etc/localtime
         state: link
 
-    - name: set language in .bashrc
+    - name: Set language in .bashrc
       ansible.builtin.lineinfile:
-        path: '{{ circleci_home }}/.bashrc'
-        line: 'export LANG=C.UTF-8'
+        path: "{{ circleci_home }}/.bashrc"
+        line: "export LANG=C.UTF-8"
         create: yes
 
     - name: Always install the latest config
       ansible.builtin.lineinfile:
-        path: /etc/dpkg/dpkg.cfg
-        line: 'force-confnew'
+        path: "/etc/dpkg/dpkg.cfg"
+        line: "force-confnew"
         create: yes
 
-    - name: deploy new apt config
+    - name: Deploy new apt config
       ansible.builtin.copy:
         src: ../files/apt.conf
         dest: /etc/apt/apt.conf
 
     - name: set noninteractive
       ansible.builtin.lineinfile:
-        path: /etc/sudoers.d/env_keep
+        path: "/etc/sudoers.d/env_keep"
         line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
         create: yes
     
@@ -99,9 +99,9 @@
       when: 
         - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
 
-    - name: configure ulimit
+    - name: Configure ulimit
       ansible.builtin.blockinfile:
-        path: /etc/security/limits.d/01-openfiles.conf
+        path: "/etc/security/limits.d/01-openfiles.conf"
         block: |
           *               soft    nofile          65536
           *               hard    nofile          65536
