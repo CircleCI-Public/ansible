@@ -84,7 +84,7 @@
 
   - name: Extract gradle
     ansible.builtin.unarchive:
-      src: "tmp/gradle.zip"
+      src: "/tmp/gradle.zip"
       dest: "/usr/local"
       remote_src: yes
 
