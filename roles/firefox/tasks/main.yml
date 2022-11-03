@@ -12,13 +12,13 @@
 
   - name: Remove firefox with apt module
     ansible.builtin.apt:
-      pkg: firefox
+      pkg: "firefox"
       state: absent
       purge: true
 
   - name: Blacklist snap firefox
     ansible.builtin.blockinfile:
-      path: '/etc/apt/preferences'
+      path: "/etc/apt/preferences"
       create: yes
       block: |
         Package: firefox
@@ -27,9 +27,9 @@
 
   - name: Prioritze apt/debian download of firefox
     ansible.builtin.blockinfile:
-      path: '/etc/apt/preferences.d/mozilla-firefox'
-      marker_begin: "firefox"
-      marker_end: "firefox"
+      path: "/etc/apt/preferences.d/mozilla-firefox"
+      marker_begin: "FIREFOX START"
+      marker_end: "FIREFOX END"
       create: yes
       block: |
         Package: *
@@ -38,7 +38,7 @@
 
   - name: Install firefox
     ansible.builtin.apt:
-      name: 'firefox'
+      pkg: "firefox"
       state: present
       update_cache: yes
 

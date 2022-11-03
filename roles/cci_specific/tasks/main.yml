@@ -1,17 +1,17 @@
 ---
 - block:
-    - name: redirect output (.bash_profile)
+    - name: Redirect output (.bash_profile)
       ansible.builtin.lineinfile:
-        path: '{{ circleci_home }}/.bash_profile'
-        line: 'source ~/.bashrc &>/dev/null'
+        path: "{{ circleci_home }}/.bash_profile"
+        line: "source ~/.bashrc &>/dev/null"
         create: yes
 
-    - name: redirect output (.bashrc)
+    - name: Redirect output (.bashrc)
       ansible.builtin.shell: echo 'source ~/.circlerc &>/dev/null' > '{{ circleci_home }}/.bashrc'
 
     - name: check if line is in file
       ansible.builtin.blockinfile:
-        path: '{{ circleci_home }}/.bashrc'
+        path: "{{ circleci_home }}/.bashrc"
         block: 
           source ~/.circlerc &>/dev/null
           if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi          
@@ -19,20 +19,20 @@
 
     - name: Change ownership of .bash_profile
       ansible.builtin.file:
-        path: '{{ circleci_home }}/.bash_profile'
-        owner: '{{ circleci_user }}'
-        group: '{{ circleci_user }}'
+        path: "{{ circleci_home }}/.bash_profile"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
 
     - name: Change ownership of .bashrc
       ansible.builtin.file:
-        path: '{{ circleci_home }}/.bashrc'
-        owner: '{{ circleci_user }}'
-        group: '{{ circleci_user }}'
+        path: "{{ circleci_home }}/.bashrc"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
 
     - name: Create and configure .circlerc
       ansible.builtin.blockinfile:
-        path: '{{ circleci_home }}/.circlerc'
-        owner: '{{ circleci_user }}'
+        path: "{{ circleci_home }}/.circlerc"
+        owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         marker_begin: "CCI SPECIFIC START"
         marker_end: "CCI SPECIFIC END"
@@ -49,14 +49,14 @@
 
     - name: Create /bin directory
       ansible.builtin.file:
-        path: '{{ circleci_home }}/bin'
-        owner: '{{ circleci_user }}'
+        path: "{{ circleci_home }}/bin"
+        owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         state: directory
 
     - name: Create and configure ssh_config
       ansible.builtin.blockinfile:
-        path: '/etc/ssh/ssh_config'
+        path: "/etc/ssh/ssh_config"
         block: |
           Host *
           StrictHostKeyChecking no
@@ -74,7 +74,7 @@
 
     - name: Some more optimizations for the sshd daemon
       ansible.builtin.blockinfile:
-        path: '/etc/ssh/sshd_config'
+        path: "/etc/ssh/sshd_config"
         backup: yes
         block: |
           UseDns no
@@ -94,7 +94,7 @@
 
     - name: Configure xvfb service
       ansible.builtin.blockinfile:
-        path: '/etc/systemd/system/xvfb.service'
+        path: "/etc/systemd/system/xvfb.service"
         block: |
           [Unit]
           Description=XVFB Service
@@ -111,12 +111,12 @@
 
     - name: Change permissions on xvfb.service
       ansible.builtin.file:
-        path: '/etc/systemd/system/xvfb.service'
-        mode: '0644'
+        path: "/etc/systemd/system/xvfb.service"
+        mode: "0644"
 
     - name: Enable xvfb.service
       ansible.builtin.systemd:
-        name: 'xvfb.service'
+        name: "xvfb.service"
         enabled: yes
         state: started
 

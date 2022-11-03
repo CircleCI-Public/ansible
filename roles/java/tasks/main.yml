@@ -5,7 +5,7 @@
 
     - name: Install java
       ansible.builtin.apt:
-        name: openjdk-{{ item }}-jdk
+        pkg: openjdk-{{ item }}-jdk
         state: present
         update_cache: yes
       with_items: "{{ java_versions }}"

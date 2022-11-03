@@ -6,7 +6,7 @@
 
     - name: Remove sbt .deb file
       ansible.builtin.file:
-        path: 'sbt-{{ sbt_version }}.deb'
+        path: "sbt-{{ sbt_version }}.deb"
         state: absent
     
     - name: Create and set permissions for sbt cache
@@ -26,7 +26,7 @@
     - name: Display sbt version
       ansible.builtin.shell: sbt -V
 
-    - name: Display sbt version (circleci user)
+    - name: Display sbt version
       ansible.builtin.shell: sudo -u {{ circleci_user }} sbt -V
 
   become: true
