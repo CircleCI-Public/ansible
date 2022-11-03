@@ -29,6 +29,7 @@
         update_cache: yes
 
     - name: Clone and checkout pyenv version
+      # Intentionally uses shell instead of git module
       ansible.builtin.shell:
         "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
         
@@ -56,7 +57,8 @@
 
     - name: Install Pip Packages
       become_user: "{{ circleci_user }}"
-      ansible.builtin.shell: "{{ item }}"
-      with_items: "{{ pip_items }}"
+      ansible.builtin.pip: 
+        name: "{{ item }}"
+      with_items: "{{ pip }}"
 
   become: true
