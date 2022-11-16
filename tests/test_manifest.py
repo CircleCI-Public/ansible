@@ -115,7 +115,6 @@ class TestManifest:
     assert java.find(manifest['defaults']['java']) != -1, f"The default version of Java was not found or is incorrect. Output: {java}"
 
   def test_java_versions(self, manifest):
-    path = "/usr/lib/jvm/java--openjdk-{{ arch }}/bin/java"
     missing = ''
     for version in manifest['java']:
         path = "/usr/lib/jvm/java-{version}-openjdk-{machine_arch}/bin/java"
