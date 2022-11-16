@@ -17,3 +17,7 @@ def dotfile():
       return "/home/circleci/.circlerc"
     else:
       return "~/.bashrc"
+      
+@pytest.fixture
+def machine_arch():
+    return platform.uname().machine
