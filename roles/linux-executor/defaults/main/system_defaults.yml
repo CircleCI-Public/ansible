@@ -1,3 +1,0 @@
-circleci_user: circleci
-circleci_home: '/home/{{ circleci_user }}'
-circlerc_file: '{{ circleci_home }}/.circlerc'

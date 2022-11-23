@@ -1,0 +1,5 @@
+---
+# !file: group_vars/linux_configure_vars.yml
+
+circleci_user: circleci
+circleci_home: /home/circleci

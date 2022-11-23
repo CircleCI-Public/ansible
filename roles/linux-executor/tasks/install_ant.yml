@@ -1,9 +1,0 @@
-# !file: roles/linux-executor/tasks/install_ant.yml
-
-- name: Install ant
-  become: true
-  become_method: sudo
-  apt:
-    name: 'ant'
-    state: present
-    update_cache: yes

@@ -1,0 +1,9 @@
+---
+- name: Prep system
+  include_tasks: 'system_prep.yml'
+
+- name: Base role
+  include_tasks: 'base.yml'
+
+- name: CCI specific role
+  include_tasks: 'cci_specific.yml'

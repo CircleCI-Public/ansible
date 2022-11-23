@@ -3,11 +3,8 @@
 
 - name: Configure linux node
   hosts: all
-  connection: local
   roles:
-    - system_prep
-    - base
-    - cci_specific
+    - common
     - node
     - java
     - python3
@@ -29,4 +26,4 @@
     - scala
     - dpkg_configure
   vars_files:
-    - linux_configure_vars.yml
+    - group_vars/linux_configure_vars.yml
