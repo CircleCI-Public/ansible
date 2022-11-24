@@ -19,11 +19,11 @@
         group: "{{ circleci_user }}"
         recurse: true
       become: true
-    
+
     - name: Set safe directory
       ansible.builtin.shell:
         git config --global --add safe.directory '*'
-      args: 
+      args:
         chdir: "{{ nvm_dir }}"
 
     - name: Set tag to latest
@@ -47,7 +47,7 @@
           export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-          
+
     - name: Set nvm dir with correct permissions recursively after running script
       ansible.builtin.file:
         path: "{{ nvm_dir }}"
@@ -62,7 +62,8 @@
       nvm:
         versions: "{{ node }}"
         default: "{{ defaults.node }}"
-        npm: "{{ npm }}"
+        npmGlobal: "{{ npmGlobal }}"
+        npmLocal: "{{ npmLocal }}"
 
   when: nvm_installed.rc == 1
 
