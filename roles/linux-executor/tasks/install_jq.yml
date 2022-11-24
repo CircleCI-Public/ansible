@@ -1,9 +1,0 @@
-# !file: roles/linux-executor/tasks/install_jq.yml
-
-- name: Install jq.
-  become: true
-  become_method: sudo
-  apt:
-    name: "jq"
-    state: present
-    update_cache: yes

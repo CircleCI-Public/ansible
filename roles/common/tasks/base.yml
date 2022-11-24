@@ -1,0 +1,104 @@
+- block:
+    - name: Remove packages we no longer need
+      ansible.builtin.apt:
+        autoremove: yes
+        autoclean: yes
+
+    - name: Remove snapd - it inteferes with what we want such as .deb Firefox
+      ansible.builtin.apt:
+        pkg: snapd
+        state: absent
+
+    - name: Update Timezone to UTC
+      ansible.builtin.file:
+        src: /usr/share/zoneinfo/Etc/UTC
+        dest: /etc/localtime
+        state: link
+
+    - name: Set language in .bashrc
+      ansible.builtin.lineinfile:
+        path: "{{ circleci_home }}/.bashrc"
+        line: "export LANG=C.UTF-8"
+        create: yes
+
+    - name: Always install the latest config
+      ansible.builtin.lineinfile:
+        path: "/etc/dpkg/dpkg.cfg"
+        line: "force-confnew"
+        create: yes
+
+    - name: Deploy new apt config
+      ansible.builtin.copy:
+        src: ../files/apt.conf
+        dest: /etc/apt/apt.conf
+
+    - name: set noninteractive
+      ansible.builtin.lineinfile:
+        path: "/etc/sudoers.d/env_keep"
+        line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
+        create: yes
+    
+    - name: Add universe repository
+      ansible.builtin.shell: add-apt-repository universe
+
+    - name: Add git-core repository from PPA
+      ansible.builtin.apt_repository:
+        repo: ppa:git-core/ppa
+
+    - name: Install core packages
+      ansible.builtin.apt:
+        pkg:
+          - acl
+          - autoconf
+          - build-essential
+          - cmake
+          - curl
+          - dmidecode
+          - dpkg-repack
+          - ffmpeg
+          - gfortran
+          - git
+          - gnupg2
+          - imagemagick
+          - libarchive-tools
+          - libicu-dev
+          - liblapack-dev
+          - lzop
+          - make
+          - mercurial
+          - protobuf-compiler
+          - software-properties-common
+          - unzip
+          - zip
+        state: latest
+        update_cache: true
+
+    - name: Grab uuid for extra kernel modules
+      ansible.builtin.shell: |
+        dmidecode --string system-uuid
+      register: system_uuid
+      ignore_errors: true
+
+    - name: Ensure extra AWS modules are installed
+      ansible.builtin.apt:
+        pkg:
+          - linux-modules-extra-aws
+      when: 
+        - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
+
+    - name: Ensure extra GCP modules are installed
+      ansible.builtin.apt:
+        pkg:
+          - linux-modules-extra-gcp
+      when: 
+        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
+
+    - name: Configure ulimit
+      ansible.builtin.blockinfile:
+        path: "/etc/security/limits.d/01-openfiles.conf"
+        block: |
+          *               soft    nofile          65536
+          *               hard    nofile          65536
+        create: yes
+
+  become: true
