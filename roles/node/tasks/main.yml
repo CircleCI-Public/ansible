@@ -7,18 +7,18 @@
   register: nvm_installed
 
 - block:
-    - name: Download NVM
-      ansible.builtin.git:
-        repo: https://github.com/nvm-sh/nvm.git
-        dest: "{{ nvm_dir }}"
-
     - name: Ensure correct permissions
       ansible.builtin.file:
         path: "{{ nvm_dir }}"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
-        recurse: true
-      become: true
+        mode: 0755
+        state: directory
+
+    - name: Download NVM
+      ansible.builtin.git:
+        repo: https://github.com/nvm-sh/nvm.git
+        dest: "{{ nvm_dir }}"
 
     - name: Set safe directory
       ansible.builtin.shell:
@@ -62,8 +62,7 @@
       nvm:
         versions: "{{ node }}"
         default: "{{ defaults.node }}"
-        npmGlobal: "{{ npmGlobal }}"
-        npmLocal: "{{ npmLocal }}"
+        npm: "{{ npm }}"
 
   when: nvm_installed.rc == 1
 
