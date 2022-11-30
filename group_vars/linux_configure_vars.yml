@@ -3,3 +3,4 @@
 
 circleci_user: circleci
 circleci_home: /home/circleci
+ansible_remote_tmp: "/tmp"

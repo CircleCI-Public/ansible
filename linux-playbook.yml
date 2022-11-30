@@ -1,6 +1,4 @@
 ---
-# !file: playbooks/linux/linux_configure.yml
-
 - name: Configure linux node
   hosts: all
   roles:

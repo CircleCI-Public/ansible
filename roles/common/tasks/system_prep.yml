@@ -40,12 +40,14 @@
       append: yes
       password: ''
       password_lock: yes
-  
+      state: present
+
   - name: Ensure .ssh directory exists for circleci user
     ansible.builtin.file:
       path: "{{ circleci_home }}/.ssh"
       owner: "{{ circleci_user }}"
       group: "{{ circleci_user }}"
+      mode: 0600
       state: directory
 
   - name: Ensure aws-sudoers group has passwordless sudo
