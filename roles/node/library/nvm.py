@@ -8,8 +8,7 @@ def main():
     args = dict(
         versions=dict(type='list', elements='str', required=True),
         default=dict(type='str', required=False),
-        npmGlobal=dict(type='list', elements='str', required=False),
-        npmLocal=dict(type='list', elements='str', required=False),
+        npm=dict(type='list', elements='str', required=False)
     )
 
     module = AnsibleModule(
@@ -19,8 +18,7 @@ def main():
 
     versions = module.params['versions']
     default = module.params['default']
-    npmGlobal = module.params['npmGlobal']
-    npmLocal = module.params['npmLocal']
+    npm = module.params['npm']
 
     for version in versions:
         if version == 'lts':
@@ -40,14 +38,10 @@ def main():
         if subprocess.run(['/bin/bash', '-i', '-c', 'source /home/circleci/.circlerc && nvm use default']).returncode != 0:
             module.fail_json(msg='Failed to set default NodeJS version!')
 
-    if npmGlobal:
-        for package in npmGlobal:
+    if npm:
+        for package in npm:
             if subprocess.run(['/bin/bash', '-lc', 'source /home/circleci/.circlerc && npm install -g ' + package]).returncode != 0:
                 module.fail_json(msg='Failed to install ' + package + ' globally with npm!')
-    if npmLocal:
-        for package in npmLocal:
-            if subprocess.run(['/bin/bash', '-lc', 'source /home/circleci/.circlerc && npm install ' + package]).returncode != 0:
-                module.fail_json(msg='Failed to install ' + package + ' locally with npm!')
 
     module.exit_json(changed=True)
 
