@@ -45,6 +45,7 @@
           export DISPLAY=:99
           # Make Selenium tests more stable
           export DBUS_SESSION_BUS_ADDRESS=/dev/null
+        mode: 0664
         create: yes
 
     - name: Create /bin directory
@@ -112,7 +113,7 @@
     - name: Change permissions on xvfb.service
       ansible.builtin.file:
         path: "/etc/systemd/system/xvfb.service"
-        mode: "0644"
+        mode: 0644
 
     - name: Enable xvfb.service
       ansible.builtin.systemd:

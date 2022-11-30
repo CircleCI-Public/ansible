@@ -12,19 +12,19 @@
         path: "{{ nvm_dir }}"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
-        mode: 0755
+        mode: 0775
         state: directory
-
-    - name: Download NVM
-      ansible.builtin.git:
-        repo: https://github.com/nvm-sh/nvm.git
-        dest: "{{ nvm_dir }}"
 
     - name: Set safe directory
       ansible.builtin.shell:
         git config --global --add safe.directory '*'
       args:
         chdir: "{{ nvm_dir }}"
+
+    - name: Download NVM
+      ansible.builtin.git:
+        repo: https://github.com/nvm-sh/nvm.git
+        dest: "{{ nvm_dir }}"
 
     - name: Set tag to latest
       changed_when: false
@@ -53,7 +53,7 @@
         path: "{{ nvm_dir }}"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
-        mode: 0755
+        mode: 0775
         recurse: true
         state: directory
 

@@ -30,6 +30,7 @@
         path: "{{ gemrc_file }}"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
+        mode: 0664
         create: yes
         block: |
           :sources:
@@ -47,7 +48,7 @@
       ansible.builtin.shell: |
         git clone https://github.com/rbenv/ruby-build.git "{{ ruby_dir }}"/plugins/ruby-build
         PREFIX=/usr/local sudo "{{ ruby_dir }}/plugins/ruby-build/install.sh"
-    
+
     - name: Install ruby
       become_user: "{{ circleci_user }}"
       rbenv:
@@ -55,4 +56,3 @@
         default: "{{ defaults.ruby }}"
 
   become: true
-  
