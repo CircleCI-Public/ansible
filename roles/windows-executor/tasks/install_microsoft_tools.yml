@@ -1,10 +1,17 @@
 # !file: roles/windows-executor/tasks/install_microsoft_tools.yml
 
-- name: Install dotnet sdk
+- name: Install dotnet sdk 6
   win_chocolatey:
     name: dotnet-sdk
     state: '{{ package_state }}'
-    version: '{{ dotnet_sdk_version }}'
+    version: '{{ dotnet_sdk_version_6}}'
+    force: yes
+
+- name: Install dotnet sdk 7
+  win_chocolatey:
+    name: dotnet-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_7}}'
     force: yes
 
 #- name: Install Sql Server Developer Edition
