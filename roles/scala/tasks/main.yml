@@ -22,6 +22,7 @@
         path: "{{ circleci_home }}/.sbt"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
+        mode: 0775
         state: directory
 
     - name: Display sbt version

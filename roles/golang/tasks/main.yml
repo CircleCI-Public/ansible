@@ -30,14 +30,10 @@
     - name: Make /.go_workspace directory
       ansible.builtin.file:
         path: "{{ circleci_home }}/.go_workspace"
-        state: directory
-
-    - name: Change ownership of .go_workspace directory
-      ansible.builtin.file:
-        path: "{{ circleci_home }}/.go_workspace"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         state: directory
+        mode: 0775
         recurse: yes
 
     - name: Configure golang
