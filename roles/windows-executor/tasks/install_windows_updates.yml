@@ -1,10 +1,10 @@
 # !file: roles/windows-executor/tasks/install_windows_updates.yml
 
-- name: Install all security, critical, and rollup updates
-  win_updates:
-    category_names:
-      - SecurityUpdates
-      - CriticalUpdates
-      - UpdateRollups
+- name: Install all updates and reboot as many times as needed
+  ansible.windows.win_updates:
+    category_names: '*'
     reboot: yes
+    reboot_timeout: 7200
+    reject_list:
+      - 5019081
    
