@@ -47,7 +47,7 @@
       path: "{{ circleci_home }}/.ssh"
       owner: "{{ circleci_user }}"
       group: "{{ circleci_user }}"
-      mode: 0775
+      mode: 0700
       state: directory
 
   - name: Ensure aws-sudoers group has passwordless sudo
