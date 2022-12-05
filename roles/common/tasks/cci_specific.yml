@@ -14,7 +14,7 @@
         path: "{{ circleci_home }}/.bashrc"
         block:
           source ~/.circlerc &>/dev/null
-          # if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+          if ! [ echo $- | grep -q "i" ] && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
         create: yes
 
     - name: Change ownership of .bash_profile
