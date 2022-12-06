@@ -1,4 +1,3 @@
----
 - name: Install PowershellGet
   ansible.windows.win_powershell:
     script: |
@@ -18,33 +17,33 @@
     state: '{{ package_state }}'
     package_params: '"/GitAndUnixToolsOnPath"'
     version: '{{ git_version }}'
-    force: yes
+    force: true
 
 - name: Install git-lfs
   win_chocolatey:
     name: git-lfs
     state: '{{ package_state }}'
     version: '{{ gitlfs_version }}'
-    force: yes
+    force: true
 
 - name: Install 7zip.portable
   win_chocolatey:
     name: 7zip.portable
     state: '{{ package_state }}'
-    version: '{{ 7zip_version }}'
-    force: yes
+    version: '{{ sevenzip_version }}'
+    force: true
 
 - name: Install gzip
   win_chocolatey:
     name: gzip
     state: '{{ package_state }}'
     version: '{{ gzip_version }}'
-    force: yes
+    force: true
 
 - name: Install sysinternals
   win_chocolatey:
     name: sysinternals
     state: '{{ package_state }}'
     version: '{{ sysinternals_version }}'
-    force: yes
-    
+    force: true
+  
