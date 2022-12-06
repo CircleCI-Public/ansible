@@ -1,0 +1,4 @@
+snaps:
+  - snapd.service
+  - snapd.socket
+  - snapd.seeded.service

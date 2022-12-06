@@ -6,9 +6,6 @@
         line: "source ~/.bashrc &>/dev/null"
         create: yes
 
-    - name: Redirect output (.bashrc)
-      ansible.builtin.shell: echo 'source ~/.circlerc &>/dev/null' > '{{ circleci_home }}/.bashrc'
-
     - name: check if line is in file
       ansible.builtin.blockinfile:
         path: "{{ circleci_home }}/.bashrc"

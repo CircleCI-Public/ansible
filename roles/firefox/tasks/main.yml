@@ -6,6 +6,12 @@
       state: present
 
   # Because 22.04 now uses snap, these removals and resetting of repositories is needed to download firefox
+  - name: Disable snap
+    ansible.builtin.systemd:
+      name: "{{ item }}"
+      state: stopped
+    with_items: "{{ snaps }}"
+
   - name: Remove firefox via shell
     ansible.builtin.shell:
       apt remove firefox
