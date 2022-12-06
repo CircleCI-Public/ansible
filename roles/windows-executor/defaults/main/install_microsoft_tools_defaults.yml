@@ -1,5 +1,4 @@
 dotnet_sdk_version_6: 6.0.403
-dotnet_sdk_version_7: 7.0.100
 sqlserver_devedition_version: 15.0.2000.20210324
 visualstudio_community_edition_version:  117.4.1.0
 visualstudio_buildtools_version: 117.4.1.0
