@@ -51,6 +51,3 @@
       allow_downgrade: true
 
   become: true
-
-  collections:
-    - community.general.snap
