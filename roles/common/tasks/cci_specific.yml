@@ -6,11 +6,15 @@
         line: "source ~/.bashrc &>/dev/null"
         create: yes
 
-    - name: check if line is in file
-      ansible.builtin.blockinfile:
+    - name: Remove existing .bashrc
+      ansible.builtin.file:
         path: "{{ circleci_home }}/.bashrc"
-        block:
-          source ~/.circlerc &>/dev/null
+        state: absent
+
+    - name: Replace the content of my file
+      ansible.builtin.lineinfile:
+        path: "{{ circleci_home }}/.bashrc"
+        line: "source ~/.circlerc &>/dev/null"
         create: yes
 
     - name: Change ownership of .bash_profile

@@ -26,7 +26,9 @@
   post_tasks:
     - name: Insert $BASH_ENV sourcing
       become: true
-      ansible.builtin.shell:
-        echo 'if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi' >> "{{ circleci_home }}/.bashrc"
+      ansible.builtin.lineinfile:
+        path: "{{ circleci_home }}/.bashrc"
+        line: 'if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi'
+        backup: yes
   vars_files:
     - group_vars/linux_configure_vars.yml
