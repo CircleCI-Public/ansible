@@ -2,3 +2,7 @@ snaps:
   - snapd.service
   - snapd.socket
   - snapd.seeded.service
+
+snap_dirs:
+  - "{{ circleci_home}}/snap"
+  - /var/cache/snapd

@@ -10,7 +10,22 @@
     ansible.builtin.systemd:
       name: "{{ item }}"
       state: stopped
+      masked: true
     with_items: "{{ snaps }}"
+
+  - name: Fully remove and purge snapd
+    ansible.builtin.apt:
+      name: snapd
+      autoremove: true
+      autoclean: true
+      purge: true
+      state: absent
+
+  - name: Clean up snap directories
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    with_items: "{{ snap_dirs }}"
 
   - name: Remove firefox via shell
     ansible.builtin.shell:
