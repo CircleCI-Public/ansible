@@ -4,5 +4,16 @@ snaps:
   - snapd.seeded.service
 
 snap_dirs:
-  - "{{ circleci_home}}/snap"
+  - "{{ circleci_home }}/snap"
   - /var/cache/snapd
+
+snapd_prefs:
+  - snapd
+  - snap-confine
+  - ubuntu-core-snapd-units
+  - ubuntu-core-launcher
+  - libsnapd-glib1
+  - gir1.2-snapd-1
+  - libsnapd-qt1
+  - snapd-xdg-open
+  - qml-module-snapd
