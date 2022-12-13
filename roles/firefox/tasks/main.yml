@@ -21,7 +21,6 @@
     ansible.builtin.apt:
       pkg: "firefox"
       state: absent
-      clean: true
       purge: true
       autoremove: true
 
@@ -42,7 +41,7 @@
   - name: Blacklist snapd
     ansible.builtin.template:
       src: ../files/snapd.pref.j2
-      path: etc/apt/preferences.d/snapd.pref
+      dest: "/etc/apt/preferences.d/snapd.pref"
       mode: 0644
 
   - name: Blacklist snap firefox
