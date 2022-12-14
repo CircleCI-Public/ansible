@@ -3,13 +3,12 @@ snap_services:
   - snapd.socket
   - snapd.seeded.service
 
+# snaps must be removed in a specific order and snapd specifically can only be removed once all others are
 snaps:
   - lxd
-  # - bare
+  - google-cloud-cli
   - core18
   - core20
-  - firefox
-  - google-cloud-cli
   - snapd
 
 snap_dirs:

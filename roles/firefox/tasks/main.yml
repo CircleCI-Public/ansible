@@ -18,6 +18,11 @@
       purge: true
       autoremove: true
 
+  - name: Remove snaps
+    ansible.builtin.shell:
+      snap remove {{ item }}
+    with_items: "{{ snaps }}"
+
   - name: Remove snapd packages
     ansible.builtin.package:
       name: "{{ snapd_prefs }}"
