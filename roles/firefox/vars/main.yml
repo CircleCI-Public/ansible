@@ -1,10 +1,20 @@
-snaps:
+snap_services:
   - snapd.service
   - snapd.socket
   - snapd.seeded.service
 
+snaps:
+  - lxd
+  # - bare
+  - core18
+  - core20
+  - firefox
+  - google-cloud-cli
+  - snapd
+
 snap_dirs:
   - "{{ circleci_home }}/snap"
+  - /root/snap
   - /var/cache/snapd
 
 snapd_prefs:

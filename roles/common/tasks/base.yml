@@ -4,11 +4,6 @@
         autoremove: yes
         autoclean: yes
 
-    - name: Remove snapd - it inteferes with what we want such as .deb Firefox
-      ansible.builtin.apt:
-        pkg: snapd
-        state: absent
-
     - name: Update Timezone to UTC
       ansible.builtin.file:
         src: /usr/share/zoneinfo/Etc/UTC
@@ -37,7 +32,7 @@
         path: "/etc/sudoers.d/env_keep"
         line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
         create: yes
-    
+
     - name: Add universe repository
       ansible.builtin.shell: add-apt-repository universe
 
@@ -83,14 +78,14 @@
       ansible.builtin.apt:
         pkg:
           - linux-modules-extra-aws
-      when: 
+      when:
         - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
 
     - name: Ensure extra GCP modules are installed
       ansible.builtin.apt:
         pkg:
           - linux-modules-extra-gcp
-      when: 
+      when:
         - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
 
     - name: Configure ulimit
