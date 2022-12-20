@@ -9,16 +9,18 @@ snaps:
   - google-cloud-cli
   - core18
   - core20
+  - firefox
   - snapd
 
 snap_dirs:
   - "{{ circleci_home }}/snap"
   - /root/snap
-  - /var/cache/snapd
+  - /var/cache/snapd/
 
 snapd_prefs:
   - snapd
   - snap-confine
+  - firefox
   - ubuntu-core-snapd-units
   - ubuntu-core-launcher
   - libsnapd-glib1

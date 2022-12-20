@@ -30,5 +30,11 @@
         path: "{{ circleci_home }}/.bashrc"
         line: 'if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi'
         backup: yes
+
+    - name: Reboot
+      become: true
+      ansible.builtin.reboot:
+        msg: Reboot initiated by ansible
+
   vars_files:
     - group_vars/linux_configure_vars.yml

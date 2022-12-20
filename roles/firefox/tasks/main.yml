@@ -11,31 +11,19 @@
       sudo systemctl disable {{ item }}
     with_items: "{{ snap_services }}"
 
-  - name: Remove firefox with apt module
-    ansible.builtin.apt:
-      pkg: "firefox"
-      state: absent
-      purge: true
-      autoremove: true
+  - name: List snaps
+    ansible.builtin.shell:
+      sudo snap list
 
   - name: Remove snaps
     ansible.builtin.shell:
       snap remove {{ item }}
     with_items: "{{ snaps }}"
 
-  - name: Remove snapd packages
-    ansible.builtin.package:
-      name: "{{ snapd_prefs }}"
-      state: absent
-      purge: true
-
   - name: Fully remove and purge snapd
-    ansible.builtin.apt:
-      name: "{{ snapd_prefs }}"
-      autoremove: true
-      autoclean: true
-      purge: true
-      state: absent
+    ansible.builtin.shell:
+      apt purge --autoremove "{{ item }}"
+    with_items: "{{ snapd_prefs }}"
 
   - name: Blacklist snap firefox
     ansible.builtin.blockinfile:

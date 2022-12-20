@@ -33,6 +33,10 @@
         line: 'Defaults    env_keep += "DEBIAN_FRONTEND"'
         create: yes
 
+    - name: Export noninteractive
+      ansible.builtin.shell:
+        export DEBIAN_FRONTEND=noninteractive
+
     - name: Add universe repository
       ansible.builtin.shell: add-apt-repository universe
 
