@@ -1,10 +1,11 @@
+---
 # !file: playbooks/windows/win_configure.yml
 
 - name: Configure windows node
   hosts: default
   connection: local
   roles:
-    - ../../../roles/windows-executor
+    - windows/buildagent_prereq
   vars_files:
-    - win_configure_vars.yml
-    
+    - group_vars/windows_configure_vars.yml
+    - manifest/windows/win-server-2022.json
