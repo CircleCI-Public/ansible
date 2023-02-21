@@ -1,14 +1,14 @@
-nunit_console_runner_version: 3.16.0
-nano_version: 7.0.7
-vim_version: 9.0.0975
+nunit_console_runner_version: 3.16.2
+nano_version: 7.2.14
+vim_version: 9.0.1221
 jq_version: 1.6
-golang_version: 1.19.3
-openjdk_version: 19.0.1
+golang_version: 1.20.1
+openjdk_version: 19.0.2
 miniconda3_version: 4.12.0
 python_3_version: 3.11.0
-nodejs_version: 19.2.0
+nodejs_version: 19.6.1
 ruby_version: 3.1.3.1
-docker_version: 20.10.20
-docker_desktop_version: 4.12.0
+docker_version: 20.10.21
+docker_desktop_version: 4.16.3
 nvm_version: 1.1.9
 nodejs_dir: 'C:\Program Files\nodejs'
