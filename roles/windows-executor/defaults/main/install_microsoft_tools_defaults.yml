@@ -1,6 +1,6 @@
-dotnet_sdk_version_6: 6.0.403
+dotnet_sdk_version_6: 6.0.406
 sqlserver_devedition_version: 15.0.2000.5
-visualstudio_community_edition_version:  117.4.4.0
-visualstudio_buildtools_version: 117.4.4.0
-nuget_cli_version: 6.4.0
+visualstudio_community_edition_version:  117.5.0.0
+visualstudio_buildtools_version: 117.5.0.0
+nuget_cli_version: 6.5.0
 winappdriver_version: 1.2.1
