@@ -2,9 +2,16 @@
 
 - name: Install dotnet sdk 6
   win_chocolatey:
-    name: dotnet-sdk
+    name: dotnet-6.0-sdk
     state: '{{ package_state }}'
     version: '{{ dotnet_sdk_version_6}}'
+    force: yes
+
+- name: Install dotnet sdk 7
+  win_chocolatey:
+    name: dotnet-7.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_7}}'
     force: yes
 
 #- name: Install Sql Server Developer Edition
