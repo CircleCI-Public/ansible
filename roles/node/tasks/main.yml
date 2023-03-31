@@ -48,6 +48,17 @@
           [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
+    - name: change .circlerc permissions
+      ansible.builtin.file:
+        path: "{{circleci_home}}/.circlerc"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        mode: 0777
+
+    - name: shell call tests
+      ansible.builtin.shell:
+        "echo hello"
+
     - name: Set nvm dir with correct permissions recursively after running script
       ansible.builtin.file:
         path: "{{ nvm_dir }}"

@@ -4,25 +4,33 @@
   roles:
     - common
     - node
-    - gather_facts
-    - java
-    - python3
-    - ruby
+    # - gather_facts
+    # - java
+    # - python3
+    # - ruby
     # - firefox
-    - chrome
-    - docker
-    - sysadmin_tools
-    - devtools
-    - ant
-    - socat
-    - nsenter
-    - jq
-    - yq
-    - awscli
-    - gcloud
-    - clojure
-    - golang
-    - scala
-    - dpkg_configure
+    # - chrome
+    # - docker
+    # - sysadmin_tools
+    # - devtools
+    # - ant
+    # - socat
+    # - nsenter
+    # - jq
+    # - yq
+    # - awscli
+    # - gcloud
+    # - clojure
+    # - golang
+    # - scala
+    # - dpkg_configure
   vars_files:
     - group_vars/linux_configure_vars.yml
+
+  # post_tasks:
+  #   - name: Check if line is in file
+  #     ansible.builtin.blockinfile:
+  #       path: "{{ circleci_home }}/.bashrc"
+  #       block:
+  #         if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+  #       create: yes
