@@ -1,4 +1,4 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-gcloud_version: 393.0.0
+gcloud_version: 424.0.0

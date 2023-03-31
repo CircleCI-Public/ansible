@@ -1,6 +1,6 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-docker_version: 5:20.10.17~3-0~ubuntu-jammy
-containerd_version: 1.6.4-1
-docker_compose_version: 2.6.0~ubuntu-jammy
+docker_version: 5:23.0.2-1~ubuntu.22.04~jammy
+containerd_version: 1.6.19-1
+docker_compose_version: 2.17.2-1~ubuntu.22.04~jammy

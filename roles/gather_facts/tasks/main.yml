@@ -1,0 +1,13 @@
+---
+# This role needs to be updated to include a couple other tasks. Normally, this is run in the common role, but since that will
+# serve as the base of most, if not all images, some of the information that needs to be propagated down is not kept. This is
+# a stop-gap solution for it.
+
+- name: Register machine architecture
+  become: true
+  ansible.builtin.shell: dpkg --print-architecture
+  register: arch_string
+
+- name: Set fact for architecture
+  ansible.builtin.set_fact:
+    arch: "{{ arch_string.stdout }}"

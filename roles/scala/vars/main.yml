@@ -1,7 +1,7 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-sbt_version: 1.6.2
+sbt_version: 1.8.2
 folders:
   - project
   - target

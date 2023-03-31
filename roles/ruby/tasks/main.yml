@@ -4,6 +4,7 @@
       ansible.builtin.apt:
         pkg:
           - rbenv
+          - libyaml-dev
         state: present
         update_cache: yes
 

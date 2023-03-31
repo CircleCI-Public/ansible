@@ -1,3 +1,4 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
+yq_version: 4.33.1
