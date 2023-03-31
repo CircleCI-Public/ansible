@@ -50,7 +50,11 @@
       become_user: "{{ circleci_user }}"
       pyenv:
         versions: "{{ python }}"
-        default: "{{ defaults.python }}"
+
+    - name: Set Pyenv global
+      become_user: "{{ circleci_user }}"
+      ansible.builtin.shell:
+        "pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Set Python for subsequent tasks
       ansible.builtin.set_fact:
