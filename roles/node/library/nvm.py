@@ -22,7 +22,7 @@ def main():
 
     for version in versions:
         if version == 'lts':
-            version = '--lts'
+            version = 'lts/*'
         elif version == 'current':
             version = 'node'
         if subprocess.run(['/bin/bash', '-i', '-c', 'source /home/circleci/.circlerc && nvm install ' + version]).returncode != 0:
