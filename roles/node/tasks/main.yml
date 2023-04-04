@@ -75,6 +75,15 @@
         default: "{{ defaults.node }}"
         npm: "{{ npm }}"
 
+    - name: Change perms for ~/.npm
+      become_user: "{{ circleci_user }}"
+      ansible.builtin.file:
+        path: "~/.npm"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        mode: u+w
+        state: directory
+
   when: nvm_installed.rc == 1
 
   become: true
