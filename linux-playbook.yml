@@ -29,6 +29,7 @@
 
   post_tasks:
     - name: Check if line is in file
+      become_user: "{{ circleci_user }}"
       ansible.builtin.blockinfile:
         path: "{{ circleci_home }}/.bashrc"
         block:
