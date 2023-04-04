@@ -7,7 +7,7 @@
     - gather_facts
     - java
     # - python3
-    - ruby
+    # - ruby
     # - firefox
     - chrome
     - docker
