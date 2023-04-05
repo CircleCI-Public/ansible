@@ -69,7 +69,7 @@
         state: directory
 
     - name: Install NodeJS
-      # become_user: "{{ circleci_user }}"
+      become_user: "{{ circleci_user }}"
       nvm:
         versions: "{{ node }}"
         default: "{{ defaults.node }}"
@@ -78,7 +78,7 @@
     - name: Change perms for ~/.npm
       become_user: "{{ circleci_user }}"
       ansible.builtin.file:
-        path: "~/.npm"
+        path: "{{ circleci_home }}.npm"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         mode: u+w
