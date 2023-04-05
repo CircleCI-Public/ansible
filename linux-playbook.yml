@@ -3,7 +3,7 @@
   hosts: all
   roles:
     - common
-    # - node
+    - node
     # - gather_facts
     # - java
     # - python3
