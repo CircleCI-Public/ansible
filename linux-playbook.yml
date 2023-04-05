@@ -26,13 +26,3 @@
     # - dpkg_configure
   vars_files:
     - group_vars/linux_configure_vars.yml
-
-  post_tasks:
-    - name: Check if line is in file
-      become_user: "{{ circleci_user }}"
-      become: true
-      ansible.builtin.blockinfile:
-        path: "{{ circleci_home }}/.bashrc"
-        block:
-          if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
-        create: yes
