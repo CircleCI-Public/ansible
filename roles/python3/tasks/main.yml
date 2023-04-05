@@ -54,7 +54,7 @@
     - name: Set Pyenv global
       become_user: "{{ circleci_user }}"
       ansible.builtin.shell:
-        "{{ pyenv_dir }}/pyenv global {{ python2_version }} {{ python3_version }}"
+        "{{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Set Python for subsequent tasks
       ansible.builtin.set_fact:
