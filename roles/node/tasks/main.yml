@@ -78,7 +78,7 @@
     - name: Change perms for .npm
       become_user: "{{ circleci_user }}"
       ansible.builtin.shell:
-        "chmod u+w {{ circleci_home }}/.npm"
+        "sudo chmod u+w {{ circleci_home }}/.npm"
 
   when: nvm_installed.rc == 1
 
