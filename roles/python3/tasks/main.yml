@@ -59,10 +59,11 @@
 
     - name: Set Python for subsequent tasks
       ansible.builtin.set_fact:
-        ansible_python_interpreter: "{{ circleci_home }}/{{ pyenv_dir }}/shims/python3"
+        ansible_python_interpreter: "{{ circleci_home }}{{ pyenv_dir }}/shims/python3"
 
     - name: Install Pip Packages
       become_user: "{{ circleci_user }}"
+      become_method: sudo
       ansible.builtin.pip:
         name: "{{ item }}"
       with_items: "{{ pip }}"

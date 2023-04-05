@@ -60,6 +60,7 @@
     ansible.builtin.lineinfile:
       path: "/etc/sudoers.d/circleci"
       line: "circleci ALL=(ALL:ALL) NOPASSWD:ALL"
+      mode: 0440
       create: yes
 
   become: true
