@@ -31,6 +31,7 @@
 
     - name: Clone and checkout pyenv version
       # Intentionally uses shell instead of git module
+      become_user: "{{ circleci_user }}"
       ansible.builtin.shell:
         "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
 
