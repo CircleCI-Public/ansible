@@ -30,6 +30,8 @@
         update_cache: yes
 
     - name: Clone and checkout pyenv version
+      become_user: "{{ circleci_user }}"
+      become_method: sudo
       # Intentionally uses shell instead of git module
       ansible.builtin.shell:
         "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
@@ -48,17 +50,19 @@
 
     - name: Install Python
       become_user: "{{ circleci_user }}"
+      become_method: sudo
       pyenv:
         versions: "{{ python }}"
-
-    - name: Set Pyenv global
-      become_user: "{{ circleci_user }}"
-      ansible.builtin.shell:
-        "sudo su circleci {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Set Python for subsequent tasks
       ansible.builtin.set_fact:
         ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
+
+    - name: Set Pyenv global
+      become_user: "{{ circleci_user }}"
+      become_method: sudo
+      ansible.builtin.shell:
+        "{{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Install Pip Packages
       become_user: "{{ circleci_user }}"
