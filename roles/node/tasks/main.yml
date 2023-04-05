@@ -75,14 +75,10 @@
         default: "{{ defaults.node }}"
         npm: "{{ npm }}"
 
-    - name: Change perms for ~/.npm
+    - name: Change perms for .npm
       become_user: "{{ circleci_user }}"
-      ansible.builtin.file:
-        path: "{{ circleci_home }}/.npm"
-        owner: "{{ circleci_user }}"
-        group: "{{ circleci_user }}"
-        mode: u+w
-        state: directory
+      ansible.builtin.shell:
+        "chmod u+w {{ circleci_home }}/.npm"
 
   when: nvm_installed.rc == 1
 
