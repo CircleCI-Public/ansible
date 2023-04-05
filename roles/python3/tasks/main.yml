@@ -57,14 +57,14 @@
       ansible.builtin.shell:
         "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
-    - name: Set Python for subsequent tasks
-      ansible.builtin.set_fact:
-        ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
-
     - name: Install Pip Packages
       become_method: sudo
       ansible.builtin.shell:
         "su {{ circleci_user }} {{ pyenv_dir }}/shims/python3 pip install -U {{ item }}"
       with_items: "{{ pip }}"
+
+    - name: Set Python for subsequent tasks
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
 
   become: true
