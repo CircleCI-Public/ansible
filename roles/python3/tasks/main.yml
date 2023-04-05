@@ -29,6 +29,10 @@
         state: latest
         update_cache: yes
 
+    - name: output sudo -l
+      ansible.builtin.shell:
+        echo sudo -l
+
     - name: Clone and checkout pyenv version
       # Intentionally uses shell instead of git module
       ansible.builtin.shell:
