@@ -67,7 +67,7 @@
       become_method: sudo
       ansible.builtin.shell:
         # "su {{ circleci_user }} /bin/bash -c 'pip install -U {{ item }}'"
-        "pip install -U {{ item }}'"
+        "pip install -U {{ item }}"
       with_items: "{{ pip }}"
 
     # - name: Set Python for subsequent tasks
