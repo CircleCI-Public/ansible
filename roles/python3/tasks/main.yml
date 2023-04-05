@@ -64,7 +64,7 @@
     - name: Install Pip Packages
       become_method: sudo
       ansible.builtin.shell:
-        "su {{ circleci_user }} pip install -U {{ item }}"
+        "su {{ circleci_user }} source /home/circleci/.circlerc && pip install -U {{ item }}"
       with_items: "{{ pip }}"
 
   become: true
