@@ -1,6 +1,7 @@
 ---
 - block:
     - name: Install rbenv
+      become_method: sudo
       ansible.builtin.apt:
         pkg:
           - rbenv
@@ -39,6 +40,7 @@
           gem:  --no-ri --no-rdoc
 
     - name: Install rubygems (ruby-dev)
+      become_method: sudo
       ansible.builtin.apt:
         pkg:
         - ruby-dev
@@ -52,6 +54,7 @@
 
     - name: Install ruby
       become_user: "{{ circleci_user }}"
+      become_method: sudo
       rbenv:
         versions: "{{ ruby }}"
         default: "{{ defaults.ruby }}"

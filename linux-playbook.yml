@@ -5,10 +5,10 @@
     - common
     # - node
     - gather_facts
-    - java
-    - python3
+    # - java
+    # - python3
     - ruby
-    - firefox
+    # - firefox
     - chrome
     - docker
     - sysadmin_tools
