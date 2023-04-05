@@ -62,10 +62,9 @@
         ansible_python_interpreter: "{{ circleci_home }}{{ pyenv_dir }}/shims/python3"
 
     - name: Install Pip Packages
-      become_user: "{{ circleci_user }}"
       become_method: sudo
-      ansible.builtin.pip:
-        name: "{{ item }}"
+      ansible.builtin.shell:
+        "su {{ circleci_user }} pip install -U {{ item }}"
       with_items: "{{ pip }}"
 
   become: true
