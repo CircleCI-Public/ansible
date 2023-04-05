@@ -48,18 +48,20 @@
 
     - name: Install Python
       become_method: sudo
-      pyenv:
-        versions: "{{ python }}"
+      ansible.builtin.shell:
+        "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
+      with_items: "{{ python_versions }}"
+      # pyenv:
+      #   versions: "{{ python }}"
 
     - name: Set Python for subsequent tasks
       ansible.builtin.set_fact:
         ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
 
     - name: Set Pyenv global
-      become_user: "{{ circleci_user }}"
       become_method: sudo
       ansible.builtin.shell:
-        "{{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
+        "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Install Pip Packages
       become_user: "{{ circleci_user }}"
