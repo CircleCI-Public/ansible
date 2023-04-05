@@ -78,7 +78,7 @@
     - name: Change perms for ~/.npm
       become_user: "{{ circleci_user }}"
       ansible.builtin.file:
-        path: "{{ circleci_home }}.npm"
+        path: "{{ circleci_home }}/.npm"
         owner: "{{ circleci_user }}"
         group: "{{ circleci_user }}"
         mode: u+w
