@@ -19,16 +19,16 @@ def main():
     default = module.params['default']
 
     for version in versions:
-        output = subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && pyenv install ' + version])
+        output = subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && /opt/circleci/.pyenv/bin/pyenv install ' + version])
         if output.returncode != 0:
             module.fail_json(msg='Problem installing Python ' + version + output.stdout + output.stderr)
 
     if default:
-        output = subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && pyenv global ' + default])
+        output = subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && /opt/circleci/.pyenv/bin/pyenv global ' + default])
         if output.returncode != 0:
             module.fail_json(msg='Problem setting default Python')
 
-    subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && pyenv rehash'])
+    subprocess.run(['sudo', 'su', 'circleci', '/bin/bash', '-lc', 'source /home/circleci/.circlerc && /opt/circleci/.pyenv/bin/pyenv rehash'])
 
     module.exit_json(changed=True)
 
