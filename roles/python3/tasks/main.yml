@@ -31,7 +31,6 @@
 
     - name: Clone and checkout pyenv version
       # Intentionally uses shell instead of git module
-      become_user: "{{ circleci_user }}"
       ansible.builtin.shell:
         "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
 
@@ -58,20 +57,15 @@
       ansible.builtin.shell:
         "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
-    - name: Set Python for subsequent tasks
-      ansible.builtin.set_fact:
-        ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
-
     - name: Install Pip Packages
       become_user: "{{ circleci_user }}"
       become_method: sudo
       ansible.builtin.shell:
-        # "su {{ circleci_user }} /bin/bash -c 'pip install -U {{ item }}'"
-        "pip install -U {{ item }}"
+        "su {{ circleci_user }} /bin/bash -c 'pip install -U {{ item }}'"
       with_items: "{{ pip }}"
 
-    # - name: Set Python for subsequent tasks
-    #   ansible.builtin.set_fact:
-    #     ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
+    - name: Set Python for subsequent tasks
+      ansible.builtin.set_fact:
+        ansible_python_interpreter: "{{ pyenv_dir }}/shims/python3"
 
   become: true
