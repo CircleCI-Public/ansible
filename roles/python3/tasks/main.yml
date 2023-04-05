@@ -30,8 +30,6 @@
         update_cache: yes
 
     - name: Clone and checkout pyenv version
-      become_user: "{{ circleci_user }}"
-      become_method: sudo
       # Intentionally uses shell instead of git module
       ansible.builtin.shell:
         "git clone --branch {{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
