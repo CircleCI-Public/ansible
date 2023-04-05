@@ -62,10 +62,9 @@
         "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Install Pip Packages
-      become_user: "{{ circleci_user }}"
       become_method: sudo
       ansible.builtin.shell:
-        "su {{ circleci_user }} /bin/bash -c 'pip install -U {{ item }}'"
+        "su {{ circleci_user }} /bin/bash -c pip install -U {{ item }}"
       with_items: "{{ pip }}"
 
     - name: Set Python for subsequent tasks
