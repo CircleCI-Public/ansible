@@ -60,7 +60,7 @@
     - name: Install Pip Packages
       become_method: sudo
       ansible.builtin.shell:
-        "su {{ circleci_user }} {{ pyenv_dir }}/shims/python3 pip install -U {{ item }}"
+        "su {{ circleci_user }} /bin/bash -c '{{ pyenv_dir }}/shims/pip install -U {{ item }}'"
       with_items: "{{ pip }}"
 
     - name: Set Python for subsequent tasks
