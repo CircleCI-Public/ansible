@@ -63,6 +63,9 @@
       mode: 0440
       create: yes
 
+  - name: Reset connection so new user groups work
+    ansible.builtin.meta: reset_connection
+
   become: true
 
   collections:
