@@ -47,7 +47,6 @@
           eval "$(pyenv init -)"
 
     - name: Install Python
-      become_user: "{{ circleci_user }}"
       become_method: sudo
       pyenv:
         versions: "{{ python }}"
