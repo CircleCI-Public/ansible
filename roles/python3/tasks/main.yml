@@ -29,10 +29,6 @@
         state: latest
         update_cache: yes
 
-    - name: output sudo -l
-      ansible.builtin.shell:
-        echo sudo -l
-
     - name: Clone and checkout pyenv version
       # Intentionally uses shell instead of git module
       ansible.builtin.shell:
@@ -53,18 +49,18 @@
     - name: Install Python
       become_method: sudo
       ansible.builtin.shell:
-        "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
+        "sudo -H -i u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
       with_items: "{{ python_versions }}"
 
     - name: Set Pyenv global
       become_method: sudo
       ansible.builtin.shell:
-        "su {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
+        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
 
     - name: Install Pip Packages
       become_method: sudo
       ansible.builtin.shell:
-        su {{ circleci_user }} /bin/bash -lc "pip install -U {{ item }}"
+        "sudo -H -i -u {{ circleci_user }} /bin/bash -lc pip install -U {{ item }}"
       with_items: "{{ pip }}"
 
     - name: Set Python for subsequent tasks

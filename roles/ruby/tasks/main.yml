@@ -1,7 +1,14 @@
 ---
 - block:
+    - name: Create /opt/circleci/.rbenv directory
+      ansible.builtin.file:
+        path: "{{ ruby_dir }}"
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        mode: 0775
+        state: directory
+
     - name: Install rbenv
-      become_method: sudo
       ansible.builtin.apt:
         pkg:
           - rbenv
@@ -16,16 +23,8 @@
         marker_begin: "RUBY START"
         marker_end: "RUBY END"
         block: |
-          export PATH="{{ circleci_home }}/.rbenv/bin:$PATH"
+          export PATH="{{ ruby_dir }}/bin:$PATH"
           eval "$(rbenv init -)"
-
-    - name: Configure permissions for ruby
-      ansible.builtin.file:
-        path: "{{ ruby_dir }}"
-        owner: "{{ circleci_user }}"
-        group: "{{ circleci_user }}"
-        recurse: true
-        state: directory
 
     - name: Configure .gemrc
       ansible.builtin.blockinfile:
@@ -53,7 +52,6 @@
         PREFIX=/usr/local sudo "{{ ruby_dir }}/plugins/ruby-build/install.sh"
 
     - name: Install ruby
-      become_method: sudo
       ansible.builtin.shell:
         "sudo -H -i -u {{ circleci_user }} rbenv install {{ defaults.ruby }}"
       # rbenv:
