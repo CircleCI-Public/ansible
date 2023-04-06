@@ -3,10 +3,10 @@
   hosts: all
   roles:
     - common
-    # - node
+    - node
     - gather_facts
-    # - java
-    # - python3
+    - java
+    - python3
     - ruby
     # - firefox
     - chrome
