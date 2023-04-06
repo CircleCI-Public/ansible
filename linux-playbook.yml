@@ -3,13 +3,13 @@
   hosts: all
   roles:
     - common
-    - node
+    # - node
     - gather_facts
-    - java
+    # - java
     - python3
-    - ruby
+    # - ruby
     # - firefox
-    - chrome
+    # - chrome
     - docker
     - sysadmin_tools
     - devtools
