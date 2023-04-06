@@ -53,10 +53,11 @@
         PREFIX=/usr/local sudo "{{ ruby_dir }}/plugins/ruby-build/install.sh"
 
     - name: Install ruby
-      become_user: "{{ circleci_user }}"
       become_method: sudo
-      rbenv:
-        versions: "{{ ruby }}"
-        default: "{{ defaults.ruby }}"
+      ansible.builtin.shell:
+        "sudo -H -i -u {{ circleci_user }} rbenv install {{ defaults.ruby }}"
+      # rbenv:
+      #   versions: "{{ ruby }}"
+      #   default: "{{ defaults.ruby }}"
 
   become: true
