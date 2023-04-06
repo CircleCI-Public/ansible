@@ -49,7 +49,7 @@
     - name: Install Python
       become_method: sudo
       ansible.builtin.shell:
-        "sudo -H -i u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
+        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
       with_items: "{{ python_versions }}"
 
     - name: Set Pyenv global
