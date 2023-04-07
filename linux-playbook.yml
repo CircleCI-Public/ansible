@@ -2,27 +2,32 @@
 - name: Configure linux node
   hosts: all
   roles:
-    - common
-    - node
+    # - common
+    # - node
     - gather_facts
-    - java
-    - python3
-    - ruby
-    # - firefox
-    - chrome
-    - docker
-    - sysadmin_tools
-    - devtools
-    - ant
-    - socat
-    - nsenter
-    - jq
-    - yq
-    - awscli
-    - gcloud
-    - clojure
-    - golang
-    - scala
-    - dpkg_configure
+    # - java
+    # - python3
+    # - ruby
+    # - chrome
+    # - docker
+    # - sysadmin_tools
+    # - devtools
+    # - ant
+    # - socat
+    # - nsenter
+    # - jq
+    # - yq
+    # - awscli
+    # - gcloud
+    # - clojure
+    # - golang
+    # - scala
+    # - dpkg_configure
   vars_files:
     - group_vars/linux_configure_vars.yml
+
+  post_tasks:
+    - name: Check if line is in file
+      ansible.builtin.lineinfile:
+        path: "{{ circleci_home }}/.bashrc"
+        line: if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
