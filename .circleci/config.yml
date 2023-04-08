@@ -1,0 +1,14 @@
+version: 2.1
+
+workflows:
+  main-wf:
+    jobs:
+      - check
+
+jobs:
+  check:
+    docker:
+      - image: cimg/deploy:2023.04
+    steps:
+      - run: |
+          echo "placeholder"
