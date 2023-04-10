@@ -1,10 +1,10 @@
 {
   "ruby": [
-    "3.1.2"
+    "3.2.1"
   ],
   "node": [
-    "lts",
-    "current"
+    "18.15.0",
+    "19.8.1"
   ],
   "npm": [
     "npm",
@@ -16,18 +16,40 @@
     "mocha",
     "yarn"
   ],
-  "python": [
+  "python_versions": [
     "2.7.18",
-    "3.10.5"
+    "3.11.2"
+  ],
+  "pip": [
+    "virtualenv",
+    "nose",
+    "pep8"
   ],
   "win_pyenv": [
     "3.10.6",
     "miniconda3-3.9-4.12.0"
   ],
+  "java_versions": [
+    "8",
+    "17"
+  ],
   "defaults": {
-    "ruby": "3.1.2",
-    "node": "lts",
-    "python": "3.10.5",
+    "ruby": "3.2.1",
+    "node": "18.15.0",
+    "python": "3.11.2",
     "win_pyenv": "3.10.6"
-  }
+  },
+  "lein_version": "2.10.0",
+  "docker_version": "5:23.0.2-1~ubuntu.22.04~jammy",
+  "containerd_version": "1.6.19-1",
+  "docker_compose_version": "2.17.2-1~ubuntu.22.04~jammy",
+  "gcloud_version": "424.0.0",
+  "golang_version": "1.20.2",
+  "maven_version": "3.9.1",
+  "gradle_version": "8.0.2",
+  "sbt_version": "1.8.2",
+  "python2_version": "2.7.18",
+  "python3_version": "3.11.2",
+  "pyenv_version": "2.3.16",
+  "yarn_version": "1.22.19"
 }

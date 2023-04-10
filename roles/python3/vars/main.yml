@@ -1,16 +1,4 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-python_versions:
-  - 2.7.18
-  - 3.10.5
-python2_version: 2.7.18
-python3_version: 3.10.5
-pyenv_version: "v2.3.3"
 pyenv_dir: "/opt/circleci/.pyenv"
-
-pip:
-  - virtualenv
-  - nose
-  - pep8
-  

@@ -1,22 +1,4 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-nodejs_versions:
-  - 16.16.0
-  - 18.6.0
-
-nodejs_lts: 16.16.0
-
-yarn_version: 1.22.19
-
 nvm_dir: '/opt/{{ circleci_user }}/.nvm'
-
-node_items:
-  - npm
-  - coffee-script
-  - grunt
-  - bower
-  - grunt-cli
-  - nodeunit
-  - mocha
-  - yarn@{{ yarn_version }}
