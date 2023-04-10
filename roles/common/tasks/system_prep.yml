@@ -60,8 +60,12 @@
     ansible.builtin.lineinfile:
       path: "/etc/sudoers.d/circleci"
       line: "circleci ALL=(ALL:ALL) NOPASSWD:ALL"
+      mode: 0400
       create: yes
 
+  - name: Reset connection so new user groups work
+    ansible.builtin.meta: reset_connection
+    
   become: true
 
   collections:
