@@ -48,9 +48,9 @@
       ansible.builtin.shell: |
         git clone https://github.com/rbenv/ruby-build.git "{{ ruby_dir }}"/plugins/ruby-build
         PREFIX=/usr/local sudo "{{ ruby_dir }}/plugins/ruby-build/install.sh"
-        
+
     - name: Install ruby and set as global
       ansible.builtin.shell:
-        "sudo -H -i -u {{ circleci_user }} rbenv install {{ defaults.ruby }} && rbenv global {{ defaults.ruby }}"
+        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc && rbenv install {{ defaults.ruby }} && rbenv global {{ defaults.ruby }}"
 
   become: true
