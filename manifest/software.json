@@ -51,5 +51,6 @@
   "python2_version": "2.7.18",
   "python3_version": "3.11.2",
   "pyenv_version": "2.3.16",
-  "yarn_version": "1.22.19"
+  "yarn_version": "1.22.19",
+  "yq": "4.33.1"
 }
