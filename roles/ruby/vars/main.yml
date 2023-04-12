@@ -2,5 +2,5 @@
 circleci_user: circleci
 circleci_home: /home/circleci
 ruby_version: 3.1.2
-gemrc_file: '{{ circleci_home }}/.gemrc'
-ruby_dir: "{{ circleci_home }}/.rbenv"
+gemrc_file: "opt/circleci/.gemrc"
+ruby_dir: "opt/circleci/.rbenv"
