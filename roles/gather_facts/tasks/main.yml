@@ -1,0 +1,12 @@
+---
+# Normally, this role would be run in the "common" role, but since that serves as the base image, this role is needed in order
+# to propagate values for roles that depend on architecture
+
+- name: Register machine architecture
+  become: true
+  ansible.builtin.shell: dpkg --print-architecture
+  register: arch_string
+
+- name: Set fact for architecture
+  ansible.builtin.set_fact:
+    arch: "{{ arch_string.stdout }}"
