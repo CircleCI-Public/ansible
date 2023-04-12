@@ -9,14 +9,6 @@
     - name: Redirect output (.bashrc)
       ansible.builtin.shell: echo 'source ~/.circlerc &>/dev/null' > '{{ circleci_home }}/.bashrc'
 
-    - name: check if line is in file
-      ansible.builtin.blockinfile:
-        path: "{{ circleci_home }}/.bashrc"
-        block:
-          source ~/.circlerc &>/dev/null
-          # if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
-        create: yes
-
     - name: Change ownership of .bash_profile
       ansible.builtin.file:
         path: "{{ circleci_home }}/.bash_profile"
