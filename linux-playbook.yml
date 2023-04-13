@@ -2,28 +2,28 @@
 - name: Configure linux node
   hosts: all
   roles:
-    - common
-    - gather_facts
-    - node
-    - java
-    - python3
-    - ruby
+    # - common
+    # - gather_facts
+    # - node
+    # - java
+    # - python3
+    # - ruby
     # - firefox
-    - chrome
-    - docker
-    - sysadmin_tools
-    - devtools
-    - ant
-    - socat
-    - nsenter
-    - jq
-    - yq
-    - awscli
-    - gcloud
-    - clojure
-    - golang
-    - scala
-    - dpkg_configure
+    # - chrome
+    # - docker
+    # - sysadmin_tools
+    # - devtools
+    # - ant
+    # - socat
+    # - nsenter
+    # - jq
+    # - yq
+    # - awscli
+    # - gcloud
+    # - clojure
+    # - golang
+    # - scala
+    # - dpkg_configure
   vars_files:
     - group_vars/linux_configure_vars.yml
 
