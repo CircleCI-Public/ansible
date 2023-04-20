@@ -1,14 +1,198 @@
 version: 2.1
 
+orbs:
+  gcloud: circleci/gcp-cli@3.0.1
+
+###
+  # These correspond to variables that are passed to packer.
+  # Update any of the anchors so changes propagate to downstream builds. For example, source_image will override source_image_family.
+  # If you were patching, you might want to use a specified source_image rather than the latest ubuntu source image, which
+  # is what the source_image_family would point to. If building the latest new image, you might want to build from source_image_family
+  #
+
+  # For full intraquarterly builds, the base_image includes common circleci modules and retains the original software from that point
+  # in time. Using this will also decrease build times
+###
+
+configuration:
+  gcp_global:
+    - gcp_zone: &gcp_zone "us-east1-c"
+    - gcp_ssh_username: &gcp_ssh_username "circleci"
+
+  gcp_focal:
+    - gcp_focal_source_image: &gcp_focal_source_image "ubuntu-2004-focal-v20230302"
+    - gcp_focal_base_image_name: &gcp_focal_base_image_name "ansible-ubuntu-2004-base"
+    - gcp_focal_source_image_family: &gcp_focal_source_image_family "ubuntu-2004-lts"
+    # Canary
+    - gcp_focal_canary_image_name: &gcp_focal_canary_image_name "ansible-ubuntu-2004-canary"
+
+  gcp_jammy:
+    - gcp_jammy_source_image: &gcp_jammy_source_image "ubuntu-2204-jammy-v20230428"
+    - gcp_jammy_base_image_name: &gcp_jammy_base_image_name "ansible-ubuntu-2204-base"
+    - gcp_jammy_source_image_family: &gcp_jammy_source_image_family "ubuntu-2204-lts"
+    # Canary
+    - gcp_jammy_canary_image_name: &gcp_jammy_canary_image_name "ansible-ubuntu-2204-canary"
+
 workflows:
   main-wf:
     jobs:
       - check
+      - build_gcp:
+          name: gcp_jammy_base
+          run_build: false
+          source_dirs: "manifest/software.json"
+          zone: *gcp_zone
+          source_image: *gcp_jammy_source_image
+          image_name: *gcp_jammy_base_image_name
+          image_family: *gcp_jammy_base_image_name
+          source_image_family: *gcp_jammy_source_image_family
+          project_id: GOOGLE_PROJECT_ID
+          ssh_username: *gcp_ssh_username
+          requires:
+            - check
+          context: vm-publishing
+      - build_gcp:
+          name: gcp_jammy_canary
+          run_build: false
+          source_dirs: "manifest/software.json"
+          zone: *gcp_zone
+          source_image: ""
+          image_name: *gcp_jammy_canary_image_name
+          image_family: *gcp_jammy_canary_image_name
+          source_image_family: *gcp_jammy_canary_image_name
+          project_id: GOOGLE_PROJECT_ID
+          requires:
+            - check
+          context: vm-publishing
+      - build_gcp:
+          name: gcp_tests
+          run_build: false
+          source_dirs: "manifest/software.json"
+          zone: *gcp_zone
+          source_image: ""
+          image_name: test-run
+          image_family: test-runs
+          source_image_family: *gcp_jammy_source_image_family
+          project_id: GOOGLE_PROJECT_ID
+          requires:
+            - check
+          context: vm-publishing
+
+executors:
+  deploy:
+    docker:
+      - image: cimg/deploy:2023.04
 
 jobs:
   check:
-    docker:
-      - image: cimg/deploy:2023.04
+    executor: deploy
     steps:
-      - run: |
-          echo "placeholder"
+      - checkout
+  build_gcp:
+      executor: deploy
+      parameters:
+      run_build:
+        type: boolean
+        default: false
+        description:
+          Use this to force a rebuild, even if there are no changes in source_dirs. This is useful if the build is correct, but
+          you still need to do a re-run. e.g patch
+      source_dirs:
+        type: string
+      zone:
+        type: string
+      source_image:
+        type: string
+        default: ""
+      image_name:
+        type: string
+      image_family:
+        type: string
+      source_image_family:
+        type: string
+        default: ""
+      ssh_username:
+        type: string
+        default: "circleci"
+      account_file:
+        type: string
+        default: "/tmp/account.json"
+      project_id:
+        type: env_var_name
+      extra_vars:
+        type: string
+        default: ""
+      specific_build:
+        type: string
+        default: ""
+      environment:
+        RUN_BUILD: << parameters.run_build >>
+      steps:
+        - checkout
+        - check_source_paths:
+              source_dirs: << parameters.source_dirs >>
+        - run:
+            name: Generate Credentials
+            command: |
+              echo "${CCI_GCE_B64_CREDENTIALS}" | base64 -d > /tmp/account.json
+            shell: bash
+        - gcloud/install:
+            components: "beta"
+        - run: |
+            gcloud auth login --brief --cred-file /tmp/account.json
+        - run: sudo apt-get update
+        - run:
+            name: Configure Packer Variables
+            command: |
+              cat > packer_vars \<<EOF
+              export PKR_VAR_zone="<< parameters.zone >>"
+              export PKR_VAR_source_image="<< parameters.source_image >>"
+              export PKR_VAR_image_name="<< parameters.image_name >>"
+              export PKR_VAR_image_family="<< parameters.image_family >>"
+              export PKR_VAR_source_image_family="<< parameters.source_image_family >>"
+              export PKR_VAR_account_file="<< parameters.account_file >>"
+              export PKR_VAR_project_id="${<< parameters.project_id >>}"
+              export PKR_VAR_ssh_username="<< parameters.ssh_username >>"
+              EOF
+        - run:
+            name: Build Images
+            no_output_timeout: 120m
+            command: |
+              source packer_vars
+              packer build \
+              -machine-readable \
+              -only=googlecompute.gcp-canary-base \
+              packer/
+
+commands:
+  check_source_paths:
+    parameters:
+      source_dirs:
+        type: string
+        description: |
+          Runs a git diff on the specified directory; if files in the path have
+          changed, and will run a build if this is true. Multiple filepaths can
+          be included and are separated by semi-colons
+    steps:
+      - run:
+          name: "Continue image job only if the correct paths were modified"
+          command: |
+            CHANGE="false"
+
+            if [[ $CIRCLE_BRANCH != "main" ]]; then
+                for i in $(ls -lR << parameters.source_dirs >> | awk '{print $9}'); do
+                  git diff --quiet HEAD main -- "<< parameters.source_dirs >>/${i}" || CHANGE="true"
+                  echo $CHANGE
+                done
+            fi
+
+            if [[ $RUN_BUILD != true ]]; then
+              if [[ $CHANGE != "true" ]] && [[ $CIRCLE_BRANCH != "main" ]]; then
+                circleci step halt
+              else
+                echo "run_build set to false, but changes in source_dirs detected. Continuing with build. \n
+                Please check source_dirs"
+              fi
+            else
+              echo "run_build set to true. Continuing with build"
+            fi
