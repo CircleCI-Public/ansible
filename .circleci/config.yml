@@ -40,7 +40,7 @@ workflows:
       - build_gcp:
           name: gcp_jammy_base
           run_build: false
-          source_dirs: "manifest/software.json"
+          source_dirs: "manifest"
           zone: *gcp_zone
           source_image: *gcp_jammy_source_image
           image_name: *gcp_jammy_base_image_name
@@ -54,7 +54,7 @@ workflows:
       - build_gcp:
           name: gcp_jammy_canary
           run_build: false
-          source_dirs: "manifest/software.json"
+          source_dirs: "manifest"
           zone: *gcp_zone
           source_image: ""
           image_name: *gcp_jammy_canary_image_name
@@ -67,7 +67,7 @@ workflows:
       - build_gcp:
           name: gcp_tests
           run_build: false
-          source_dirs: "manifest/software.json"
+          source_dirs: "manifest"
           zone: *gcp_zone
           source_image: ""
           image_name: test-run
@@ -187,11 +187,11 @@ commands:
             fi
 
             if [[ $RUN_BUILD != true ]]; then
-              if [[ $CHANGE != "true" ]] && [[ $CIRCLE_BRANCH != "main" ]]; then
-                circleci step halt
+              if [[ $CHANGE != "false" ]] && [[ $CIRCLE_BRANCH != "main" ]]; then
+                echo "run_build set to false, but changes in source_dirs detected. Continuing with build.
+                This is the default behavior. If this is not intentional, please check << parameters.source_dirs >> for changes"
               else
-                echo "run_build set to false, but changes in source_dirs detected. Continuing with build. \n
-                Please check source_dirs"
+                circleci step halt
               fi
             else
               echo "run_build set to true. Continuing with build"
