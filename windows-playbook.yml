@@ -9,4 +9,3 @@
     - windows/microsoft_tools
   vars_files:
     - group_vars/windows_configure_vars.yml
-    # - manifest/windows-software.json

@@ -5,4 +5,3 @@
     reboot_timeout: 7200
     reject_list:
       - 5019081
-   
