@@ -1,0 +1,33 @@
+#- name: Create circleci user passwords
+#  set_fact:
+#    cci_user_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+#    cci_admin_pwd: "{{ lookup('password', '/dev/null length=42 chars=ascii_letters,digits,punctuation') }}"
+
+- name: Disble complex password requirements
+  ansible.windows.win_powershell:
+    script: |
+      secedit /export /cfg c:\secpol.cfg (gc C:\secpol.cfg).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File C:\secpol.cfg secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY rm -force c:\secpol.cfg -confirm:$false
+
+- name: Create circeci user
+  win_user:
+    name: circleci
+    password: "{{ cci_user_pwd }}"
+    state: present
+    groups:
+      - Administrators
+
+- name: Create circeci-admin user
+  win_user:
+    name: circleci-admin
+    password: "{{ cci_admin_pwd }}"
+    state: present
+    groups:
+      - Administrators
+
+- name: Do not forcefully unload the users registry at user logoff in user policies of Group Policy editor
+  win_regedit:
+    path: HKLM:\Software\Policies\Microsoft\Windows\System
+    name: DisableForceUnload
+    data: 1
+    type: dword
+    state: present
