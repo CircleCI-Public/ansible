@@ -1,0 +1,94 @@
+- name: Install dotnet sdk 6
+  win_chocolatey:
+    name: dotnet-6.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_6}}'
+    force: yes
+
+- name: Install dotnet sdk 7
+  win_chocolatey:
+    name: dotnet-7.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_7}}'
+    force: yes
+
+#- name: Install Sql Server Developer Edition
+#  win_chocolatey:
+#    name: sql-server-2019
+#    state: '{{ package_state }}'
+#    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /SQLSYSADMINACCOUNTS:{{ ansible_env.COMPUTERNAME }}\\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:circleci /QUIET"'
+#    version: '{{ sqlserver_devedition_version }}'
+
+- name: Reboot the machine after install dotnet sdk
+  ansible.windows.win_reboot:
+
+- name: Install Visual Studio Community Edition
+  win_chocolatey:
+    name: visualstudio2022community
+    state: '{{ package_state }}'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    timeout: 5400
+    version: '{{ visualstudio_community_edition_version }}'
+    force: yes
+
+- name: Install Visual Studio Build Tools
+  win_chocolatey:
+    name: visualstudio2022buildtools
+    state: '{{ package_state }}'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    version: '{{ visualstudio_buildtools_version }}'
+    force: yes
+
+- name: Ensure that msbuild is in the path
+  ansible.windows.win_path:
+    elements:
+    - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
+
+- name: Install Nuget command line interface
+  win_chocolatey:
+    name: nuget.commandline
+    state: '{{ package_state }}'
+    version: '{{ nuget_cli_version }}'
+    force: yes
+
+- name: Install Windows Application Driver
+  win_chocolatey:
+    name: winappdriver
+    state: '{{ package_state }}'
+    version: '{{ winappdriver_version }}'
+    force: yes
+
+- name: Disable Visual Studio background downloads
+  win_regedit:
+    path: HKLM:\Software\Microsoft\VisualStudio\Setup
+    name: BackgroundDownloadDisabled
+    data: 00000001
+    type: dword
+    state: present
+
+# - name: Disable Visual Studio Update
+# win_regedit:
+#    path: HKLM:\Policies\Microsoft\VisualStudio
+#    name: SQM
+#    data: 0
+#    type: dword
+#    state: present
+
+- name: Enable Windows Development Mode
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowDevelopmentWithoutDevLicense
+    data: 1
+    type: dword
+    state: present
+
+- name: Enable Sideloading
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowAllTrustedApps
+    data: 1
+    type: dword
+    state: present
+
+- name: Reboot the machine
+  ansible.windows.win_reboot:

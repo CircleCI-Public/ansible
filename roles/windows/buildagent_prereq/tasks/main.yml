@@ -46,4 +46,3 @@
     state: '{{ package_state }}'
     version: '{{ sysinternals_version }}'
     force: true
-  
