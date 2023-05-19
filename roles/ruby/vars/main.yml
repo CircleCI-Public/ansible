@@ -1,5 +1,5 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
-gemrc_file: "opt/circleci/.gemrc"
-ruby_dir: "opt/circleci/.rbenv"
+gemrc_file: "/opt/circleci/.gemrc"
+ruby_dir: "/opt/circleci/.rbenv"
