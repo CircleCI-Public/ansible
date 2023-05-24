@@ -69,6 +69,13 @@
     version: '{{ ruby_version }}'
     force: yes
 
+- name: Install rust
+  win_chocolatey:
+    name: rust
+    state: '{{ package_state }}'
+    version: '{{ rust_version }}'
+    force: yes
+
 - name: Install docker engine
   win_chocolatey:
     name: docker-engine
