@@ -45,5 +45,8 @@ variable "skip_create_image" {
 
 variable "playbook_file" {
   type    = string
+
+variable "minimum_cpu" {
+  type = string
   default = ""
 }
