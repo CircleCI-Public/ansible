@@ -1,0 +1,13 @@
+---
+- name: Configure linux node
+  hosts: all
+  roles:
+    - cuda
+  vars_files:
+    - group_vars/linux_configure_vars.yml
+
+  post_tasks:
+    - name: Reboot
+      become_method: sudo
+      become: true
+      ansible.builtin.reboot:

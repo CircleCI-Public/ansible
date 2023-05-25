@@ -1,0 +1,31 @@
+---
+- block:
+  - name: Sleep for 15
+    ansible.builtin.shell: |
+      export DEBIAN_FRONTEND=noninteractive
+      sleep 15
+
+  - name: Check gcc version
+    ansible.builtin.shell:
+      gcc --version
+
+  - name: Set up nvidia apt repo
+    ansible.builtin.shell: |
+      wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+      sudo dpkg -i cuda-keyring_1.1-1_all.deb
+
+  - name: Run updates and install headers
+    ansible.builtin.shell: |
+      sudo apt-get update
+      sudo apt-get install --yes linux-headers-$(uname -r)
+      sudo apt-get install --yes nvidia-driver-{{ cuda.driver }}
+      sudo apt-get install --yes cuda-{{ item }}
+      sudo apt-get install --yes nvidia-gds-{{ item }}
+    with_items: "{{ cuda.versions }}"
+
+  - name: Export path
+    ansible.builtin.lineinfile:
+      path: "{{ circleci_home }}/.circlerc"
+      line: export "PATH=/usr/local/cuda/bin:$PATH"
+
+  become: true
