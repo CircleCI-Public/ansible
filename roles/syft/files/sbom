@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+parse() {
+  searchPackage=""
+  granularity=""
+  manifest=""
+  defaultManifest="/sbom/sbom-manifest.json"
+
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -pkg|--package)
+        searchPackage="$2"
+        shift 2
+        ;;
+      -g|--granularity)
+        granularity="$2"
+        shift 2
+        ;;
+      -m|--manifest)
+        manifest="$2"
+        shift 2
+        ;;
+      *)
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -z $manifest ]]; then
+    manifest=$defaultManifest
+  fi
+
+  if [[ $granularity == "exact" ]]; then
+    jq 'to_entries[] | .value[] | select(.name?=="'"$searchPackage"'") | {name: .name, version: (.version // .versionInfo)}' "$manifest"
+  else
+    jq 'to_entries[] | .value[] | select(.name? | contains("'"$searchPackage"'")) | {name: .name, version: (.version // .versionInfo)}' "$manifest"
+  fi
+}
+
+run () {
+  $1 "$@"
+}
+
+run "$@"
