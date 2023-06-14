@@ -1,0 +1,8 @@
+---
+circleci_user: circleci
+circleci_home: /home/circleci
+syft_dirs:
+  - /usr
+  - /home/circleci
+  - /opt/circleci
+sbom_dir: /sbom
