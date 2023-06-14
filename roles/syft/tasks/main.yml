@@ -19,7 +19,7 @@
     temp_file=$(mktemp)
     MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
     jq -s add $(ls {{ sbom_dir }}/spdx-*.json) \
-    | jq '{"image_name": "'"$PKR_VAR_image_name"'", "image_tag": "'"$PKR_VAR_image_tag"'", "created": "'"$MANIFEST_TIMESTAMP"'","installed_software": .packages }' \
+    | jq '{"image_name": "'"$PKR_VAR_image_name"'", "image_tag": "'"$PARAM_IMAGE_TAG"'", "created": "'"$MANIFEST_TIMESTAMP"'","installed_software": .packages }' \
     | sudo tee {{ sbom_dir }}r/sbom-manifest.json
 
     apt list --installed | tail -n +2 | awk -F '/' '{print $1}' \

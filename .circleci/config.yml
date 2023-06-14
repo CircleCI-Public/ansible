@@ -32,7 +32,7 @@ configuration:
     - gcp_jammy_source_image_family: &gcp_jammy_source_image_family "ubuntu-2204-lts"
     # Canary
     - gcp_jammy_canary_image_name: &gcp_jammy_canary_image_name "ansible-ubuntu-2204-canary"
-    
+
   gcp_tags:
     - gcp_jammy_base_tag: &gcp_jammy_base_tag "2023.06.base"
     - gcp_jammy_test_tag: &gcp_jammy_test_tag "2023.06.test"
@@ -98,7 +98,7 @@ workflows:
                 - /fix.*/
                 - /feat.*/
           name: gcp_tests
-          run_build: false
+          run_build: true
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ansible-ubuntu-2204-base-1684347129"
@@ -157,6 +157,7 @@ jobs:
           default: false
       environment:
         RUN_BUILD: << parameters.run_build >>
+        PARAM_IMAGE_TAG: << parameters.image_tag >>
       steps:
         - checkout
         - check_source_paths:
