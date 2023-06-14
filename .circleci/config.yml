@@ -32,6 +32,12 @@ configuration:
     - gcp_jammy_source_image_family: &gcp_jammy_source_image_family "ubuntu-2204-lts"
     # Canary
     - gcp_jammy_canary_image_name: &gcp_jammy_canary_image_name "ansible-ubuntu-2204-canary"
+    
+  gcp_tags:
+    - gcp_jammy_base_tag: &gcp_jammy_base_tag "2023.06.base"
+    - gcp_jammy_test_tag: &gcp_jammy_test_tag "2023.06.test"
+    # Canary
+    - gcp_jammy_canary_tag: &gcp_jammy_canary_tag "2023.06.1"
 
 parameters:
   build_quarterly:
@@ -56,6 +62,7 @@ workflows:
           zone: *gcp_zone
           source_image: *gcp_jammy_source_image
           image_name: *gcp_jammy_base_image_name
+          image_tag: *gcp_jammy_base_tag
           image_family: *gcp_jammy_base_image_name
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
@@ -75,6 +82,7 @@ workflows:
           zone: *gcp_zone
           source_image: ""
           image_name: *gcp_jammy_canary_image_name
+          image_tag: *gcp_jammy_canary_tag
           image_family: *gcp_jammy_canary_image_name
           source_image_family: *gcp_jammy_canary_image_name
           project_id: GOOGLE_PROJECT_ID
@@ -95,6 +103,7 @@ workflows:
           zone: *gcp_zone
           source_image: "ansible-ubuntu-2204-base-1684347129"
           image_name: test-run
+          image_tag: *gcp_jammy_test_tag
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
@@ -124,6 +133,8 @@ jobs:
           type: string
           default: ""
         image_name:
+          type: string
+        image_tag:
           type: string
         image_family:
           type: string
