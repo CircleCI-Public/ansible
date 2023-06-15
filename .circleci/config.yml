@@ -33,14 +33,26 @@ configuration:
     # Canary
     - gcp_jammy_canary_image_name: &gcp_jammy_canary_image_name "ansible-ubuntu-2204-canary"
 
+parameters:
+  build_quarterly:
+    type: boolean
+    default: false
+  build_canary:
+    type: boolean
+    default: false
+
 workflows:
-  main-wf:
+  build-quarterly:
+    when: << pipeline.parameters.build_quarterly >>
     jobs:
-      - check
       - build_gcp:
-          name: gcp_jammy_base
-          run_build: false
-          source_dirs: "manifest"
+          filters:
+            branches:
+              only:
+                - /build.*/
+          name: gcp_jammy_quarterly
+          run_build: true
+          source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: *gcp_jammy_source_image
           image_name: *gcp_jammy_base_image_name
@@ -48,34 +60,45 @@ workflows:
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
           ssh_username: *gcp_ssh_username
-          requires:
-            - check
           context: vm-publishing
+  build-canary:
+    when: << pipeline.parameters.build_canary >>
+    jobs:
       - build_gcp:
+          filters:
+            branches:
+              only:
+                - /canary.*/
           name: gcp_jammy_canary
-          run_build: false
-          source_dirs: "manifest"
+          run_build: true
+          source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: ""
           image_name: *gcp_jammy_canary_image_name
           image_family: *gcp_jammy_canary_image_name
           source_image_family: *gcp_jammy_canary_image_name
           project_id: GOOGLE_PROJECT_ID
-          requires:
-            - check
           context: vm-publishing
+  build-test:
+    jobs:
       - build_gcp:
+          filters:
+            branches:
+              only:
+                - /test.*/
+                - /refactor.*/
+                - /fix.*/
+                - /feat.*/
           name: gcp_tests
           run_build: false
-          source_dirs: "manifest"
+          source_dirs: "manifest/software.json"
           zone: *gcp_zone
-          source_image: ""
+          source_image: "ansible-ubuntu-2204-base-1684347129"
           image_name: test-run
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
-          requires:
-            - check
+          skip_create_image: true
           context: vm-publishing
 
 executors:
@@ -84,10 +107,6 @@ executors:
       - image: cimg/deploy:2023.04
 
 jobs:
-  check:
-    executor: deploy
-    steps:
-      - checkout
   build_gcp:
       executor: deploy
       parameters:
@@ -122,9 +141,9 @@ jobs:
         extra_vars:
           type: string
           default: ""
-        specific_build:
-          type: string
-          default: ""
+        skip_create_image:
+          type: boolean
+          default: false
       environment:
         RUN_BUILD: << parameters.run_build >>
       steps:
@@ -153,6 +172,7 @@ jobs:
               export PKR_VAR_account_file="<< parameters.account_file >>"
               export PKR_VAR_project_id="${<< parameters.project_id >>}"
               export PKR_VAR_ssh_username="<< parameters.ssh_username >>"
+              export PKR_VAR_skip_create_image="<< parameters.skip_create_image >>"
               EOF
         - run:
             name: Build Images
@@ -170,9 +190,8 @@ commands:
       source_dirs:
         type: string
         description: |
-          Runs a git diff on the specified directory; if files in the path have
-          changed, and will run a build if this is true. Multiple filepaths can
-          be included and are separated by semi-colons
+          Runs a git diff on the specified manifest and runs the build if a change has been detected from in the feature branch
+          compared to the default branch. Use the `run_build` parameter to override if no changes were made
     steps:
       - run:
           name: "Continue image job only if the correct paths were modified"
@@ -180,10 +199,8 @@ commands:
             CHANGE="false"
 
             if [[ $CIRCLE_BRANCH != "main" ]]; then
-                for i in $(ls -lR << parameters.source_dirs >> | awk '{print $9}'); do
-                  git diff --quiet HEAD main -- "<< parameters.source_dirs >>/${i}" || CHANGE="true"
-                  echo $CHANGE
-                done
+              git diff --quiet HEAD main -- "<< parameters.source_dirs >>" || CHANGE="true"
+              echo "$CHANGE"
             fi
 
             if [[ $RUN_BUILD != true ]]; then
