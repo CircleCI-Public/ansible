@@ -12,6 +12,7 @@ source "googlecompute" "gcp-canary-base" {
   source_image_family = var.source_image_family
   ssh_username        = var.ssh_username
   zone                = var.zone
+  skip_create_image   = var.skip_create_image
 }
 
 build {

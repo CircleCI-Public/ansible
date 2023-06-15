@@ -37,3 +37,8 @@ variable "zone" {
   type    = string
   default = ""
 }
+
+variable "skip_create_image" {
+  type    = bool
+  default = false
+}
