@@ -42,3 +42,8 @@ variable "skip_create_image" {
   type    = bool
   default = false
 }
+
+variable "playbook_file" {
+  type    = string
+  default = ""
+}

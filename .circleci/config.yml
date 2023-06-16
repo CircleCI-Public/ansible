@@ -67,6 +67,7 @@ workflows:
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
           ssh_username: *gcp_ssh_username
+          playbook_file: "./linux-playbook.yml"
           context: vm-publishing
   build-canary:
     when: << pipeline.parameters.build_canary >>
@@ -86,6 +87,7 @@ workflows:
           image_family: *gcp_jammy_canary_image_name
           source_image_family: *gcp_jammy_canary_image_name
           project_id: GOOGLE_PROJECT_ID
+          playbook_file: "./linux-playbook.yml"
           context: vm-publishing
   build-test:
     jobs:
@@ -101,13 +103,14 @@ workflows:
           run_build: true
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
-          source_image: "ansible-ubuntu-2204-base-1684347129"
+          source_image: ""
           image_name: test-run
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
           skip_create_image: true
+          playbook_file: "./linux-playbook-test.yml"
           context: vm-publishing
 
 executors:
@@ -155,6 +158,8 @@ jobs:
         skip_create_image:
           type: boolean
           default: false
+        playbook_file:
+          type: string
       environment:
         RUN_BUILD: << parameters.run_build >>
         PARAM_IMAGE_TAG: << parameters.image_tag >>
@@ -185,6 +190,7 @@ jobs:
               export PKR_VAR_project_id="${<< parameters.project_id >>}"
               export PKR_VAR_ssh_username="<< parameters.ssh_username >>"
               export PKR_VAR_skip_create_image="<< parameters.skip_create_image >>"
+              export PKR_VAR_playbook_file="<< parameters.playbook_file >>"
               EOF
         - run:
             name: Build Images
