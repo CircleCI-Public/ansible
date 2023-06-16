@@ -103,7 +103,7 @@ workflows:
           run_build: true
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
-          source_image: ""
+          source_image: "ansible-ubuntu-2204-base-1684347129"
           image_name: test-run
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
@@ -177,6 +177,7 @@ jobs:
         - run: |
             gcloud auth login --brief --cred-file /tmp/account.json
         - run: sudo apt-get update
+        - run: mkdir -p /tmp/workspace
         - run:
             name: Configure Packer Variables
             command: |
@@ -184,6 +185,7 @@ jobs:
               export PKR_VAR_zone="<< parameters.zone >>"
               export PKR_VAR_source_image="<< parameters.source_image >>"
               export PKR_VAR_image_name="<< parameters.image_name >>"
+              export PKR_VAR_image_tag="${PARAM_IMAGE_TAG}"
               export PKR_VAR_image_family="<< parameters.image_family >>"
               export PKR_VAR_source_image_family="<< parameters.source_image_family >>"
               export PKR_VAR_account_file="<< parameters.account_file >>"
@@ -196,11 +198,24 @@ jobs:
             name: Build Images
             no_output_timeout: 120m
             command: |
-              source packer_vars
+              source packer_vars && sudo cp packer_vars /tmp/workspace
               packer build \
               -machine-readable \
               -only=googlecompute.gcp-canary-base \
               packer/
+        - run:
+            name: Persist files
+            command: |
+              echo ${CIRCLE_BUILD_NUM} > /tmp/workspace/build
+              sudo cp << parameters.source_dirs >> /tmp/workspace/manifest
+        - persist_to_workspace:
+            root: /tmp/workspace
+            paths:
+              - packer_vars
+              - build
+              - manifest
+        - store_artifacts:
+            path: /tmp/workspace
 
 commands:
   check_source_paths:
