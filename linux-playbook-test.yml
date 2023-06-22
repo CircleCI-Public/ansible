@@ -29,9 +29,13 @@
     - group_vars/linux_configure_vars.yml
 
   post_tasks:
-    - name: Check if line is in file
-      become_method: sudo
+    # - name: Check if line is in file
+    #   become_method: sudo
+    #   become: true
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ circleci_home }}/.bashrc"
+    #     line: if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+    - name: Echo Hello
       become: true
-      ansible.builtin.lineinfile:
-        path: "{{ circleci_home }}/.bashrc"
-        line: if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+      ansible.builtin.shell:
+        echo "hello"
