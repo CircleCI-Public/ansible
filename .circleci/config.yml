@@ -46,6 +46,9 @@ parameters:
   build_canary:
     type: boolean
     default: false
+  pull_trigger:
+    type: boolean
+    default: false
 
 workflows:
   build-quarterly:
@@ -90,6 +93,7 @@ workflows:
           playbook_file: "./linux-playbook.yml"
           context: vm-publishing
   build-test:
+    unless: << pipeline.parameters.pull_trigger >>
     jobs:
       - build_gcp:
           filters:
@@ -112,12 +116,25 @@ workflows:
           skip_create_image: true
           playbook_file: "./linux-playbook-test.yml"
           context: vm-publishing
+  trigger:
+    when: << pipeline.parameters.pull_trigger >>
+    jobs:
+      - trigger_pipeline:
+          name: Trigger Test Pipeline
+          organization: PARAM_ORG
+          vcs: "gh"
+          repository: PARAM_PROJECT
+          branch: "feat/trigger-pipelines"
+          image_group: "linux-2204-amd64"
+
+      # TODO: Image Testing
+      # TODO: Parameterize branch
+      # TODO: Slack approval call
 
 executors:
   deploy:
     docker:
       - image: cimg/deploy:2023.04
-
 jobs:
   build_gcp:
       executor: deploy
@@ -204,7 +221,7 @@ jobs:
         - run:
             name: Persist files
             command: |
-              echo ${CIRCLE_BUILD_URL} > /tmp/workspace/build_url
+              echo ${CIRCLE_SHA1} > /tmp/workspace/build_sha
               sudo cp << parameters.source_dirs >> /tmp/workspace/manifest
         - persist_to_workspace:
             root: /tmp/workspace
@@ -214,6 +231,68 @@ jobs:
               - manifest
         - store_artifacts:
             path: /tmp/workspace
+
+  trigger_pipeline:
+    executor: deploy
+    parameters:
+      organization:
+        type: env_var_name
+        default: PARAM_ORG
+      vcs:
+        type: enum
+        enum: ['gh', 'bb', 'github', 'bitbucket']
+      repository:
+        type: env_var_name
+        default: PARAM_PROJECT
+        description: "This is the repository in your vcs, but is referred to as project on CircleCI"
+      branch:
+        type: string
+        default: ""
+      tag:
+        type: string
+        default: ""
+        description: "This can take the form of a branch or tag. These are mutually exclusive. Please refer to the documentation for additional details
+          https://circleci.com/docs/api/v2/index.html#operation/triggerPipeline"
+      trigger_build:
+        type: boolean
+        default: true
+      token:
+        type: env_var_name
+        default: CIRCLE_TOKEN
+      image_group:
+        type: string
+    environment:
+      PARAM_BRANCH: << parameters.branch >>
+      PARAM_TAG: << parameters.tag >>
+      PARAM_VCS: << parameters.vcs >>
+      PARAM_TRIGGER_BUILD: << parameters.trigger_build >>
+      PARAM_IMAGE_GROUP: << parameters.image_group >>
+    steps:
+      - checkout
+      - attach_workspace:
+          at: /tmp/workspace
+      - run:
+          name: Define Variables
+          command: |
+            export BUILD_SHA=$(cat /tmp/workspace/build_sha)
+      - run:
+          name: Trigger Build
+          command: |
+            curl --request POST \
+            --url https://circleci.com/api/v2/project/$PARAM_VCS/$PARAM_ORG/$PARAM_PROJECT/pipeline \
+            --header "Circle-Token: $CIRCLE_TOKEN" \
+            --header "content-type: application/json" \
+            --data "$(cat \<<EOF
+            {
+              "branch": "$PARAM_BRANCH",
+              "parameters": {
+                "trigger_image_build": $PARAM_TRIGGER_BUILD,
+                "image_group": $PARAM_IMAGE_GROUP
+                "build_sha": $BUILD_SHA
+              }
+            }
+            EOF
+            )"
 
 commands:
   check_source_paths:
