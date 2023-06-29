@@ -4,37 +4,6 @@
   ansible.builtin.shell:
     sudo curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
 
-- name: Generate SBOMs
-  become: true
-  ansible.builtin.shell: |
-    sudo mkdir -p {{ sbom_dir }}
-    cd {{ sbom_dir }}
-    dirPrefix=$(cut -d "/" -f2 \<<< "{{ item }}")
-    syft dir:{{ item }} -o spdx-json=spdx-${dirPrefix}.json
-  with_items: "{{ syft_dirs }}"
-
-- name: Consolidate SBOM Files
-  become: true
-  ansible.builtin.shell: |
-    temp_file=$(mktemp)
-    MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
-    jq -s add $(ls {{ sbom_dir }}/spdx-*.json) \
-    | jq '{"image_name": "'"$PKR_VAR_image_name"'", "image_tag": "'"$PARAM_IMAGE_TAG"'", "created": "'"$MANIFEST_TIMESTAMP"'","installed_software": .packages }' \
-    | sudo tee {{ sbom_dir }}r/sbom-manifest.json
-
-    apt list --installed | tail -n +2 | awk -F '/' '{print $1}' \
-    | xargs dpkg-query -W -f='{"name":"${Package}","version":"${Version}","architecture":"${Architecture}"}\n' \
-    | jq -s . > $temp_file
-
-    jq --slurpfile new_data "$temp_file" '.apt = $new_data[]' {{ sbom_dir }}/sbom-manifest.json \
-    | sudo tee {{ sbom_dir }}/sbom-manifest.json.tmp && \
-    sudo mv {{ sbom_dir }}/sbom-manifest.json.tmp {{ sbom_dir }}/sbom-manifest.json
-
-- name: Remove Files
-  become: true
-  ansible.builtin.shell:
-    sudo rm -rf {{ sbom_dir }}/spdx-*.json
-
 - name: Deploy SBOM parser
   become: true
   ansible.builtin.copy:
@@ -43,3 +12,8 @@
     owner: "{{ circleci_user }}"
     group: "{{ circleci_user }}"
     mode: a+x
+
+- name: Generate SBOM
+  become: true
+  ansible.builtin.shell: |
+    "sbom generate {{ image_name }} {{ image_tag }}"
