@@ -20,7 +20,7 @@ build {
 
   provisioner "ansible" {
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s -o PubkeyAcceptedKeyTypes=+ssh-rsa -o HostKeyAlgorithms=+ssh-rsa'"]
-    extra_arguments  = ["-vvv", "--extra-vars", "@manifest/software.json", "--scp-extra-args", "'-O'"]
+    extra_arguments  = ["-vvv", "--extra-vars", "@${var.manifest_file}", "--scp-extra-args", "'-O'"]
     playbook_file    = var.playbook_file
   }
 

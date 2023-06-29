@@ -61,7 +61,6 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: *gcp_jammy_source_image
-          image_group_name: "ubuntu-2204"
           image_name: *gcp_jammy_base_image_name
           image_tag: *gcp_jammy_base_tag
           image_family: *gcp_jammy_base_image_name
@@ -83,7 +82,6 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: ""
-          image_group_name: "ubuntu-2204-canary"
           image_name: *gcp_jammy_canary_image_name
           image_tag: *gcp_jammy_canary_tag
           image_family: *gcp_jammy_canary_image_name
@@ -106,14 +104,14 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ansible-ubuntu-2204-base-1684347129"
-          image_group_name: ubuntu-2204-test
           image_name: linux-2204-test
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
-          skip_create_image: true
+          skip_create_image: false
           playbook_file: "./linux-playbook-test.yml"
+          manifest_file: "manifest/test-software.json"
           context: vm-publishing
 
 executors:
@@ -138,10 +136,6 @@ jobs:
         source_image:
           type: string
           default: ""
-        image_group_name:
-          type: string
-          description: "This image name is what would be part of the image slug users will be able to access. An example would be
-            something like `ubuntu-2204`"
         image_name:
           type: string
         image_tag:
@@ -167,6 +161,9 @@ jobs:
           default: false
         playbook_file:
           type: string
+        manifest_file:
+          type: string
+          default: ""
       environment:
         RUN_BUILD: << parameters.run_build >>
       steps:
@@ -198,6 +195,7 @@ jobs:
               export PKR_VAR_ssh_username="<< parameters.ssh_username >>"
               export PKR_VAR_skip_create_image="<< parameters.skip_create_image >>"
               export PKR_VAR_playbook_file="<< parameters.playbook_file >>"
+              export PKR_VAR_manifest_file="<< parameters.manifest_file >>"
               EOF
         - run:
             name: Build Images

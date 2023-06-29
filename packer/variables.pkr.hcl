@@ -47,3 +47,8 @@ variable "playbook_file" {
   type    = string
   default = ""
 }
+
+variable "manifest_file" {
+  type    = string
+  default = ""
+}
