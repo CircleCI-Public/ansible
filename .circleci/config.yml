@@ -104,7 +104,7 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ansible-ubuntu-2204-base-1684347129"
-          image_name: test-run
+          image_name: linux-2204-test
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
@@ -162,7 +162,6 @@ jobs:
           type: string
       environment:
         RUN_BUILD: << parameters.run_build >>
-        PARAM_IMAGE_TAG: << parameters.image_tag >>
       steps:
         - checkout
         - check_source_paths:
@@ -185,7 +184,6 @@ jobs:
               export PKR_VAR_zone="<< parameters.zone >>"
               export PKR_VAR_source_image="<< parameters.source_image >>"
               export PKR_VAR_image_name="<< parameters.image_name >>"
-              export PKR_VAR_image_tag="${PARAM_IMAGE_TAG}"
               export PKR_VAR_image_family="<< parameters.image_family >>"
               export PKR_VAR_source_image_family="<< parameters.source_image_family >>"
               export PKR_VAR_account_file="<< parameters.account_file >>"
@@ -206,13 +204,13 @@ jobs:
         - run:
             name: Persist files
             command: |
-              echo ${CIRCLE_BUILD_NUM} > /tmp/workspace/build
+              echo ${CIRCLE_BUILD_URL} > /tmp/workspace/build_url
               sudo cp << parameters.source_dirs >> /tmp/workspace/manifest
         - persist_to_workspace:
             root: /tmp/workspace
             paths:
               - packer_vars
-              - build
+              - build_url
               - manifest
         - store_artifacts:
             path: /tmp/workspace

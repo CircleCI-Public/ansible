@@ -1,10 +1,110 @@
 #!/usr/bin/env bash
+CREATE_MANIFEST_DIRS=${CREATE_MANIFEST_DIRS:="/opt/circleci /home/circleci /usr"}
+SBOM_FILE=${SBOM_FILE:="/sbom/sbom.json"}
+SPDX_MANIFEST=${SPDX_MANIFEST:="/sbom/spdx-manifest.json"}
+APT_MANIFEST=${APT_MANIFEST:="/sbom/apt-manifest.json"}
+ANDROID_MANIFEST=${ANDROID_MANIFEST:="/sbom/android-manifest.json"}
+MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
 
-parse() {
+function generateSyftSBOM() {
+  sudo mkdir -p /sbom
+
+  for dir in ${CREATE_MANIFEST_DIRS}; do
+    dirPrefix=$(cut -d "/" -f2 <<< "$dir")
+    sudo syft dir:"$dir" -q -o spdx-json=/sbom/spdx-"${dirPrefix}".json
+  done
+}
+
+function slurpSBOM() {
+  # newFile should follow the naming convention of `/sbom/<<category>>-<<"manifest"/directory>>.json`
+  # for SPDX, this would be something like `/sbom/spdx-usr.json`, which is a category and directory
+  # for a package manager, it would be `/sbom/apt-manifest`since the manifest itself is is provided for us
+  local newFile=$1
+  category=$(basename "$newFile" | cut -d '-' -f1)
+
+  jq --arg category "$category" --slurpfile new_data "$newFile" '.[$category] = $new_data[]' "$SBOM_FILE" \
+  | sudo tee "$SBOM_FILE.tmp" && \
+  sudo mv "$SBOM_FILE.tmp" "$SBOM_FILE"
+}
+
+function generateSPDXManifest() {
+  echo "Generating SPDX"
+
+  jq -s add $(ls /sbom/spdx-*.json) | sudo tee "$SPDX_MANIFEST"
+}
+
+function generateAPTManifest() {
+  echo "Generating APT"
+
+  apt list --installed | tail -n +2 | awk -F '/' '{print $1}' \
+  | xargs dpkg-query -W -f='{"name":"${Package}","version":"${Version}","architecture":"${Architecture}"}\n' \
+  | jq -s . \
+  | sudo tee "$APT_MANIFEST"
+
+  slurpSBOM "$APT_MANIFEST"
+}
+
+function generateAndroidManifest() {
+  if command -v sdkmanager &> /dev/null; then
+    echo "Generating Android"
+    sdkmanager --list_installed \
+    | awk -F "|" 'NR>3 && $1 != "" { name=$1; version=$2; desc=$3; print \
+    "{\"name\":\""name"\",\"version\":\""version"\",\"description\":\""desc"\"}"}' \
+    | tr -d '[:blank:]' \
+    | jq -s . | sudo tee "$ANDROID_MANIFEST" && \
+
+    slurpSBOM "$ANDROID_MANIFEST"
+  else
+    echo "Skipping Android"
+  fi
+}
+
+# for installed software, we only pull the two keys because otherwise, the output is flaky. also helps with readability
+function consolidateSBOM() {
+  echo "Consolidating SBOMs"
+
+  generateSPDXManifest
+
+  jq -n --arg IMAGE_NAME "$SBOM_IMAGE_NAME" \
+     --arg IMAGE_TAG "$SBOM_IMAGE_TAG" \
+     --arg MANIFEST_TIMESTAMP "$MANIFEST_TIMESTAMP" \
+  '
+  {
+    "image_slug": ($IMAGE_NAME + ":" +$IMAGE_TAG),
+    "image_name": $IMAGE_NAME,
+    "image_tag": $IMAGE_TAG,
+    "created": $MANIFEST_TIMESTAMP,
+    "installed_software": (.packages + [inputs | .packages[]] | map({name: .name, versionInfo: .versionInfo}))
+  }
+  ' "$SPDX_MANIFEST" | sudo tee "$SBOM_FILE"
+
+  generateAPTManifest
+  generateAndroidManifest
+}
+
+function cleanup() {
+  echo "Cleaning up files"
+  sudo rm -rf /sbom/*-manifest.json
+  sudo rm -rf /sbom/spdx-*.json
+}
+
+function generate() {
+  export SBOM_IMAGE_NAME=$1
+  export SBOM_IMAGE_TAG=$2
+
+  if ! command -v syft &> /dev/null; then
+    echo "Syft not installed"
+    exit 1
+  fi
+
+  generateSyftSBOM
+  consolidateSBOM
+  cleanup
+}
+
+function parse() {
   searchPackage=""
   granularity=""
-  manifest=""
-  defaultManifest="/sbom/sbom-manifest.json"
 
   while [ $# -gt 0 ]; do
     case "$1" in
@@ -26,9 +126,7 @@ parse() {
     esac
   done
 
-  if [[ -z $manifest ]]; then
-    manifest=$defaultManifest
-  fi
+  manifest=${manifest:="/sbom/sbom.json"}
 
   if [[ $granularity == "exact" ]]; then
     jq 'to_entries[] | .value[] | select(.name?=="'"$searchPackage"'") | {name: .name, version: (.version // .versionInfo)}' "$manifest"
@@ -38,7 +136,11 @@ parse() {
 }
 
 run () {
-  $1 "$@"
+  if [[ $1 == parse || $1 == generate ]]; then
+    $1 "$@"
+  else
+    $1
+  fi
 }
 
 run "$@"
