@@ -8,16 +8,6 @@ variable "image_name" {
   default = ""
 }
 
-variable "image_group_name" {
-  type    = string
-  default = ""
-}
-
-variable "image_tag" {
-  type    = string
-  default = ""
-}
-
 variable "image_family" {
   type    = string
   default = ""

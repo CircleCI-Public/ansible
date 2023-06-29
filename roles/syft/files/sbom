@@ -6,7 +6,6 @@ APT_MANIFEST=${APT_MANIFEST:="/sbom/apt-manifest.json"}
 ANDROID_MANIFEST=${ANDROID_MANIFEST:="/sbom/android-manifest.json"}
 MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
 # These variables will be supplied by the build
-SBOM_IMAGE_SLUG=${PARAM_IMAGE_SLUG:="test"}
 SBOM_IMAGE_NAME=${PARAM_IMAGE_NAME:="test"}
 SBOM_IMAGE_TAG=${PARAM_IMAGE_TAG:="test"}
 
@@ -70,8 +69,7 @@ function consolidateSBOM() {
 
   generateSPDXManifest
 
-  jq -n --arg IMAGE_SLUG "$SBOM_IMAGE_SLUG" \
-     --arg IMAGE_NAME "$SBOM_IMAGE_NAME" \
+  jq -n --arg IMAGE_NAME "$SBOM_IMAGE_NAME" \
      --arg IMAGE_TAG "$SBOM_IMAGE_TAG" \
      --arg MANIFEST_TIMESTAMP "$MANIFEST_TIMESTAMP" \
   '

@@ -16,6 +16,6 @@
 - name: Generate SBOM
   become: true
   ansible.builtin.shell: |
-    export PARAM_IMAGE_NAME
-    export PARAM_IMAGE_TAG
+    "export PARAM_IMAGE_NAME={{ image_name }}"
+    "export PARAM_IMAGE_TAG={{ image_tag }}"
     sbom generate

@@ -52,5 +52,7 @@
   "python3_version": "3.11.2",
   "pyenv_version": "2.3.16",
   "yarn_version": "1.22.19",
-  "yq": "4.33.1"
+  "yq": "4.33.1",
+  "image_name": "ubuntu-2204-test",
+  "image_tag": "2023.06.test"
 }
