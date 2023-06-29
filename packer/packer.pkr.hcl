@@ -6,7 +6,7 @@ source "googlecompute" "gcp-canary-base" {
   account_file        = var.account_file
   disk_size           = 14
   image_family        = var.image_family
-  image_name          = "${var.group_name}-${local.timestamp}"
+  image_name          = "${var.image_name}-${local.timestamp}"
   project_id          = var.project_id
   source_image        = var.source_image
   source_image_family = var.source_image_family
