@@ -24,7 +24,7 @@
     # - golang
     # - scala
     # - dpkg_configure
-    # - syft
+    - syft
   vars_files:
     - group_vars/linux_configure_vars.yml
 
