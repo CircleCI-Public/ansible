@@ -6,7 +6,7 @@ source "googlecompute" "gcp-canary-base" {
   account_file        = var.account_file
   disk_size           = 14
   image_family        = var.image_family
-  image_name          = "${var.image_name}-${local.timestamp}"
+  image_name          = "${var.group_name}-${local.timestamp}"
   project_id          = var.project_id
   source_image        = var.source_image
   source_image_family = var.source_image_family
@@ -20,7 +20,15 @@ build {
 
   provisioner "ansible" {
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s -o PubkeyAcceptedKeyTypes=+ssh-rsa -o HostKeyAlgorithms=+ssh-rsa'"]
-    extra_arguments  = ["-vvv", "--extra-vars", "@manifest/software.json", "--scp-extra-args", "'-O'"]
+    extra_arguments  = [
+    "-vvv",
+    "--extra-vars",
+    "@manifest/software.json",
+    "--scp-extra-args",
+    "'-O'",
+    "PARAM_IMAGE_GROUP_NAME=${var.image_group_name}",
+    "PARAM_IMAGE_TAG=${var.image_tag}"
+    ]
     playbook_file    = var.playbook_file
   }
 
