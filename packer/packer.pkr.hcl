@@ -20,15 +20,7 @@ build {
 
   provisioner "ansible" {
     ansible_env_vars = ["ANSIBLE_HOST_KEY_CHECKING=False", "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -o ControlMaster=auto -o ControlPersist=60s -o PubkeyAcceptedKeyTypes=+ssh-rsa -o HostKeyAlgorithms=+ssh-rsa'"]
-    extra_arguments  = [
-    "-vvv",
-    "--extra-vars",
-    "@manifest/software.json",
-    "--scp-extra-args",
-    "'-O'",
-    "PARAM_IMAGE_GROUP_NAME=${var.image_group_name}",
-    "PARAM_IMAGE_TAG=${var.image_tag}"
-    ]
+    extra_arguments  = ["-vvv", "--extra-vars", "@manifest/software.json", "--scp-extra-args", "'-O'", "PARAM_IMAGE_GROUP_NAME=${var.image_group_name}", "PARAM_IMAGE_TAG=${var.image_tag}"]
     playbook_file    = var.playbook_file
   }
 
