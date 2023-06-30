@@ -35,6 +35,8 @@
       comment: CircleCI
       uid: 1001
       non_unique: true
+      home: "{{ circleci_home }}"
+      move_home: true
       shell: /bin/bash
       group: "{{ circleci_user }}"
       groups: aws-sudoers,adm,audio,cdrom,dialout,dip,floppy,lxd,netdev,plugdev,video,ubuntu
