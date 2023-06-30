@@ -33,6 +33,9 @@
     ansible.builtin.user:
       name: "{{ circleci_user }}"
       comment: CircleCI
+      non_unique: true
+      home: "{{ circleci_home }}"
+      move_home: true
       uid: 1001
       shell: /bin/bash
       group: "{{ circleci_user }}"
@@ -65,7 +68,7 @@
 
   - name: Reset connection so new user groups work
     ansible.builtin.meta: reset_connection
-    
+
   become: true
 
   collections:
