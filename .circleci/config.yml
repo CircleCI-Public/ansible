@@ -116,9 +116,6 @@ workflows:
           skip_create_image: true
           playbook_file: "./linux-playbook-test.yml"
           context: vm-publishing
-  trigger:
-    when: << pipeline.parameters.pull_trigger >>
-    jobs:
       - trigger_pipeline:
           name: Trigger Test Pipeline
           organization: PARAM_ORG
@@ -126,6 +123,18 @@ workflows:
           repository: PARAM_PROJECT
           branch: "feat/trigger-pipelines"
           image_group: "linux-2204-amd64"
+          requires:
+            - gcp_tests
+  # trigger:
+  #   when: << pipeline.parameters.pull_trigger >>
+  #   jobs:
+  #     - trigger_pipeline:
+  #         name: Trigger Test Pipeline
+  #         organization: PARAM_ORG
+  #         vcs: "gh"
+  #         repository: PARAM_PROJECT
+  #         branch: "feat/trigger-pipelines"
+  #         image_group: "linux-2204-amd64"
 
       # TODO: Image Testing
       # TODO: Parameterize branch
