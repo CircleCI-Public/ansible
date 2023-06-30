@@ -116,6 +116,10 @@ workflows:
           skip_create_image: true
           playbook_file: "./linux-playbook-test.yml"
           context: vm-publishing
+      - hold:
+          type: approval
+          requires:
+            - gcp_tests
       - trigger_pipeline:
           name: Trigger Test Pipeline
           organization: PARAM_ORG
@@ -124,6 +128,7 @@ workflows:
           branch: "feat/trigger-pipelines"
           image_group: "linux-2204-amd64"
           requires:
+            - hold
             - gcp_tests
   # trigger:
   #   when: << pipeline.parameters.pull_trigger >>
