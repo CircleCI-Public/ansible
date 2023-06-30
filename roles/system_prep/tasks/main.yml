@@ -34,13 +34,16 @@
       name: "{{ circleci_user }}"
       comment: CircleCI
       uid: 1001
+      non_unique: true
+      home: "{{ circleci_home }}"
+      move_home: true
       shell: /bin/bash
       group: "{{ circleci_user }}"
       groups: aws-sudoers,adm,audio,cdrom,dialout,dip,floppy,lxd,netdev,plugdev,video,ubuntu
       append: yes
       password: ''
       password_lock: yes
-  
+
   - name: Ensure .ssh directory exists for circleci user
     ansible.builtin.file:
       path: "{{ circleci_home }}/.ssh"
