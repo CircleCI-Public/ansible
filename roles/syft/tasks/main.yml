@@ -8,8 +8,10 @@
   become: true
   ansible.builtin.copy:
     src: ../files/sbom
-    dest: /usr/local/bin/sbom
-    mode: 0755
+    dest: /usr/bin/sbom
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+    mode: 6755
 
 - name: Generate SBOM
   become: true
