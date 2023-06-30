@@ -296,7 +296,7 @@ jobs:
               "branch": "$PARAM_BRANCH",
               "parameters": {
                 "trigger_image_build": $PARAM_TRIGGER_BUILD,
-                "image_group": $PARAM_IMAGE_GROUP
+                "image_group": $PARAM_IMAGE_GROUP,
                 "build_sha": $BUILD_SHA
               }
             }
