@@ -43,7 +43,7 @@
     ansible.builtin.user:
       name: "{{ oldUser }}"
       state: absent
-      when: "{{ oldUser }} != 'circleci'"
+    when: "{{ oldUser }} != {{ circleci_user }}"
 
   - name: Ensure circleci user exists
     ansible.builtin.user:
