@@ -8,7 +8,7 @@
   become: true
   ansible.builtin.copy:
     src: ../files/sbom
-    dest: /usr/bin/sbom
+    dest: /usr/local/bin/sbom
     owner: "{{ circleci_user }}"
     group: "{{ circleci_user }}"
     mode: a+x
@@ -16,4 +16,4 @@
 - name: Generate SBOM
   become: true
   ansible.builtin.shell: |
-    "sbom generate {{ image_name }} {{ image_tag }}"
+    sbom generate "{{ image_name }}" "{{ image_tag }}"
