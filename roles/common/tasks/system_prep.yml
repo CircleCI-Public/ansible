@@ -29,6 +29,21 @@
       gid: 1002
       non_unique: yes
 
+  - name: Register machine architecture
+    become: true
+    ansible.builtin.shell: |
+      getent passwd "1001" | cut -d: -f1
+    register: old_user
+
+  - name: Set old user fact
+    ansible.builtin.set_fact:
+      oldUser: "{{ old_user.stdout }}"
+
+  - name: Remove uid 1001
+    ansible.builtin.user:
+      name: "{{ oldUser }}"
+      state: absent
+
   - name: Ensure circleci user exists
     ansible.builtin.user:
       name: "{{ circleci_user }}"
