@@ -104,9 +104,9 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ubuntu-2204-jammy-v20230616"
-          image_name: linux-2204-q3
+          image_name: linux-base-q3
           image_tag: *gcp_jammy_test_tag
-          image_family: test-runs
+          image_family: ansible-ubuntu-2204-canary
           source_image_family: *gcp_jammy_source_image_family
           project_id: GOOGLE_PROJECT_ID
           skip_create_image: false
