@@ -35,8 +35,8 @@
     "python": "3.11.4"
   },
   "lein_version": "2.10.0",
-  "docker_version": "5:20.10.24~3-0~ubuntu-jammy",
-  "containerd_version": "1.6.20-1",
+  "docker_version": "5:23.0.6-1~ubuntu.22.04~jammy",
+  "containerd_version": "1.6.21-1",
   "docker_compose_version": "2.18.1-1~ubuntu.22.04~jammy",
   "gcloud_version": "437.0.1",
   "golang_version": "1.20.5",
