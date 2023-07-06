@@ -103,7 +103,7 @@ workflows:
           run_build: true
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
-          source_image: "ansible-ubuntu-2204-base-1684347129"
+          source_image: "ubuntu-2204-jammy-v20230616"
           image_name: linux-2204-test
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
