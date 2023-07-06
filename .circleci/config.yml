@@ -104,7 +104,7 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ubuntu-2204-jammy-v20230616"
-          image_name: linux-2204-docker23
+          image_name: linux-2204-docker24
           image_tag: 2023.07.test
           image_family: test-runs
           # source_image_family: *gcp_jammy_source_image_family
