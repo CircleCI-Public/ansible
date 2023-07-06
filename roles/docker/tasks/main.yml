@@ -42,14 +42,14 @@
         allow_downgrade: yes
         force: yes
         update_cache: yes
-      when: "{{ containerd_version }} | version_compare('1.7' '<')"
+      when: "{{ containerd_version }} | version('1.7' '<')"
 
     - name: Install containderd for Docker >= 24
       ansible.builtin.shell: |
         wget https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz && \
         tar xvf containerd-{{ containerd_version }}-linux-amd64.tar.gz && \
         rm containerd-{{ containerd_version }}-linux-amd64.tar.gz
-      when: "{{ containerd_version }} | version_compare('1.7' '>')"
+      when: "{{ containerd_version }} | version('1.7' '>')"
 
     - name: Install docker compose switch
       ansible.builtin.shell: |
