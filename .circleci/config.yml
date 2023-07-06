@@ -110,7 +110,7 @@ workflows:
           source_image_family: ""
           project_id: GOOGLE_PROJECT_ID
           skip_create_image: true
-          playbook_file: "./linux-playbook.yml"
+          playbook_file: "./linux-playbook-test.yml"
           context: vm-publishing
 
 executors:

@@ -29,7 +29,7 @@
       gid: 1002
       non_unique: yes
 
-  - name: Register machine architecture
+  - name: Register old user
     become: true
     ansible.builtin.shell: |
       getent passwd "1001" | cut -d: -f1
