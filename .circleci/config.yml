@@ -104,7 +104,7 @@ workflows:
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ubuntu-2204-jammy-v20230616"
-          image_name: linux-2204-test
+          image_name: linux-2204-q3
           image_tag: *gcp_jammy_test_tag
           image_family: test-runs
           source_image_family: *gcp_jammy_source_image_family
