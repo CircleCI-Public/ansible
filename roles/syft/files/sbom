@@ -89,8 +89,8 @@ function cleanup() {
 }
 
 function generate() {
-  export SBOM_IMAGE_NAME=$1
-  export SBOM_IMAGE_TAG=$2
+  export SBOM_IMAGE_NAME=$2
+  export SBOM_IMAGE_TAG=$3
 
   if ! command -v syft &> /dev/null; then
     echo "Syft not installed"
