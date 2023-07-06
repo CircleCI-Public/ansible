@@ -2,7 +2,7 @@
 - name: Configure linux node
   hosts: all
   roles:
-    # - common
+    - common
     # - gather_facts
     # - node
     # - java
