@@ -23,17 +23,33 @@
         $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
         grep -ri docker /etc/apt
 
-    - name: Install docker and docker compose (*put versions back here eventually)
+    - name: Install docker and docker compose
       ansible.builtin.apt:
         name:
           - docker-ce={{ docker_version }}
           - docker-ce-cli={{ docker_version }}
-          - containerd.io={{ containerd_version }}
           - docker-compose-plugin={{ docker_compose_version }}
         state: present
         allow_downgrade: yes
         force: yes
         update_cache: yes
+
+    - name: Install containerd for Docker < 24
+      ansible.builtin.apt:
+        name:
+          - containerd.io={{ containerd_version }}
+        state: present
+        allow_downgrade: yes
+        force: yes
+        update_cache: yes
+      when: "{{ containerd_version }} | version_compare('1.7' '<')"
+
+    - name: Install containderd for Docker >= 24
+      ansible.builtin.shell: |
+        wget https://github.com/containerd/containerd/releases/download/v{{ containerd_version }}/containerd-{{ containerd_version }}-linux-amd64.tar.gz && \
+        tar xvf containerd-{{ containerd_version }}-linux-amd64.tar.gz && \
+        rm containerd-{{ containerd_version }}-linux-amd64.tar.gz
+      when: "{{ containerd_version }} | version_compare('1.7' '>')"
 
     - name: Install docker compose switch
       ansible.builtin.shell: |
