@@ -7,11 +7,9 @@ ANDROID_MANIFEST=${ANDROID_MANIFEST:="/sbom/android-manifest.json"}
 MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
 
 function generateSyftSBOM() {
-  sudo mkdir -p /sbom
-
   for dir in ${CREATE_MANIFEST_DIRS}; do
     dirPrefix=$(cut -d "/" -f2 <<< "$dir")
-    sudo syft dir:"$dir" -q -o spdx-json=/sbom/spdx-"${dirPrefix}".json
+    syft dir:"$dir" -q -o spdx-json=/sbom/spdx-"${dirPrefix}".json
   done
 }
 
@@ -23,14 +21,14 @@ function slurpSBOM() {
   category=$(basename "$newFile" | cut -d '-' -f1)
 
   jq --arg category "$category" --slurpfile new_data "$newFile" '.[$category] = $new_data[]' "$SBOM_FILE" \
-  | sudo tee "$SBOM_FILE.tmp" && \
-  sudo mv "$SBOM_FILE.tmp" "$SBOM_FILE"
+  | tee "$SBOM_FILE.tmp" && \
+  mv "$SBOM_FILE.tmp" "$SBOM_FILE"
 }
 
 function generateSPDXManifest() {
   echo "Generating SPDX"
 
-  jq -s add $(ls /sbom/spdx-*.json) | sudo tee "$SPDX_MANIFEST"
+  jq -s add $(ls /sbom/spdx-*.json) | tee "$SPDX_MANIFEST"
 }
 
 function generateAPTManifest() {
@@ -39,7 +37,7 @@ function generateAPTManifest() {
   apt list --installed | tail -n +2 | awk -F '/' '{print $1}' \
   | xargs dpkg-query -W -f='{"name":"${Package}","version":"${Version}","architecture":"${Architecture}"}\n' \
   | jq -s . \
-  | sudo tee "$APT_MANIFEST"
+  | tee "$APT_MANIFEST"
 
   slurpSBOM "$APT_MANIFEST"
 }
@@ -51,7 +49,7 @@ function generateAndroidManifest() {
     | awk -F "|" 'NR>3 && $1 != "" { name=$1; version=$2; desc=$3; print \
     "{\"name\":\""name"\",\"version\":\""version"\",\"description\":\""desc"\"}"}' \
     | tr -d '[:blank:]' \
-    | jq -s . | sudo tee "$ANDROID_MANIFEST" && \
+    | jq -s . | tee "$ANDROID_MANIFEST" && \
 
     slurpSBOM "$ANDROID_MANIFEST"
   else
@@ -76,7 +74,7 @@ function consolidateSBOM() {
     "created": $MANIFEST_TIMESTAMP,
     "installed_software": (.packages + [inputs | .packages[]] | map({name: .name, versionInfo: .versionInfo}))
   }
-  ' "$SPDX_MANIFEST" | sudo tee "$SBOM_FILE"
+  ' "$SPDX_MANIFEST" | tee "$SBOM_FILE"
 
   generateAPTManifest
   generateAndroidManifest
@@ -84,13 +82,13 @@ function consolidateSBOM() {
 
 function cleanup() {
   echo "Cleaning up files"
-  sudo rm -rf /sbom/*-manifest.json
-  sudo rm -rf /sbom/spdx-*.json
+  rm -rf /sbom/*-manifest.json
+  rm -rf /sbom/spdx-*.json
 }
 
 function generate() {
-  export SBOM_IMAGE_NAME=$1
-  export SBOM_IMAGE_TAG=$2
+  export SBOM_IMAGE_NAME=$2
+  export SBOM_IMAGE_TAG=$3
 
   if ! command -v syft &> /dev/null; then
     echo "Syft not installed"
