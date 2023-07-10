@@ -31,5 +31,6 @@
   "visualstudio_buildtools_version": "117.6.2.0",
   "nuget_cli_version": "6.6.1",
   "winappdriver_version": "1.2.1",
+  "syft_version": "0.84.1",
   "package_state": "present"
 }

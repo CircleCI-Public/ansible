@@ -4,9 +4,14 @@ SBOM_FILE=${SBOM_FILE:="/sbom/sbom.json"}
 SPDX_MANIFEST=${SPDX_MANIFEST:="/sbom/spdx-manifest.json"}
 APT_MANIFEST=${APT_MANIFEST:="/sbom/apt-manifest.json"}
 ANDROID_MANIFEST=${ANDROID_MANIFEST:="/sbom/android-manifest.json"}
+WINDOWS_MANIFEST=${WINDOWS_MANIFEST:="/sbom/choco-manifest.json"}
 MANIFEST_TIMESTAMP=$(date +'%Y-%m-%d %H:%M:%S')
 
 function generateSyftSBOM() {
+  if [[ $(uname -a) =~ "Msys" ]]; then
+    CREATE_MANIFEST_DIRS="c:/programdata/"
+  fi
+
   for dir in ${CREATE_MANIFEST_DIRS}; do
     dirPrefix=$(cut -d "/" -f2 <<< "$dir")
     syft dir:"$dir" -q -o spdx-json=/sbom/spdx-"${dirPrefix}".json
@@ -57,6 +62,14 @@ function generateAndroidManifest() {
   fi
 }
 
+function generateChocoManifest() {
+  echo "Parsing Chocolatey"
+
+  choco list | tail -n +2 | jq -R 'split(" ") | select(.[1] != "packages") | { name: .[0], version: .[1] }' | jq -s . | tee "$WINDOWS_MANIFEST"
+
+  slurpSBOM "$WINDOWS_MANIFEST"
+}
+
 # for installed software, we only pull the two keys because otherwise, the output is flaky. also helps with readability
 function consolidateSBOM() {
   echo "Consolidating SBOMs"
@@ -76,8 +89,12 @@ function consolidateSBOM() {
   }
   ' "$SPDX_MANIFEST" | tee "$SBOM_FILE"
 
-  generateAPTManifest
-  generateAndroidManifest
+  if [[ $(uname -a) =~ "Msys" ]]; then
+    generateChocoManifest
+  else
+    generateAPTManifest
+    generateAndroidManifest
+  fi
 }
 
 function cleanup() {
