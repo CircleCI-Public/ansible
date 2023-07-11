@@ -4,6 +4,15 @@
   ansible.builtin.shell:
     sudo curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin
 
+- name: Create SBOM folder
+  become: true
+  ansible.builtin.file:
+    path: /sbom
+    state: directory
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+    force: true
+
 - name: Deploy SBOM parser
   become: true
   ansible.builtin.copy:
