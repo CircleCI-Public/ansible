@@ -40,6 +40,7 @@
     version: '{{ gzip_version }}'
     force: true
 
+# Checksums are ignored due to this comment: http://disq.us/p/2k4lc0k
 - name: Install sysinternals
   win_chocolatey:
     name: sysinternals
