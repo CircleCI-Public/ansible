@@ -96,11 +96,11 @@
     path: '{{ nodejs_dir }}'
     state: absent
 
-- name: Install docker
+- name: Install docker with new script
   ansible.windows.win_powershell:
     script: |
-      Install-Module DockerMsftProvider -Force
-      Install-Package Docker -ProviderName DockerMsftProvider -Force
+      Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
+      .\install-docker-ce.ps1 -NoRestart
 
 - name: Docker requires a reboot. Reboot the machine
   ansible.windows.win_reboot:
