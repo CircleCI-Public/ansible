@@ -10,7 +10,7 @@
     "servicefabric_version": "9.1.1390",
     "servicefabricsdk_version": "6.1.1390",
     "nunit_console_runner_version": "3.16.3",
-    "nano_version": "7.2.25",
+    "nano_version": "7.2.25",   
     "vim_version": "9.0.1536",
     "jq_version": 1.6,
     "golang_version": "1.20.5",

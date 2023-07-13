@@ -47,13 +47,13 @@
     version: '{{ python_3_version }}'
     allow_multiple: yes
 
-- name: Install miniconda3
-  win_chocolatey:
-    name: miniconda3
-    package_params: '"/AddToPath:1"'
-    state: '{{ package_state }}'
-    version: '{{ miniconda3_version }}'
-    force: yes
+# - name: Install miniconda3
+#   win_chocolatey:
+#     name: miniconda3
+#     package_params: '"/AddToPath:1"'
+#     state: '{{ package_state }}'
+#     version: '{{ miniconda3_version }}'
+#     force: yes
 
 - name: Install nodejs
   win_chocolatey:
