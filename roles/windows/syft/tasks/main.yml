@@ -1,0 +1,21 @@
+- name: Install Syft
+  win_chocolatey:
+    name: syft
+    state: '{{ package_state }}'
+    version: '{{ syft_version }}'
+    force: true
+
+- name: Create SBOM folder
+  ansible.windows.win_file:
+    path: "/sbom"
+    state: directory
+
+- name: Deploy SBOM parser
+  ansible.windows.win_copy:
+    src: ../../../syft/files/sbom
+    dest: "C:\\Program Files\\sbom"
+
+- name: Generate SBOM
+  ansible.windows.win_command:
+    cmd: |
+      bash "C:\Program Files\sbom" generate "{{ image_name }}" "{{ image_tag }}"

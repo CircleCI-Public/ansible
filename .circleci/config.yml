@@ -100,7 +100,7 @@ workflows:
                 - /fix.*/
                 - /feat.*/
           name: gcp_tests
-          run_build: true
+          run_build: false
           source_dirs: "manifest/software.json"
           zone: *gcp_zone
           source_image: "ubuntu-2204-jammy-v20230616"
