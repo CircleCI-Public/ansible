@@ -76,9 +76,11 @@
       create: yes
 
   - name: Ensure circleci user has passwordless sudo
-    ansible.builtin.lineinfile:
+    ansible.builtin.blockinfile:
       path: "/etc/sudoers.d/circleci"
-      line: "circleci ALL=(ALL:ALL) NOPASSWD:ALL"
+      block: |
+        circleci ALL=(ALL:ALL) NOPASSWD:ALL
+        Defaults rlimit_core=default
       mode: 0400
       create: yes
 
