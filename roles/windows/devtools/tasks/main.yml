@@ -5,13 +5,14 @@
     version: '{{ nunit_console_runner_version }}'
     force: yes
 
-- name: Install python 3.x
+- name: Install docker engine
   win_chocolatey:
-    name: python3
+    name: docker-engine
+    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
     state: '{{ package_state }}'
-    version: '{{ python_3_version }}'
-    allow_multiple: no
-
+    version: '{{ docker_version }}'
+    force: yes
+    
 - name: Install nano
   win_chocolatey:
     name: nano
@@ -47,6 +48,13 @@
     version: '{{ openjdk_version }}'
     force: yes
 
+# - name: Install python 3.x
+#   win_chocolatey:
+#     name: python3
+#     state: '{{ package_state }}'
+#     version: '{{ python_3_version }}'
+#     allow_multiple: no
+
 - name: Install miniconda3
   win_chocolatey:
     name: miniconda3
@@ -74,14 +82,6 @@
     name: rust
     state: '{{ package_state }}'
     version: '{{ rust_version }}'
-    force: yes
-
-- name: Install docker engine
-  win_chocolatey:
-    name: docker-engine
-    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
-    state: '{{ package_state }}'
-    version: '{{ docker_version }}'
     force: yes
 
 - name: Install nvm.portable
