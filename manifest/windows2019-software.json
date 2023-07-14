@@ -16,7 +16,7 @@
     "golang_version": "1.20.5",
     "openjdk_version": "20.0.1",
     "miniconda3_version": "4.12.0",
-    "python_3_version": "3.11.4",
+    "python_3_version": "3.11.3",
     "nodejs_version": "20.3.0",
     "ruby_version": "3.1.3.1",
     "rust_version": "1.68.0",
