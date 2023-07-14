@@ -7,10 +7,10 @@
 
 - name: Install python 3.x
   win_chocolatey:
-    name: python
+    name: python3
     state: '{{ package_state }}'
     version: '{{ python_3_version }}'
-    allow_multiple: yes
+    allow_multiple: no
 
 - name: Install nano
   win_chocolatey:
