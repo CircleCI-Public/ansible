@@ -1,7 +1,0 @@
-dotnet_sdk_version_6: 6.0.408
-dotnet_sdk_version_7: 7.0.203
-sqlserver_devedition_version: 15.0.2000.5
-visualstudio_community_edition_version:  117.5.5.0
-visualstudio_buildtools_version: 117.5.5.0
-nuget_cli_version: 6.5.0
-winappdriver_version: 1.2.1
