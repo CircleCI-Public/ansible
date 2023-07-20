@@ -22,7 +22,7 @@
 
 - name: Install Visual Studio Community Edition
   win_chocolatey:
-    name: visualstudio2022community
+    name: visualstudio2019community
     state: '{{ package_state }}'
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     timeout: 5400
@@ -31,7 +31,7 @@
 
 - name: Install Visual Studio Build Tools
   win_chocolatey:
-    name: visualstudio2022buildtools
+    name: visualstudio2019buildtools
     state: '{{ package_state }}'
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     version: '{{ visualstudio_buildtools_version }}'
