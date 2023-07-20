@@ -94,13 +94,13 @@
       Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
       .\install-docker-ce.ps1 -NoRestart
 
-# - name: Install docker engine
-#   win_chocolatey:
-#     name: docker-engine
-#     package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
-#     state: '{{ package_state }}'
-#     version: '{{ docker_version }}'
-#     force: yes
+- name: Install docker engine
+  win_chocolatey:
+    name: docker-engine
+    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
+    state: '{{ package_state }}'
+    version: '{{ docker_version }}'
+    force: yes
 
 - name: Docker requires a reboot. Reboot the machine
   ansible.windows.win_reboot:
