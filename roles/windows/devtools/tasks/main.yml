@@ -42,7 +42,7 @@
 
 - name: Install python 3.x
   win_chocolatey:
-    name: python
+    name: python311
     state: '{{ package_state }}'
     version: '{{ python_3_version }}'
     allow_multiple: yes
