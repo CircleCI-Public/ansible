@@ -92,7 +92,7 @@
   ansible.windows.win_powershell:
     script: |
       Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
-      .\install-docker-ce.ps1 -NoRestart
+      .\install-docker-ce.ps1 -DockerVersion "20.10.24" -NoRestart
 
 # - name: Install docker engine
 #   win_chocolatey:
