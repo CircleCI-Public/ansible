@@ -22,7 +22,7 @@
   "rust_version": "1.68.0",
   "docker_version": "20.10.24",
   "docker_desktop_version": "4.19.0",
-  "nvm_version": "1.1.9",
+  "nvm_version": "1.1.11",
   "nodejs_dir": "C:\\Program Files\\nodejs",
   "dotnet_sdk_version_6": "6.0.412",
   "dotnet_sdk_version_7": "7.0.306",
@@ -34,6 +34,6 @@
   "package_state": "present",
   "syft_version": "0.84.1",
   "image_name": "windows-server-2022-gui",
-  "image_tag": "2023.07.1",
+  "image_tag": "2023.07.2",
   "image_group": "windows-server-2022"
 }
