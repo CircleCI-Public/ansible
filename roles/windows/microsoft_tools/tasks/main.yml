@@ -28,6 +28,8 @@
     timeout: 5400
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
+    until: result.stdout.find("all systems go") != -1
+    retries: 3
 
 - name: Install Visual Studio Build Tools
   win_chocolatey:
