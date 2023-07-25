@@ -20,14 +20,14 @@
 #    version: '{{ sqlserver_devedition_version }}'
 
 
-- name: Install Visual Studio Community Edition
-  win_chocolatey:
-    name: visualstudio2019community
-    state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
-    timeout: 6000
-    version: '{{ visualstudio_community_edition_version }}'
-    force: yes
+# - name: Install Visual Studio Community Edition
+#   win_chocolatey:
+#     name: visualstudio2019community
+#     state: '{{ package_state }}'
+#     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+#     timeout: 6000
+#     version: '{{ visualstudio_community_edition_version }}'
+#     force: yes
 
 - name: Install Visual Studio Build Tools
   win_chocolatey:
