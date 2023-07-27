@@ -13,7 +13,7 @@
 - name: Create circeci user 
   win_user:
     name: circleci
-    password: "_user_pwd }}"
+    password: "{{ cci_user_pwd }}"
     state: present
     groups:
       - Administrators
