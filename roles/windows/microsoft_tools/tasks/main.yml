@@ -24,7 +24,7 @@
   win_chocolatey:
     name: visualstudio2019community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--locale en-US'
     timeout: 12000
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
