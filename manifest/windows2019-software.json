@@ -27,7 +27,7 @@
     "dotnet_sdk_version_6": "6.0.410",
     "dotnet_sdk_version_7": "7.0.304",
     "sqlserver_devedition_version": "15.0.2000.5",
-    "visualstudio_community_edition_version": "16.11.28.0",
+    "visualstudio_community_edition_version": "16.11.17.0",
     "visualstudio_buildtools_version": "16.11.27.0",
     "nuget_cli_version": "6.6.1",
     "winappdriver_version": "1.2.1",
