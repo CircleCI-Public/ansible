@@ -42,6 +42,12 @@
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
 
+- name: Ensure microsoft default java is not on path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin'
+    state: absent
+
 - name: Install Nuget command line interface
   win_chocolatey:
     name: nuget.commandline
