@@ -47,7 +47,40 @@ parameters:
     type: boolean
     default: false
 
+jobs:
+  verifydefault:
+    parameters:
+      xcodev:
+        type: string
+    macos:
+      xcode: << parameters.xcodev >>
+    resource_class: macos.m1.large.gen1
+    steps:
+        - run: xcodebuild -version
+        
+  verifydefault_intel:
+    parameters:
+      xcodev:
+        type: string
+    macos:
+      xcode: << parameters.xcodev >>
+    resource_class: macos.x86.medium.gen2
+    steps:
+        - run: xcodebuild -version
+
 workflows:
+  verifydefault-workflow:
+        jobs:
+            - verifydefault:
+                name: M1 - Xcode << matrix.xcodev >>
+                matrix:
+                    parameters:
+                        xcodev: ["15.0.0"]
+            - verifydefault_intel:
+                name: Intel - Xcode << matrix.xcodev >>
+                matrix:
+                    parameters:
+                        xcodev: ["15.0.0"]
   build-quarterly:
     when: << pipeline.parameters.build_quarterly >>
     jobs:
