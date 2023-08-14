@@ -3,8 +3,8 @@
     "3.2.2"
   ],
   "node": [
-    "18.16.1",
-    "20.4.0"
+    "18.17.1",
+    "20.5.1"
   ],
   "npm": [
     "npm",
@@ -31,24 +31,24 @@
   ],
   "defaults": {
     "ruby": "3.2.2",
-    "node": "18.16.1",
+    "node": "18.17.1",
     "python": "3.11.4"
   },
   "lein_version": "2.10.0",
-  "docker_version": "5:20.10.24~3-0~ubuntu-jammy",
-  "containerd_version": "1.6.20-1",
-  "docker_compose_version": "2.18.1-1~ubuntu.22.04~jammy",
-  "gcloud_version": "437.0.1",
-  "golang_version": "1.20.5",
-  "maven_version": "3.9.3",
-  "gradle_version": "8.2",
-  "sbt_version": "1.9.1",
+  "docker_version": "5:24.0.5-1~ubuntu.22.04~jammy",
+  "containerd_version": "1.6.22-1",
+  "docker_compose_version": "2.20.2-1~ubuntu.22.04~jammy",
+  "gcloud_version": "442.0.0",
+  "golang_version": "1.21.0",
+  "maven_version": "3.9.4",
+  "gradle_version": "8.2.1",
+  "sbt_version": "1.9.3",
   "python2_version": "2.7.18",
   "python3_version": "3.11.4",
-  "pyenv_version": "2.3.21",
+  "pyenv_version": "2.3.24",
   "yarn_version": "1.22.19",
   "yq": "4.34.1",
   "image_name": "ubuntu-2204",
-  "image_tag": "2023.07.1",
+  "image_tag": "2023.10.test",
   "image_group": "ubuntu-2204-amd64"
 }
