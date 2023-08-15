@@ -8,13 +8,13 @@
     script: |
       secedit /export /cfg c:\secpol.cfg (gc C:\secpol.cfg).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File C:\secpol.cfg secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY rm -force c:\secpol.cfg -confirm:$false
 
-# - name: Create circeci user
-#   win_user:
-#     name: circleci
-#     password: "{{ cci_user_pwd }}"
-#     state: present
-#     groups:
-#       - Administrators
+- name: Create circeci user
+  win_user:
+    name: circleci
+    password: "{{ cci_user_pwd }}"
+    state: present
+    groups:
+      - Administrators
 
 - name: Create circeci-admin user
   win_user:
