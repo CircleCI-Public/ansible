@@ -26,9 +26,9 @@
 
 - name: get the username running the deploy
   become: false
-  local_action: command whoami
+  local_action: command net user
   register: username_on_the_host
-  
+
 - name: Ensure Packer user is absent
   ansible.windows.win_user:
     name: "{{ net user | regex_search('circleci.PACKER+') | first}}"
