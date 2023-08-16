@@ -13,6 +13,7 @@
     name: circleci
     password: "{{ cci_user_pwd }}"
     state: present
+    groups_action: add
     groups:
       - Administrators
 

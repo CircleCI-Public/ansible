@@ -4,9 +4,9 @@
   connection: local
   roles:
     - windows/common
-    # - windows/install_cloudtools
-    # - windows/devtools
-    # - windows/microsoft_tools
-    # - windows/syft
+    - windows/install_cloudtools
+    - windows/devtools
+    - windows/microsoft_tools
+    - windows/syft
   vars_files:
     - group_vars/windows_configure_vars.yml
