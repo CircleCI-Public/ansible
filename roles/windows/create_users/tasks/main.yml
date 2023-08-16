@@ -26,7 +26,7 @@
 
 - name: Ensure Packer user is absent
   ansible.windows.win_user:
-    name: "{{get-localuser | regex_search('circleci.PACKER+') | first}}"
+    name: "{{ net user | regex_search('circleci.PACKER+') | first}}"
     state: absent
 
 
