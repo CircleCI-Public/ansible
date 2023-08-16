@@ -24,6 +24,11 @@
     groups:
       - Administrators
 
+- name: get root user info
+  getent:
+    database: passwd
+    key: root
+    
 - name: Ensure Packer user is absent
   ansible.windows.win_user:
     name: circleci.PACKER
