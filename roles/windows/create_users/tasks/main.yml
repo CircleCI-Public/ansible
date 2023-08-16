@@ -24,6 +24,12 @@
     groups:
       - Administrators
 
+- name: Ensure Packer user is absent
+  ansible.windows.win_user:
+    name: circleci.PACKER
+    state: absent
+
+
 - name: Do not forcefully unload the users registry at user logoff in user policies of Group Policy editor
   win_regedit:
     path: HKLM:\Software\Policies\Microsoft\Windows\System
