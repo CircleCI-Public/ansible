@@ -25,14 +25,14 @@
       - Administrators
 
 - name: Create variable from command
-    command: "net user | findstr /R 'circleci.PACKER+'"
-    register: command_output
+  command: "net user | findstr /R 'circleci.PACKER+'"
+  register: command_output
 
 - set_fact:
-    string_to_echo: "{{ command_output.stdout }}"
+  string_to_echo: "{{ command_output.stdout }}"
 
 - debug: 
-    var: string_to_echo
+  var: string_to_echo
 
 - set_fact:
     packer_user: "{{ 'net user' | findstr /R 'circleci.PACKER+' }}"
