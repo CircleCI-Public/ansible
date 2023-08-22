@@ -5,8 +5,8 @@
 - name: Disable windows services
   include_tasks: 'roles/windows/disable_services/tasks/main.yml'
 
-- name: Create CircleCI users
-  include_tasks: 'roles/windows/create_users/tasks/main.yml'
+# - name: Create CircleCI users
+#   include_tasks: 'roles/windows/create_users/tasks/main.yml'
 
 - name: install Build Agent Prerequisites
   include_tasks: 'roles/windows/buildagent_prereq/tasks/main.yml'
