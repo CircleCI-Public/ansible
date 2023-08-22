@@ -25,7 +25,7 @@
       - Administrators
 
 - set_fact:
-    packer_user: "{{ 'net user' | regex_search('circleci.PACKER+') | first }}"
+    packer_user: "{{ 'net user' | findstr /R 'circleci.PACKER+' }}"
 
 - name: Ensure Packer user is absent
   ansible.windows.win_user:
