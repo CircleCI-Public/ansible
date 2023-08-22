@@ -13,8 +13,6 @@
     name: circleci
     password: "{{ cci_user_pwd }}"
     state: present
-    profile: "C:\\Users\\circleci"
-    home_directory: "C:\\Users\\circleci"
     groups_action: add
     groups:
       - Administrators
