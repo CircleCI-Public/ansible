@@ -25,7 +25,7 @@
       - Administrators
 
 - name: Create variable from command
-  command: "{{net user | findstr /R 'circleci.PACKER+'}}"
+  command: "{{net user | findstr /R circleci.PACKER+ }}"
   register: command_output
 
 - set_fact:
