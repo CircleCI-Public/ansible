@@ -8,11 +8,6 @@
     script: |
       secedit /export /cfg c:\secpol.cfg (gc C:\secpol.cfg).replace("PasswordComplexity = 1", "PasswordComplexity = 0") | Out-File C:\secpol.cfg secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY rm -force c:\secpol.cfg -confirm:$false
 
-- name: Ensure Packer user is absent
-  ansible.windows.win_user:
-    name: "{{ net user | regex_search('circleci.PACKER+') | first}}"
-    state: absent
-    
 - name: Create circeci user
   win_user:
     name: circleci
@@ -28,6 +23,15 @@
     state: present
     groups:
       - Administrators
+
+- set_fact:
+    packer_user: "{{ net user | regex_search('circleci.PACKER+') | first }}"
+
+- name: Ensure Packer user is absent
+  ansible.windows.win_user:
+    name: "{{ packer_user }}"
+    state: absent
+
 
 - name: Do not forcefully unload the users registry at user logoff in user policies of Group Policy editor
   win_regedit:
