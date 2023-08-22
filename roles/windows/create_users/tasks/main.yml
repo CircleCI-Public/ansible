@@ -29,13 +29,10 @@
   register: command_output
 
 - set_fact:
-  string_to_echo: "{{ command_output.stdout }}"
+    string_to_echo: "{{ command_output.stdout }}"
 
 - debug: 
-  var: string_to_echo
-
-- set_fact:
-    packer_user: "{{ 'net user' | findstr /R 'circleci.PACKER+' }}"
+    var: string_to_echo
 
 - name: Ensure Packer user is absent
   ansible.windows.win_user:
