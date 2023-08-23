@@ -22,9 +22,5 @@
       tags:
         - 'ms_tools'
         - 'build'
-    - role: windows/syft
-      tags:
-        - 'syft'
-        - 'build'
   vars_files:
     - group_vars/windows_configure_vars.yml
