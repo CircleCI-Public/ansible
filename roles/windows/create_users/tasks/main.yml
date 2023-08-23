@@ -24,21 +24,6 @@
     groups:
       - Administrators
 
-- name: Create variable from command
-  command: "{{net user | findstr /R circleci.PACKER+ }}"
-  register: command_output
-
-- set_fact:
-    string_to_echo: "{{ command_output.stdout }}"
-
-- debug: 
-    var: string_to_echo
-
-- name: Ensure Packer user is absent
-  ansible.windows.win_user:
-    name: "{{ packer_user }}"
-    state: absent
-
 
 - name: Do not forcefully unload the users registry at user logoff in user policies of Group Policy editor
   win_regedit:

@@ -3,9 +3,28 @@
   hosts: default
   connection: local
   roles:
-    - windows/common
-    - windows/install_cloudtools
-    - windows/devtools
-    - windows/microsoft_tools
+    - role: windows/create_users
+      tags:
+        - 'create_users'
+    - role: windows/common
+      tags:
+        - 'common'
+        - 'build'
+    - role: windows/install_cloudtools
+      tags:
+        - 'cloudtools'
+        - 'build'
+    - role: windows/devtools
+      tags:
+        - 'devtools'
+        - 'build'
+    - role: windows/microsoft_tools
+      tags:
+        - 'ms_tools'
+        - 'build'
+    - role: windows/syft
+      tags:
+        - 'syft'
+        - 'build'
   vars_files:
     - group_vars/windows_configure_vars.yml
