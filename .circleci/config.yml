@@ -52,12 +52,12 @@ workflows:
     jobs:
       - verifydefault:
           name: M1 - Xcode << matrix.xcodev >>
-            matrix:
+          matrix:
               parameters:
                 xcodev: ["15.0.0"]
       - verifydefault_intel:
           name: Intel - Xcode << matrix.xcodev >>
-            matrix:
+          matrix:
               parameters:
                 xcodev: ["15.0.0"]
   build-quarterly:
