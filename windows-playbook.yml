@@ -26,5 +26,6 @@
       tags:
         - 'syft'
         - 'build'
+      when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
   vars_files:
     - group_vars/windows_configure_vars.yml
