@@ -1,17 +1,17 @@
-- name: Install python 3.x
-  win_chocolatey:
-    name: python311
-    state: '{{ package_state }}'
-    version: '{{ python_3_version }}'
-    force: true
-    
 - name: Install nunit-console-runner
   win_chocolatey:
     name: nunit-console-runner
     state: '{{ package_state }}'
     version: '{{ nunit_console_runner_version }}'
     force: yes
-    
+
+- name: Install python 3.x
+  win_chocolatey:
+    name: python311
+    state: '{{ package_state }}'
+    version: '{{ python_3_version }}'
+    force: yes    
+
 - name: Install nano
   win_chocolatey:
     name: nano
