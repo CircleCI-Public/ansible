@@ -1,0 +1,8 @@
+{
+  "docker_version": "5:24.0.5-1~ubuntu.22.04~jammy",
+  "containerd_version": "1.6.21-1",
+  "docker_compose_version": "2.20.2-1~ubuntu.22.04~jammy",
+  "image_name": "docker-24",
+  "image_tag": "2023.08.1",
+  "image_group": "docker-24-amd64"
+}
