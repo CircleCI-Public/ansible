@@ -28,7 +28,7 @@
     timeout: 5400
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  # when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
 
 - name: Install Visual Studio 2022 Build Tools
   win_chocolatey:
@@ -37,13 +37,13 @@
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     version: '{{ visualstudio_buildtools_version }}'
     force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  # when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
 
 - name: Ensure that msbuild is in the path
   ansible.windows.win_path:
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
-  when: '2022 in win_version'
+  # when: '2022 in win_version'
 
 - name: Install Visual Studio 2019 Community Edition
   win_chocolatey:
@@ -53,7 +53,7 @@
     timeout: 12000
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
+  # when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
 - name: Install Visual Studio 2019 Build Tools
   win_chocolatey:
@@ -62,13 +62,13 @@
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     version: '{{ visualstudio_buildtools_version }}'
     force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
+  # when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
 - name: Ensure that msbuild is in the path
   ansible.windows.win_path:
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin'
-  when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
+  # when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
 - name: Ensure microsoft default java is not on path
   ansible.windows.win_path:
