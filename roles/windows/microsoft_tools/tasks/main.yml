@@ -43,7 +43,7 @@
   ansible.windows.win_path:
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
-  when: '2022 in win_version'
+  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
 
 - name: Install Visual Studio 2019 Community Edition
   win_chocolatey:
