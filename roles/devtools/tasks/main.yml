@@ -13,3 +13,16 @@
       - tightvncserver
     state: latest
     update_cache: true
+
+- name: Install git lfs
+  ansible.builtin.shell: |
+    echo ">>> Installing git lfs {{ git_lfs_version }}"
+    GIT_LFS_REPO="https://github.com/git-lfs/git-lfs/releases/download/"
+    curl -sSL -o /tmp/git-lfs.tar.gz $GIT_LFS_REPO/v{{ git_lfs_version }}/git-lfs-linux-{{ image_arch }}-v{{ git_lfs_version }}.tar.gz
+    sudo tar -xz -C /usr/local/bin -f /tmp/git-lfs.tar.gz
+    sudo rm -rf /tmp/git-lfs.tar.gz
+
+
+- name: Initialize Git-LFS
+  ansible.builtin.shell: |
+    git-lfs install
