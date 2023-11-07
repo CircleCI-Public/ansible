@@ -28,4 +28,9 @@
       path: "{{ circleci_home }}/.circlerc"
       line: export "PATH=/usr/local/cuda/bin:$PATH"
 
+  - name: Install pytorch and torchvision
+    ansible.builtin.shell:
+      pip install -U torch {{ item }}
+    with_items: "{{ packages.pip }}"
+
   become: true
