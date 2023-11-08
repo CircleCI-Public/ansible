@@ -19,18 +19,25 @@
       sudo apt-get update
       sudo apt-get install --yes linux-headers-$(uname -r)
       sudo apt-get install --yes nvidia-driver-{{ cuda.driver }}
+
+  - name: Run updates and install headers
+    ansible.builtin.shell: |
       sudo apt-get install --yes cuda-{{ item }}
       sudo apt-get install --yes nvidia-gds-{{ item }}
     with_items: "{{ cuda.versions }}"
+
+  - name: Install pytorch and torchvision
+    ansible.builtin.shell:
+      pip install -U {{ item }}
+    with_items: "{{ packages.pip }}"
 
   - name: Export path
     ansible.builtin.lineinfile:
       path: "{{ circleci_home }}/.circlerc"
       line: export "PATH=/usr/local/cuda/bin:$PATH"
 
-  - name: Install pytorch and torchvision
+  - name: "Clean up sources.list"
     ansible.builtin.shell:
-      pip install -U torch {{ item }}
-    with_items: "{{ packages.pip }}"
+      sudo rm -rf /etc/apt/sources.list
 
   become: true
