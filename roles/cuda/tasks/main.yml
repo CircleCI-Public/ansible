@@ -2,7 +2,7 @@
 - block:
   - name: Sleep for 15
     ansible.builtin.shell: |
-      export DEBIAN_FRONTEND=noninteractive
+      echo "export DEBIAN_FRONTEND=noninteractive" >> ~/.bashrc
       sleep 15
 
   - name: Check gcc version
