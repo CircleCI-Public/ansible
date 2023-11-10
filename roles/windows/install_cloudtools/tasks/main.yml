@@ -20,4 +20,4 @@
     force: yes
 
 - name: Install service fabric sdk
-  script: install_servicefabric_sdk.ps1 --servicefabricsdk_version "{{ servicefabricsdk_version }}"
+  script: install_servicefabric_sdk.ps1 "{{ servicefabricsdk_version }}"
