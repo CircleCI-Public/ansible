@@ -15,14 +15,17 @@
     update_cache: true
 
 - name: Install git lfs
+  become: true
+  become_method: sudo
   ansible.builtin.shell: |
     echo ">>> Installing git lfs {{ git_lfs }}"
     GIT_LFS_REPO="https://github.com/git-lfs/git-lfs/releases/download/"
-    curl -sSL -o /tmp/git-lfs.tar.gz $GIT_LFS_REPO/v{{ git_lfs }}/git-lfs-linux-{{ image_arch }}-v{{ git_lfs }}.tar.gz
-    sudo tar -xz -C /usr/local/bin -f /tmp/git-lfs.tar.gz
-    sudo rm -rf /tmp/git-lfs.tar.gz
-
+    curl -sSL -o /tmp/git-lfs.tar.gz $GIT_LFS_REPO/v{{ git_lfs }}/git-lfs-linux-{{ arch }}-v{{ git_lfs }}.tar.gz
+    sudo tar -xz -C /tmp -f /tmp/git-lfs.tar.gz
+    sudo /tmp/install.sh
+    sudo rm -rf /tmp/git-lfs*
 
 - name: Initialize Git-LFS
+  become: true
   ansible.builtin.shell: |
     git-lfs install
