@@ -2,12 +2,12 @@
 - name: Install sbt
   become: true
   ansible.builtin.apt:
-    deb: https://scala.jfrog.io/artifactory/debian/sbt-{{ sbt_version }}.deb
+    deb: https://scala.jfrog.io/artifactory/debian/sbt-{{ sbt }}.deb
 
 - block:
     - name: Remove sbt .deb file
       ansible.builtin.file:
-        path: "sbt-{{ sbt_version }}.deb"
+        path: "sbt-{{ sbt }}.deb"
         state: absent
 
     - name: Create and set permissions for sbt cache

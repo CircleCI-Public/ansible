@@ -61,12 +61,14 @@
       become_method: sudo
       ansible.builtin.shell:
         "sudo -H -i -u {{ circleci_user }} nvm install {{ item }}"
-      with_items: "{{ node }}"
+      with_items:
+        - "{{ nodelts }}"
+        - "{{ nodeCurrent }}"
 
     - name: Set Node defaults
       become_method: sudo
       ansible.builtin.shell:
-        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc nvm alias default {{ defaults.node }} && nvm use {{ defaults.node }}"
+        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc nvm alias default {{ nodelts }} && nvm use {{ nodelts }}"
 
     - name: Install npm packages
       become_method: sudo

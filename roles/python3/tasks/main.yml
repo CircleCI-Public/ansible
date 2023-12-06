@@ -32,7 +32,7 @@
     - name: Clone and checkout pyenv version
       # Intentionally uses shell instead of git module
       ansible.builtin.shell:
-        "git clone --branch v{{ pyenv_version }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
+        "git clone --branch v{{ pyenv }} --single-branch https://github.com/pyenv/pyenv.git {{ pyenv_dir }}"
 
     - name: Configure pyenv
       ansible.builtin.blockinfile:
@@ -50,12 +50,14 @@
       become_method: sudo
       ansible.builtin.shell:
         "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv install {{ item }}"
-      with_items: "{{ python_versions }}"
+      with_items:
+        - "{{ python2 }}"
+        - "{{ python3 }}"
 
     - name: Set Pyenv global
       become_method: sudo
       ansible.builtin.shell:
-        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
+        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2 }} {{ python3 }}"
 
     - name: Install Pip Packages
       become_method: sudo

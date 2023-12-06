@@ -8,25 +8,25 @@
         pkg: openjdk-{{ item }}-jdk
         state: present
         update_cache: yes
-      with_items: "{{ java_versions }}"
+      with_items: "{{ java }}"
 
     - name: Set java links
       community.general.alternatives:
         name: java
         path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/java"
-      with_items: "{{ java_versions }}"
+      with_items: "{{ java }}"
 
     - name: Set javac links
       community.general.alternatives:
         name: javac
         path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javac"
-      with_items: "{{ java_versions }}"
+      with_items: "{{ java }}"
 
     - name: Set javadoc links
       community.general.alternatives:
         name: javadoc
         path: "/usr/lib/jvm/java-{{ item }}-openjdk-{{ arch }}/bin/javadoc"
-      with_items: "{{ java_versions }}"
+      with_items: "{{ java }}"
 
   become: true
 
@@ -37,7 +37,7 @@
 - block:
   - name: Download maven
     ansible.builtin.get_url:
-      url: "http://apache.osuosl.org/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz"
+      url: "http://apache.osuosl.org/maven/maven-3/{{ maven }}/binaries/apache-maven-{{ maven }}-bin.tar.gz"
       dest: "/tmp/maven.tar.gz"
 
   - name: Extract maven
@@ -48,7 +48,7 @@
 
   - name: Create a maven symbolic link
     ansible.builtin.file:
-      src: "/usr/local/apache-maven-{{maven_version}}"
+      src: "/usr/local/apache-maven-{{ maven }}"
       dest: "/usr/local/apache-maven"
       state: link
 
@@ -79,7 +79,7 @@
 - block:
   - name: Download gradle
     ansible.builtin.get_url:
-      url: "https://services.gradle.org/distributions/gradle-{{ gradle_version }}-bin.zip"
+      url: "https://services.gradle.org/distributions/gradle-{{ gradle }}-bin.zip"
       dest: "/tmp/gradle.zip"
 
   - name: Extract gradle
@@ -91,7 +91,7 @@
   - name: Set gradle path
     ansible.builtin.lineinfile:
       path: "{{ circleci_home }}/.circlerc"
-      line: "export PATH=$PATH:/usr/local/gradle-{{ gradle_version }}/bin"
+      line: "export PATH=$PATH:/usr/local/gradle-{{ gradle }}/bin"
       create: yes
 
   - name: Remove gradle zip file
@@ -100,4 +100,3 @@
       state: absent
 
   become: true
-    

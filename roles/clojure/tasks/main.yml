@@ -2,7 +2,7 @@
 - block:
     - name: Download clojure
       ansible.builtin.get_url:
-        url: "https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein"
+        url: "https://raw.github.com/technomancy/leiningen/{{ leiningen }}/bin/lein"
         dest: "{{ lein_dir }}"
 
     - name: Change permissions on /usr/local/bin/lein

@@ -15,7 +15,7 @@
     #     url: https://download.docker.com/linux/ubuntu/gpg
     #     keyring: /etc/apt/keyrings/docker.gpg
     #     state: present
-    
+
     - name: Install docker's official gpg keyring new
       ansible.builtin.shell: |
         sudo apt-get update
@@ -23,7 +23,7 @@
         sudo install -m 0755 -d /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
         sudo chmod a+r /etc/apt/keyrings/docker.gpg
-        
+
 
     - name: Set up docker repository
       ansible.builtin.shell: |
@@ -35,10 +35,10 @@
     - name: Install docker and docker compose (*put versions back here eventually)
       ansible.builtin.apt:
         name:
-          - docker-ce={{ docker_version }}
-          - docker-ce-cli={{ docker_version }}
-          - containerd.io={{ containerd_version }}
-          - docker-compose-plugin={{ docker_compose_version }}
+          - docker-ce={{ docker_ce }}
+          - docker-ce-cli={{ docker_ce }}
+          - containerd.io={{ containerd_io }}
+          - docker-compose-plugin={{ docker_compose_plugin }}
         state: present
         allow_downgrade: yes
         force: yes
