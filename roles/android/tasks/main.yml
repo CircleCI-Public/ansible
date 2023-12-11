@@ -82,8 +82,3 @@
     sudo chown -R {{ circleci_user }}:{{ circleci_user }} /usr/local/bin/circle-android
     sudo chmod +x /usr/local/bin/circle-android
     chown -R {{ circleci_user }}:{{ circleci_user }} /opt/android/sdk
-
-# - name: set JAVA HOME and JDK HOME
-#   become: true
-#   become_method: sudo
-#   ansible.builtin.shell: |
