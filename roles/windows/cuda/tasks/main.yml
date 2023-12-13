@@ -1,0 +1,7 @@
+---
+- name: Install cuda
+  win_chocolatey:
+    name: cuda
+    state: '{{ package_state }}'
+    version: '{{ cuda_version }}'
+    force: yes
