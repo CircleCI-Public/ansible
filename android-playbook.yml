@@ -1,0 +1,30 @@
+---
+- name: Configure linux node
+  hosts: all
+  roles:
+    - common
+    - node
+    - java
+    - gcloud
+    - python3
+    - android
+    - ruby
+    - android_tools
+    - docker
+    - sysadmin_tools
+    - devtools
+    - ant
+    - socat
+    - nsenter
+    - jq
+    - dpkg_configure
+  vars_files:
+    - group_vars/linux_configure_vars.yml
+
+  post_tasks:
+    - name: Check if line is in file
+      become_method: sudo
+      become: true
+      ansible.builtin.lineinfile:
+        path: "{{ circleci_home }}/.bashrc"
+        line: if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi

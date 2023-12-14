@@ -1,0 +1,5 @@
+---
+circleci_user: circleci
+circleci_home: /home/circleci
+android_home: /opt/android/sdk
+cmdline_tools_root: /opt/android/sdk/cmdline-tools/latest/bin

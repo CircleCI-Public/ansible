@@ -1,0 +1,79 @@
+{
+    "ruby": [
+      "3.2.2"
+    ],
+    "node": [
+      "20.9.0",
+      "21.1.0"
+    ],
+    "npm": [
+      "coffeescript",
+      "grunt-cli",
+      "grunt",
+      "bower",
+      "nodeunit",
+      "mocha",
+      "yarn",
+      "firebase-tools"
+    ],
+    "python_versions": [
+      "2.7.18",
+      "3.12.0"
+    ],
+    "pip": [
+      "virtualenv",
+      "nose",
+      "pep8"
+    ],
+    "java_versions": [
+      "8",
+      "17"
+    ],
+    "platforms": [
+      "android-34",
+      "android-33",
+      "android-32",
+      "android-31",
+      "android-30",
+      "android-29",
+      "android-28",
+      "android-27"
+  
+    ],
+    "build_tools": [
+      "34.0.0-rc3",
+      "33.0.2",
+      "30.0.3"
+    ],
+    "ndk_versions": [
+      "26.1.10909125",
+      "25.2.9519653"
+    ],
+    "cmake_versions": [
+      "3.22.1",
+      "3.18.1"
+    ],
+    "defaults": {
+      "ruby": "3.2.2",
+      "node": "20.9.0",
+      "python": "3.12.0"
+    },
+    "command_line_tools_version": "10406996",
+    "default_java_version": "17",
+    "docker_version": "5:24.0.7-1~ubuntu.22.04~jammy",
+    "containerd_version": "1.6.24-1",
+    "docker_compose_version": "2.21.0-1~ubuntu.22.04~jammy",
+    "fastlane_version": "2.216.0",
+    "gcloud_version": "453.0.0",
+    "git_lfs_version": "3.1.1",
+    "maven_version": "3.9.5",
+    "gradle_version": "8.4",
+    "python2_version": "2.7.18",
+    "python3_version": "3.12.0",
+    "pyenv_version": "2.3.31",
+    "yarn_version": "1.22.19",
+    "image_arch": "amd64",
+    "image_name": "android",
+    "image_tag": "2023.11.1"
+  }
+

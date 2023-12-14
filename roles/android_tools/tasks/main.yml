@@ -1,0 +1,23 @@
+---
+- name: Install bison to compile nsenter
+  become: true
+  ansible.builtin.apt:
+    pkg:
+      - bison
+      - qemu-kvm
+      - libvirt-clients
+      - libvirt-daemon-system
+      - bridge-utils
+    state: present
+    update_cache: yes
+
+- name: configure libvirt
+  become_method: sudo
+  ansible.builtin.shell: |
+    sudo su root -c 'addgroup libvirt'
+    sudo su root -c "adduser {{ circleci_user }} libvirt"
+    sudo usermod -aG kvm {{ circleci_user }}
+
+- name: Install fastlane
+  ansible.builtin.shell: |
+    rbenv exec gem install fastlane --version {{ fastlane_version }} --no-document

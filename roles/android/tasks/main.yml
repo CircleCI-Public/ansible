@@ -1,0 +1,84 @@
+---
+- name: Install android command line tools
+  become: true
+  become_method: sudo
+  ansible.builtin.shell: |
+    cmdline_tools_url="https://dl.google.com/android/repository/commandlinetools-linux-{{ command_line_tools_version }}_latest.zip"
+    ANDROID_HOME="{{ android_home }}"
+    CMDLINE_TOOLS_ROOT="{{ cmdline_tools_root }}"
+    CIRCLECI_HOME={{ circleci_home }}
+
+    # Download and install Android Commandline Tools
+    sudo mkdir -p ${ANDROID_HOME}/cmdline-tools
+    sudo mkdir ${ANDROID_HOME}/platforms
+    sudo mkdir ${ANDROID_HOME}/ndk
+    sudo wget -O /tmp/cmdline-tools.zip -t 5 "${cmdline_tools_url}"
+    sudo unzip -q /tmp/cmdline-tools.zip -d ${ANDROID_HOME}/cmdline-tools
+    sudo rm /tmp/cmdline-tools.zip
+    sudo mv ${ANDROID_HOME}/cmdline-tools/cmdline-tools ${ANDROID_HOME}/cmdline-tools/latest
+    chown -R {{ circleci_user }}:{{ circleci_user }} /opt/android/sdk
+
+
+    # Set environmental variables
+    echo "export ANDROID_HOME=${ANDROID_HOME}" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export ANDROID_SDK_ROOT=${ANDROID_HOME}" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export ADB_INSTALL_TIMEOUT=120" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export PATH=${ANDROID_HOME}/emulator:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/platform-tools/bin:\$PATH" >> ${CIRCLECI_HOME}/.circlerc
+    
+    DEFAULT_JAVA={{ default_java_version }}
+    echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export JDK_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export JRE_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+
+- name: accept android licenses
+  ansible.builtin.shell: |
+    yes | {{ cmdline_tools_root }}/sdkmanager --licenses 
+
+- name: install android tools
+  ansible.builtin.shell: |
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "tools"
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "platform-tools"
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "emulator"
+
+- name: install android extras
+  ansible.builtin.shell: |
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "extras;android;m2repository"
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "extras;google;m2repository"
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "extras;google;google_play_services"
+
+- name: Install android platforms
+  become_method: sudo
+  ansible.builtin.shell: |
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "platforms;{{ item }}"
+  with_items: "{{ platforms }}"
+
+- name: Install build tools
+  become_method: sudo
+  ansible.builtin.shell: |
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "build-tools;{{ item }}"
+  with_items: "{{ build_tools }}"
+
+- name: Install ndk
+  become_method: sudo
+  ansible.builtin.shell: |
+    ANDROID_NDK_HOME="/opt/android/sdk/ndk/{{ item }}"
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "ndk;{{ item }}"
+    echo "export ANDROID_NDK_HOME=${ANDROID_NDK_HOME}" >> {{ circleci_home }}/.circlerc
+    echo "export ANDROID_NDK_ROOT=${ANDROID_NDK_HOME}" >> {{ circleci_home }}/.circlerc
+    echo 'export PATH=${ANDROID_NDK_HOME}:$PATH' >> {{ circleci_home }}/.circlerc
+  with_items: "{{ ndk_versions }}"
+
+- name: Install cmake
+  become_method: sudo
+  ansible.builtin.shell: |
+    echo y | sudo {{ cmdline_tools_root }}/sdkmanager "cmake;{{ item }}"
+  with_items: "{{ cmake_versions }}"
+
+- name: install circle android and ensure circleci owns all packages
+  become: true
+  become_method: sudo
+  ansible.builtin.shell: |
+    cp /tmp/circleci-provisioner/circle-android /usr/local/bin/
+    sudo chown -R {{ circleci_user }}:{{ circleci_user }} /usr/local/bin/circle-android
+    sudo chmod +x /usr/local/bin/circle-android
+    chown -R {{ circleci_user }}:{{ circleci_user }} /opt/android/sdk
