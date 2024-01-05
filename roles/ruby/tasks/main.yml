@@ -51,6 +51,6 @@
 
     - name: Install ruby and set as global
       ansible.builtin.shell:
-        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc && rbenv install {{ defaults.ruby }} && rbenv global {{ defaults.ruby }}"
+        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc && rbenv install {{ ruby_version }} && rbenv global {{ ruby_version }}"
 
   become: true

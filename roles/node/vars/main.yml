@@ -2,3 +2,6 @@
 circleci_user: circleci
 circleci_home: /home/circleci
 nvm_dir: '/opt/{{ circleci_user }}/.nvm'
+node:
+  - "{{ nodelts_version }}"
+  - "{{ nodeCurrent_version }}"
