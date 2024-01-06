@@ -1,15 +1,13 @@
 ---
 - block:
     - name: Download awscli (arm64)
-      ansible.builtin.get_url:
-        url: "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip"
-        dest: '/tmp/awscliv2.zip'
+      ansible.builtin.shell: |
+        curl -fsSL -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip
       when: arch == "arm64" or arch == "aarch64"
 
     - name: Download awscli (amd64)
-      ansible.builtin.get_url:
-        url: "https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_facts.architecture }}.zip"
-        dest: '/tmp/awscliv2.zip'
+      ansible.builtin.shell: |
+        curl -fsSL -o /tmp/awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-{{ ansible_facts.architecture }}.zip
       when: arch == "amd64" or arch == "x86_64"
 
     - name: Extract awscli
