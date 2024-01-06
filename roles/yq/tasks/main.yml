@@ -1,9 +1,8 @@
 ---
 - block:
     - name: Download yq
-      ansible.builtin.get_url:
-        url: "https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_{{ arch }}.tar.gz"
-        dest: "/tmp/yq.tar.gz"
+      ansible.builtin.shell: |
+        curl -fsSL -o /tmp/yq.tar.gz https://github.com/mikefarah/yq/releases/download/v{{ yq_version }}/yq_linux_{{ arch }}.tar.gz
 
     - name: Create /tmp/yq directory
       ansible.builtin.file:
