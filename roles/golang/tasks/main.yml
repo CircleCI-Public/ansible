@@ -1,9 +1,8 @@
 ---
 - block:
     - name: Download golang
-      ansible.builtin.get_url:
-        url: "http://golang.org/dl/go{{ golang_version }}.linux-{{ arch }}.tar.gz"
-        dest: "/tmp/golang.tar.gz"
+      ansible.builtin.shell: |
+        curl -sSL -o /tmp/golang.tar.gz http://golang.org/dl/go{{ go_version }}.linux-{{ arch }}.tar.gz
 
     - name: Extract golang
       ansible.builtin.unarchive:

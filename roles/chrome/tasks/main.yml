@@ -1,15 +1,10 @@
 ---
 - block:
   - name: Add APT signing key for linux chrome
-    ansible.builtin.apt_key:
-      url: "https://dl-ssl.google.com/linux/linux_signing_key.pub"
-      state: present
-
-  - name: Add download link for debian chrome to source list
-    ansible.builtin.lineinfile:
-      path: "/etc/apt/sources.list.d/google-chrome.list"
-      line: "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main"
-      create: yes
+    become_method: sudo
+    ansible.builtin.shell: |
+      curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/chrome.gpg
+      echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee -a /etc/apt/sources.list.d/google.list
 
   - name: Install google chrome
     ansible.builtin.apt:

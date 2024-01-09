@@ -2,3 +2,6 @@
 circleci_user: circleci
 circleci_home: /home/circleci
 pyenv_dir: "/opt/circleci/.pyenv"
+python_versions:
+  - "{{ python2_version }}"
+  - "{{ python3_version }}"

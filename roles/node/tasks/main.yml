@@ -66,7 +66,7 @@
     - name: Set Node defaults
       become_method: sudo
       ansible.builtin.shell:
-        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc nvm alias default {{ defaults.node }} && nvm use {{ defaults.node }}"
+        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc nvm alias default {{ nodelts_version }} && nvm use {{ nodelts_version }}"
 
     - name: Install npm packages
       become_method: sudo

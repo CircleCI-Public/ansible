@@ -1,9 +1,8 @@
 ---
 - block:
     - name: Download clojure
-      ansible.builtin.get_url:
-        url: "https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein"
-        dest: "{{ lein_dir }}"
+      ansible.builtin.shell: |
+        sudo curl -sSL -o /usr/local/bin/lein https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs
 
     - name: Change permissions on /usr/local/bin/lein
       ansible.builtin.file:

@@ -8,15 +8,13 @@
         state: directory
 
     - name: Download gcloud (arm64)
-      ansible.builtin.get_url:
-        url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-arm.tar.gz"
-        dest: "/tmp/gcloud.tar.gz"
+      ansible.builtin.shell: |
+        curl -fsSL -o /tmp/gcloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-arm.tar.gz
       when: arch == "arm64" or arch == "aarch64"
 
     - name: Download gcloud (amd64)
-      ansible.builtin.get_url:
-        url: "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-{{ ansible_facts.architecture }}.tar.gz"
-        dest: "/tmp/gcloud.tar.gz"
+      ansible.builtin.shell: |
+        curl -fsSL -o /tmp/gcloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-{{ gcloud_version }}-linux-{{ ansible_facts.architecture }}.tar.gz
       when: arch == "amd64" or arch == "x86_64"
 
     - name: Extract gcloud
