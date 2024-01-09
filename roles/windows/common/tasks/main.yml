@@ -7,3 +7,15 @@
 
 - name: install Build Agent Prerequisites
   include_tasks: 'roles/windows/buildagent_prereq/tasks/main.yml'
+
+- name: load Chocolatey Profile
+  ansible.windows.win_powershell:
+    script: |
+      @'
+      # Chocolatey profile
+      $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+      if (Test-Path($ChocolateyProfile)) {
+          Import-Module $ChocolateyProfile
+      }
+      refreshenv >$null 2>&1
+      '@ | Out-File -Encoding ascii "${PSHOME}\Microsoft.PowerShell_profile.ps1"
