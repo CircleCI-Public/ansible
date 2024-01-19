@@ -24,7 +24,6 @@
         marker_end: "RUBY END"
         block: |
           export PATH="{{ ruby_dir }}/bin:$PATH"
-          eval "$(rbenv init -)"
     - name: Configure .gemrc
       ansible.builtin.blockinfile:
         path: "{{ gemrc_file }}"

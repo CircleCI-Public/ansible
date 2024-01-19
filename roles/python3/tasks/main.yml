@@ -43,8 +43,6 @@
           export PYENV_ROOT="{{ pyenv_dir }}"
           export PATH=$PYENV_ROOT/bin:$PATH
           export PATH=$PYENV_ROOT/shims:$PATH
-          eval "$(pyenv init --path)"
-          eval "$(pyenv init -)"
 
     - name: Install Python
       become_method: sudo
