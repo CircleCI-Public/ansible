@@ -55,7 +55,7 @@
     - name: Set Pyenv global
       become_method: sudo
       ansible.builtin.shell:
-        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python2_version }} {{ python3_version }}"
+        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv global {{ python3_version }} {{ python2_version }}"
 
     - name: Install Pip Packages
       become_method: sudo
