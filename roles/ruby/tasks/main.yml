@@ -23,8 +23,9 @@
         marker_begin: "RUBY START"
         marker_end: "RUBY END"
         block: |
+          export RBENV_ROOT="{{ ruby_dir }}"
           export PATH="{{ ruby_dir }}/bin:$PATH"
-          eval "$(rbenv init -)"
+          export PATH="{{ ruby_dir }}/shims:$PATH"
     - name: Configure .gemrc
       ansible.builtin.blockinfile:
         path: "{{ gemrc_file }}"
