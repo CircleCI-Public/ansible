@@ -73,16 +73,27 @@
     ansible.builtin.lineinfile:
       path: "/etc/sudoers.d/aws-sudoers"
       line: "%aws-sudoers ALL=(ALL:ALL) NOPASSWD:ALL"
+      mode: 0440
       create: yes
 
-  - name: Ensure circleci user has passwordless sudo
-    ansible.builtin.blockinfile:
+  - name: Ensure circleci user has passwordless
+    ansible.builtin.lineinfile:
       path: "/etc/sudoers.d/circleci"
-      block: |
-        circleci ALL=(ALL:ALL) NOPASSWD:ALL
-        Defaults rlimit_core=default
-      mode: 0400
+      line: circleci ALL=(ALL:ALL) NOPASSWD:ALL
+      mode: 0440
       create: yes
+
+  - name: Ensure circleci user has passwordless and ulimit fix for jammy
+    ansible.builtin.lineinfile:
+      path: "/etc/sudoers.d/circleci"
+      line: Defaults rlimit_core=default
+      mode: 0440
+      create: yes
+    when: ansible_facts['distribution_major_version'] != "20"
+
+  - name: Test sudoers files
+    ansible.builtin.shell:
+      sudo visudo -c
 
   - name: Reset connection so new user groups work
     ansible.builtin.meta: reset_connection
