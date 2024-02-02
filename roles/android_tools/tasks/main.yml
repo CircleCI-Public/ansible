@@ -20,4 +20,4 @@
 
 - name: Install fastlane
   ansible.builtin.shell: |
-    rbenv exec gem install fastlane --version {{ fastlane_version }} --no-document
+    sudo gem install fastlane --version {{ fastlane_version }} --no-document
