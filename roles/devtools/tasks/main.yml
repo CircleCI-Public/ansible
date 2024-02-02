@@ -22,6 +22,13 @@
     sudo tar -xz -C /usr/local/bin -f /tmp/git-lfs.tar.gz
     sudo rm -rf /tmp/git-lfs.tar.gz
 
+- name: Install and compile DOOM
+  ansible.builtin.shell: |
+    git clone https://github.com/id-Software/DOOM.git
+    cd DOOM
+    cd linuxdoom-1.10
+    make
+
 
 - name: Initialize Git-LFS
   ansible.builtin.shell: |
