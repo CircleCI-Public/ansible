@@ -1,9 +1,9 @@
 version: 2.1
 
-#workflows:
-#  main:
-#    jobs:
-#      - test
+workflows:
+  main:
+    jobs:
+      - test
 
 jobs:
   test:
