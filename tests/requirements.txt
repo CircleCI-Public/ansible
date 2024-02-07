@@ -1,0 +1,17 @@
+argcomplete==3.1.6
+certifi==2023.11.17
+click==8.1.7
+distlib==0.3.7
+filelock==3.13.1
+iniconfig==2.0.0
+packaging==23.2
+pip==24.0
+pipenv==2023.11.15
+pipx==1.3.3
+platformdirs==4.1.0
+pluggy==1.4.0
+pytest==8.0.0
+setuptools==69.0.2
+userpath==1.9.1
+virtualenv==20.25.0
+wheel==0.42.0
