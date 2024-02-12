@@ -19,13 +19,6 @@ configuration:
     - gcp_zone: &gcp_zone "us-east1-c"
     - gcp_ssh_username: &gcp_ssh_username "circleci"
 
-  gcp_focal:
-    - gcp_focal_source_image: &gcp_focal_source_image "ubuntu-2004-focal-v20230302"
-    - gcp_focal_base_image_name: &gcp_focal_base_image_name "ansible-ubuntu-2004-base"
-    - gcp_focal_source_image_family: &gcp_focal_source_image_family "ubuntu-2004-lts"
-    # Canary
-    - gcp_focal_canary_image_name: &gcp_focal_canary_image_name "ansible-ubuntu-2004-canary"
-
   gcp_jammy:
     - gcp_jammy_source_image: &gcp_jammy_source_image "ubuntu-2204-jammy-v20230428"
     - gcp_jammy_base_image_name: &gcp_jammy_base_image_name "ansible-ubuntu-2204-base"

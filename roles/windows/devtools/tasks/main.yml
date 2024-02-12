@@ -97,7 +97,6 @@
     state: '{{ package_state }}'
     version: '{{ docker_version }}'
     force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
 
 - name: Install docker with new script
   ansible.windows.win_powershell:
