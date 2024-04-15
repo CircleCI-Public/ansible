@@ -24,15 +24,15 @@
     echo "export ANDROID_SDK_ROOT=${ANDROID_HOME}" >> ${CIRCLECI_HOME}/.circlerc
     echo "export ADB_INSTALL_TIMEOUT=120" >> ${CIRCLECI_HOME}/.circlerc
     echo "export PATH=${ANDROID_HOME}/emulator:${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/platform-tools/bin:\$PATH" >> ${CIRCLECI_HOME}/.circlerc
-    
+
     DEFAULT_JAVA={{ default_java_version }}
-    echo "export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
-    echo "export JDK_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
-    echo "export JRE_HOME=/usr/lib/jvm/java-17-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export JAVA_HOME=/usr/lib/jvm/java-{{ default_java_version }}-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export JDK_HOME=/usr/lib/jvm/java-{{ default_java_version }}-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
+    echo "export JRE_HOME=/usr/lib/jvm/java-{{ default_java_version }}-openjdk-amd64" >> ${CIRCLECI_HOME}/.circlerc
 
 - name: accept android licenses
   ansible.builtin.shell: |
-    yes | {{ cmdline_tools_root }}/sdkmanager --licenses 
+    yes | {{ cmdline_tools_root }}/sdkmanager --licenses
 
 - name: install android tools
   ansible.builtin.shell: |
