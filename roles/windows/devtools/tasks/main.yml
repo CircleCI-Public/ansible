@@ -1,3 +1,10 @@
+- name: Install python 3.x
+  win_chocolatey:
+    name: python
+    state: '{{ package_state }}'
+    version: '{{ python_3_version }}'
+    force: yes
+
 - name: Install nunit-console-runner
   win_chocolatey:
     name: nunit-console-runner
@@ -38,13 +45,6 @@
     name: openjdk
     state: '{{ package_state }}'
     version: '{{ openjdk_version }}'
-    force: yes
-
-- name: Install python 3.x
-  win_chocolatey:
-    name: python
-    state: '{{ package_state }}'
-    version: '{{ python_3_version }}'
     force: yes
 
 # - name: Install miniconda3
