@@ -44,6 +44,11 @@
           export PATH=$PYENV_ROOT/bin:$PATH
           export PATH=$PYENV_ROOT/shims:$PATH
 
+    - name: Check pyenv version
+      become_method: sudo
+      ansible.builtin.shell:
+        "sudo -H -i -u {{ circleci_user }} {{ pyenv_dir }}/bin/pyenv --version"
+
     - name: Install Python
       become_method: sudo
       ansible.builtin.shell:
