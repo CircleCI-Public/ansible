@@ -2,15 +2,31 @@
   win_chocolatey:
     name: dotnet-6.0-sdk
     state: '{{ package_state }}'
-    version: '{{ dotnet_sdk_version_6}}'
+    version: '{{ dotnet_sdk_version_6 }}'
     force: yes
 
 - name: Install dotnet sdk 7
   win_chocolatey:
     name: dotnet-7.0-sdk
     state: '{{ package_state }}'
-    version: '{{ dotnet_sdk_version_7}}'
+    version: '{{ dotnet_sdk_version_7 }}'
     force: yes
+
+- name: Install netcore-sdk2-2
+  win_chocolatey:
+    name: dotnetcore-sdk
+    state: '{{ package_state }}'
+    version: '{{ netcore_sdk2_2_version }}'
+    force: yes
+  when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
+
+- name: Install netcore-sdk5-0
+  win_chocolatey:
+    name: dotnet-5.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ netcore_sdk5_0_version }}'
+    force: yes
+  when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
 #- name: Install Sql Server Developer Edition
 #  win_chocolatey:
