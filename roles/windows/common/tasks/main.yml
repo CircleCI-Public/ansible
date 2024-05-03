@@ -7,6 +7,12 @@
 
 - name: install Build Agent Prerequisites
   include_tasks: 'roles/windows/buildagent_prereq/tasks/main.yml'
+  
+# https://docs.ansible.com/ansible/latest/collections/chocolatey/chocolatey/win_chocolatey_feature_module.html#ansible-collections-chocolatey-chocolatey-win-chocolatey-feature-module
+- name: Enable Chocolatey Global Confirmation
+  win_chocolatey_feature:
+    name: allowGlobalConfirmation
+    state: enabled
 
 - name: load Chocolatey Profile
   ansible.windows.win_powershell:
