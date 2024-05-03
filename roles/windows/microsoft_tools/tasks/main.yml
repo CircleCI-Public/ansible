@@ -20,11 +20,11 @@
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
-- name: Install netcore-sdk5-0
+- name: Install dotnet-sdk5-0
   win_chocolatey:
     name: dotnet-5.0-sdk
     state: '{{ package_state }}'
-    version: '{{ netcore_sdk5_0_version }}'
+    version: '{{ dotnet_sdk_version_5 }}'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2019 Datacenter" in win_version.output'
 
