@@ -1,3 +1,13 @@
+packer {
+  required_plugins {
+    ansible = {
+      # this version contains a fix for the SSH extra arguments quoting issues
+      version = ">= 1.1.1"
+      source  = "github.com/hashicorp/ansible"
+    }
+  }
+}
+
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
