@@ -197,10 +197,11 @@ jobs:
             no_output_timeout: 120m
             command: |
               source packer_vars && sudo cp packer_vars /tmp/workspace
+              packer init
               packer build \
-              -machine-readable \
-              -only=googlecompute.gcp-canary-base \
-              packer/
+                -machine-readable \
+                -only=googlecompute.gcp-canary-base \
+                packer/
         - run:
             name: Persist files
             command: |

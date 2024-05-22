@@ -45,6 +45,7 @@
     - name: Add git-core repository from PPA
       ansible.builtin.apt_repository:
         repo: ppa:git-core/ppa
+      when: ansible_facts['distribution_major_version'] != "24" # git-core/ppa does not install on 24.04
 
     - name: Install core packages
       ansible.builtin.apt:
