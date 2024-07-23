@@ -22,9 +22,10 @@
         chdir: "{{ nvm_dir }}"
 
     - name: Download NVM
-      ansible.builtin.git:
-        repo: https://github.com/nvm-sh/nvm.git
-        dest: "{{ nvm_dir }}"
+      ansible.builtin.shell:
+        git clone https://github.com/nvm-sh/nvm .
+      args:
+        chdir: "{{ nvm_dir }}"
 
     - name: Set tag to latest
       changed_when: false
