@@ -45,6 +45,9 @@
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  become: true
+  become_user: Administrator
+  become_method: runas
 
 - name: Install Visual Studio 2022 Build Tools
   win_chocolatey:
@@ -54,6 +57,9 @@
     version: '{{ visualstudio_buildtools_version }}'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  become: true
+  become_user: Administrator
+  become_method: runas
 
 - name: Ensure that msbuild is in the path
   ansible.windows.win_path:
