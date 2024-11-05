@@ -43,6 +43,10 @@
     version: '4.8.1'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  become: true
+  become_user: Administrator
+  become_method: runas
+
 
 - name: Install Visual Studio 2022 Community Edition
   win_chocolatey:
