@@ -4,8 +4,9 @@
     reboot: yes
     reboot_timeout: 7200
     reject_list:
-      - 5019081
-      - 4052623
-      - 5034439
-      - 2267602 # (maybe) causing an update loop
+      # - 5019081 # Something for kerberos, maybe (?)
+      # - 4052623 # i think this is windows defender
+      - 5034439 # this one tends to fails and microsoft says ignore it, seems related to WinRE
+      # - 2267602 # (maybe) causing an update loop. 
+      # The loops could be normal, related to antivirus as well, I'm enabling it
     skip_optional: true
