@@ -40,7 +40,6 @@
     name: dotnetfx
     state: '{{ package_state }}'
     timeout: 5400
-    version: '4.8.1'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
   become: true
