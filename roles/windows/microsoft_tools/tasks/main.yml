@@ -46,6 +46,11 @@
   become_user: Administrator
   become_method: runas
 
+- name: Install vcredist 140
+  ansible.windows.win_powershell:
+    script: |
+      choco install vcredist140 --force --yes
+
 # - name: Install Visual Studio 2022 Community Edition
 #   win_chocolatey:
 #     name: visualstudio2022community

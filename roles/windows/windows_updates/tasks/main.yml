@@ -9,4 +9,4 @@
       - 5034439 # this one tends to fails and microsoft says ignore it, seems related to WinRE
       # - 2267602 # (maybe) causing an update loop. 
       # The loops could be normal, related to antivirus as well, I'm enabling it
-    skip_optional: true
+    skip_optional: false
