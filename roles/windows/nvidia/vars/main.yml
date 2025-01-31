@@ -1,0 +1,3 @@
+---
+package_state: present
+cuda_version: "12.7"
