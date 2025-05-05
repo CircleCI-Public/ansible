@@ -45,6 +45,13 @@
       state: absent
     when: "old_user.stdout != 'circleci'"
 
+  - name: Check if circleci user exists with correct properties
+    ansible.builtin.shell: |
+      getent passwd circleci | grep -q ":1001:"
+    register: circleci_user_check
+    ignore_errors: true
+    changed_when: false
+
   - name: Ensure circleci user exists
     ansible.builtin.user:
       name: "{{ circleci_user }}"
@@ -60,6 +67,7 @@
       password: ''
       password_lock: yes
       state: present
+    when: circleci_user_check.rc != 0
 
   - name: Ensure .ssh directory exists for circleci user
     ansible.builtin.file:
