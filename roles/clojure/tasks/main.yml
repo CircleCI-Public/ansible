@@ -3,6 +3,8 @@
     - name: Download clojure
       ansible.builtin.shell: |
         sudo curl -sSL -o /usr/local/bin/lein https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs
+      args:
+        stdin_add_newline: false
 
     - name: Change permissions on /usr/local/bin/lein
       ansible.builtin.file:
@@ -13,5 +15,7 @@
 
     - name: Force lein dependencies to download
       ansible.builtin.shell: lein -v
+      args:
+        stdin_add_newline: false
 
   become: true
