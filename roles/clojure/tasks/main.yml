@@ -2,7 +2,7 @@
 - block:
     - name: Download clojure
       ansible.builtin.shell: |
-        sudo curl -sSL -o /usr/local/bin/lein https://raw.github.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs
+        sudo curl -sSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs
       args:
         stdin_add_newline: false
 
