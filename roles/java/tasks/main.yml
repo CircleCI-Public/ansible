@@ -39,6 +39,8 @@
     ansible.builtin.get_url:
       url: "https://archive.apache.org/dist/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz"
       dest: "/tmp/maven.tar.gz"
+      validate_certs: false
+      timeout: 30
 
   - name: Extract maven
     ansible.builtin.unarchive:
