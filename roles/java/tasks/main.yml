@@ -35,12 +35,18 @@
 
 # maven and gradle are consistently used with gradle, therefore we will include them together
 - block:
+  - name: Check if maven already downloaded
+    ansible.builtin.stat:
+      path: "/tmp/maven.tar.gz"
+    register: maven_exists
+
   - name: Download maven
     ansible.builtin.get_url:
       url: "https://archive.apache.org/dist/maven/maven-3/{{maven_version}}/binaries/apache-maven-{{maven_version}}-bin.tar.gz"
       dest: "/tmp/maven.tar.gz"
-      validate_certs: no
       timeout: 30
+      validate_certs: false
+    when: not maven_exists.stat.exists
 
   - name: Extract maven
     ansible.builtin.unarchive:
