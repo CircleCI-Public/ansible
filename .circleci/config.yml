@@ -175,7 +175,14 @@ jobs:
             components: "beta"
         - run: |
             gcloud auth login --brief --cred-file /tmp/account.json
-        - run: sudo apt-get update
+        - run:
+            name: sudo apt-get update
+            command: |
+              # Remove unused repositories that cause apt update failures
+              sudo rm -f /etc/apt/sources.list.d/kubernetes.list
+              sudo rm -f /etc/apt/sources.list.d/salt.list
+              sudo rm -f /etc/apt/sources.list.d/*salt*
+              sudo apt-get update
         - run: mkdir -p /tmp/workspace
         - run:
             name: Configure Packer Variables
@@ -197,7 +204,7 @@ jobs:
             no_output_timeout: 120m
             command: |
               source packer_vars && sudo cp packer_vars /tmp/workspace
-              packer init
+              packer init packer/
               packer build \
                 -machine-readable \
                 -only=googlecompute.gcp-canary-base \
