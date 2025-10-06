@@ -27,9 +27,7 @@
     ],
     "java_versions": [
       "8",
-      "17",
-      "21",
-      "25"
+      "17"
     ],
     "platforms": [
       "android-34",
