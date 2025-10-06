@@ -5,4 +5,3 @@ java_versions:
   - "{{ java8_version }}"
   - "{{ java17_version }}"
   - "{{ java21_version }}"
-  - "{{ java25_version }}"
