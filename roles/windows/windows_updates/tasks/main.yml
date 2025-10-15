@@ -1,11 +1,15 @@
 - name: Install Critical, Security, and Update Rollups
   ansible.windows.win_updates:
     category_names: "*"
-    reboot: yes
-    reboot_timeout: 7200
+    reboot: false
     reject_list:
       - 5019081
       - 4052623
       - 5034439
       - 2267602 # (maybe) causing an update loop
     skip_optional: true
+
+- name: Reboot the machine
+  ansible.windows.win_reboot:
+    reboot_timeout: 7200
+  when: ansible_facts.windows_update_reboot_required

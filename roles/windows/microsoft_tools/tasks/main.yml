@@ -40,7 +40,7 @@
   win_chocolatey:
     name: visualstudio2022community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.VisualStudio.Component.IncrediBuild --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     timeout: 5400
     version: '{{ visualstudio_community_edition_version }}'
     force: yes
@@ -50,7 +50,7 @@
   win_chocolatey:
     name: visualstudio2022buildtools
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.VisualStudio.Component.IncrediBuild --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
     version: '{{ visualstudio_buildtools_version }}'
     force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
