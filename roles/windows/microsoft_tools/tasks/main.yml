@@ -35,25 +35,31 @@
 #    package_params: '"/ACTION:INSTALL /IACCEPTSQLSERVERLICENSETERMS /SQLSYSADMINACCOUNTS:{{ ansible_env.COMPUTERNAME }}\\circleci /INSTANCEID:MSSQLSERVER /INSTANCENAME:MSSQLSERVER /UPDATEENABLED:FALSE /SECURITYMODE:SQL /SAPWD:circleci /QUIET"'
 #    version: '{{ sqlserver_devedition_version }}'
 
+- name: Install dotnetfx
+  win_chocolatey:
+    name: dotnetfx
+    state: '{{ package_state }}'
+    timeout: 5400
+    force: yes
+  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  become: true
+  become_user: Administrator
+  become_method: runas
+
+- name: Install vcredist 140
+  ansible.windows.win_powershell:
+    script: |
+      choco install vcredist140 --force --yes
 
 - name: Install Visual Studio 2022 Community Edition
-  win_chocolatey:
-    name: visualstudio2022community
-    state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.VisualStudio.Component.IncrediBuild --includeRecommended --includeOptional --quiet --locale en-US'
-    timeout: 5400
-    version: '{{ visualstudio_community_edition_version }}'
-    force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  ansible.windows.win_powershell:
+    script: |
+      choco install visualstudio2022community --params "--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US" --yes --timeout 0 --force
 
 - name: Install Visual Studio 2022 Build Tools
-  win_chocolatey:
-    name: visualstudio2022buildtools
-    state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.VisualStudio.Component.IncrediBuild --includeRecommended --includeOptional --quiet --locale en-US'
-    version: '{{ visualstudio_buildtools_version }}'
-    force: yes
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+  ansible.windows.win_powershell:
+    script: |
+      choco install visualstudio2022buildtools --params "--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US" --yes --timeout 0 --force
 
 - name: Ensure that msbuild is in the path
   ansible.windows.win_path:
