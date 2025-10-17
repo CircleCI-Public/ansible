@@ -8,4 +8,5 @@
       - 4052623
       - 5034439
       - 2267602 # (maybe) causing an update loop
+      - 890830 # (maybe) causing an update loop
     skip_optional: true
