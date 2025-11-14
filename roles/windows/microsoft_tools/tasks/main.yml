@@ -40,11 +40,12 @@
     name: dotnetfx
     state: '{{ package_state }}'
     timeout: 5400
-    force: yes
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
-  become: true
-  become_user: Administrator
-  become_method: runas
+  vars:
+    ansible_become: true
+    ansible_become_method: runas
+    ansible_become_user: circleci-admin
+    ansible_become_password: '{{ cci_admin_pwd }}'
 
 - name: Install vcredist 140
   ansible.windows.win_powershell:
