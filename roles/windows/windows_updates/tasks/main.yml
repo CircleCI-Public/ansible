@@ -1,7 +1,7 @@
 - name: Install Critical, Security, and Update Rollups
   ansible.windows.win_updates:
     category_names: "*"
-    reboot: yes
+    reboot: no
     reboot_timeout: 7200
     reject_list:
       - 5019081
