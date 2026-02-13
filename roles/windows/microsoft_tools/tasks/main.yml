@@ -147,3 +147,4 @@
 
 - name: Reboot the machine
   ansible.windows.win_reboot:
+  when: ansible_env.PROCESSOR_ARCHITECTURE != "ARM64"
