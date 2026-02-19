@@ -2,7 +2,7 @@
   ansible.windows.win_updates:
     category_names: "*"
     reboot: no
-    reboot_timeout: 7200
+    reboot_timeout: 3600
     reject_list:
       - 5019081
       - 4052623
@@ -11,4 +11,6 @@
       - 890830 # (maybe) causing an update loop
       - 5070881 # (maybe) causing an update loop
       - 5007651 # (maybe) causing an update loop
+      - 5077181 # 2026-02 Security Update — known-broken, fails with 0x80240035 (WU_E_UPDATE_NOT_PROCESSED)
+      - 5066128 # 2025-10 .NET Framework 3.5/4.8.1 for Win11 25H2 ARM64 — fails with 0x80240035
     skip_optional: true
