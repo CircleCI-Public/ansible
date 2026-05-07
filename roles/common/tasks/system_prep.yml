@@ -97,7 +97,7 @@
       line: Defaults rlimit_core=default
       mode: 0440
       create: yes
-    when: ansible_facts['distribution_major_version'] != "20"
+    when: ansible_facts['distribution_major_version'] not in ["20", "26"]
 
   - name: Test sudoers files
     ansible.builtin.shell:
