@@ -88,21 +88,14 @@
       when:
         - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
 
+    # linux-modules-extra-gcp is not published for Ubuntu 26.04; ignore failure on that release.
     - name: Ensure extra GCP modules are installed
       ansible.builtin.apt:
         pkg:
           - linux-modules-extra-gcp
+      ignore_errors: true
       when:
         - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
-        - ansible_facts['distribution_major_version'] != "26"
-
-    # linux-modules-extra-gcp metapackage is not published for Ubuntu 26.04;
-    # install the versioned kernel-specific package directly instead.
-    - name: Ensure extra GCP modules are installed (26.04)
-      ansible.builtin.shell: apt-get install -y linux-modules-extra-$(uname -r)
-      when:
-        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
-        - ansible_facts['distribution_major_version'] == "26"
 
     - name: Configure ulimit
       ansible.builtin.blockinfile:
