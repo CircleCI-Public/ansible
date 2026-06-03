@@ -77,8 +77,8 @@
 
     - name: Grab uuid for extra kernel modules
       ansible.builtin.shell: |
-        dmidecode --string system-uuid
-      register: system_uuid
+        dmidecode --string bios-vendor
+      register: system_vendor
       ignore_errors: true
 
     - name: Ensure extra AWS modules are installed
@@ -86,7 +86,7 @@
         pkg:
           - linux-modules-extra-aws
       when:
-        - system_uuid.stdout == "ec2*" or system_uuid.stdout == "EC2*"
+        - system_vendor.stdout == "Amazon EC2" or system_vendor.stdout == "Vultr"
 
     # linux-modules-extra-gcp is not published for Ubuntu 26.04; ignore failure on that release.
     - name: Ensure extra GCP modules are installed
@@ -95,7 +95,7 @@
           - linux-modules-extra-gcp
       ignore_errors: true
       when:
-        - system_uuid.stdout != "ec2*" or system_uuid.stdout != "EC2*"
+        - system_vendor.stdout != "Amazon EC2" or system_vendor.stdout != "Vultr"
 
     - name: Configure ulimit
       ansible.builtin.blockinfile:
