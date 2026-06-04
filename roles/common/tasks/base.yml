@@ -81,10 +81,12 @@
       register: system_vendor
       ignore_errors: true
 
+    # linux-modules-extra-aws is not published for Ubuntu 26.04; ignore failure on that release.
     - name: Ensure extra AWS modules are installed
       ansible.builtin.apt:
         pkg:
           - linux-modules-extra-aws
+      ignore_errors: true
       when:
         - system_vendor.stdout == "Amazon EC2" or system_vendor.stdout == "Vultr"
 
