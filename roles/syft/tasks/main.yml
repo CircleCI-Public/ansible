@@ -25,4 +25,4 @@
 - name: Generate SBOM
   become: true
   ansible.builtin.shell: |
-    sbom generate "{{ image_name }}" "{{ image_tag }}"
+    sbom generate "{{ image_name }}" "{{ image_tag }}" > /sbom/sbom-generate.log 2>&1
