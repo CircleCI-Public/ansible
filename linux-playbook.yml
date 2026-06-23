@@ -1,6 +1,16 @@
 ---
 - name: Configure linux node
   hosts: all
+
+  pre_tasks:
+    - name: Suppress apt progress output during provisioning
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/99-cci-quiet
+        content: |
+          quiet "1";
+        mode: '0644'
+
   roles:
     - common
     # - gather_facts
@@ -34,3 +44,9 @@
       ansible.builtin.lineinfile:
         path: "{{ circleci_home }}/.bashrc"
         line: if ! echo $- | grep -q "i" && [ -n "$BASH_ENV" ] && [ -f "$BASH_ENV" ]; then . "$BASH_ENV"; fi
+
+    - name: Remove playbook-time apt quiet override
+      become: true
+      ansible.builtin.file:
+        path: /etc/apt/apt.conf.d/99-cci-quiet
+        state: absent

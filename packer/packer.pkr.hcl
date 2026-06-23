@@ -5,6 +5,10 @@ packer {
       version = ">= 1.1.1"
       source  = "github.com/hashicorp/ansible"
     }
+    vultr = {
+       version = ">=v2.3.2"
+       source = "github.com/vultr/vultr"
+     }
   }
 }
 

@@ -29,6 +29,20 @@
       gid: 1002
       non_unique: yes
 
+  # Some base images (e.g. Vultr's Ubuntu 26.04, where the default user is
+  # `linuxuser`) do not include the `ubuntu` or `netdev` groups that the AWS/GCP
+  # cloud images ship with. Create them defensively so the supplementary groups
+  # below resolve on every provider.
+  - name: Ensure ubuntu group exists
+    group:
+      name: ubuntu
+      state: present
+
+  - name: Ensure netdev group exists
+    group:
+      name: netdev
+      state: present
+
   - name: Register old user
     become: true
     ansible.builtin.shell: |
