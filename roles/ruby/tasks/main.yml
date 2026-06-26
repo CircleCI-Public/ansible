@@ -50,8 +50,20 @@
         git clone https://github.com/rbenv/ruby-build.git "{{ ruby_dir }}"/plugins/ruby-build
         PREFIX=/usr/local sudo "{{ ruby_dir }}/plugins/ruby-build/install.sh"
 
+    # Ruby 4.x ships a Rust-based YJIT whose target/ tree plus the partial-link
+    # libruby.o easily exceeds 500 MB. On small VMs (e.g. Vultr vc2-1c-1gb)
+    # /tmp is a tmpfs sized at ~50% of RAM, which fills up mid-link with
+    # "No space left on device". Route ruby-build through /var/tmp (disk-backed).
+    - name: Ensure on-disk build dir for ruby-build exists
+      ansible.builtin.file:
+        path: /var/tmp/ruby-build
+        owner: "{{ circleci_user }}"
+        group: "{{ circleci_user }}"
+        mode: 01777
+        state: directory
+
     - name: Install ruby and set as global
       ansible.builtin.shell:
-        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc && rbenv install {{ ruby_version }} && rbenv global {{ ruby_version }}"
+        sudo -H -i -u {{ circleci_user }} /bin/bash -c "source /home/circleci/.circlerc && export TMPDIR=/var/tmp/ruby-build RUBY_BUILD_BUILD_PATH=/var/tmp/ruby-build && rbenv install {{ ruby_version }} && rbenv global {{ ruby_version }}"
 
   become: true
