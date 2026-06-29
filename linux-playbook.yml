@@ -3,6 +3,28 @@
   hosts: all
 
   pre_tasks:
+    # On small VMs (e.g. Vultr vc2-1c-1gb with a 25 GB disk) /tmp is a tmpfs
+    # sized at ~50% of RAM, so it fills up mid-build (ruby YJIT compile, npm
+    # installs, ansible module uploads via ansible_remote_tmp=/tmp, ...).
+    # Redirect /tmp onto the root filesystem so the build can use the full
+    # disk for scratch space. Torn down again in post_tasks so the captured
+    # image's /tmp comes up clean on first boot from the normal tmpfs fstab.
+    - name: Bind-mount /tmp onto disk when /tmp is tmpfs
+      become: true
+      ansible.builtin.shell: |
+        set -e
+        fstype=$(findmnt -n -o FSTYPE /tmp || true)
+        src=$(findmnt -n -o SOURCE /tmp 2>/dev/null || true)
+        if [ "$fstype" = "tmpfs" ] && ! echo "$src" | grep -q cci-build-tmp; then
+          mkdir -p /var/tmp/cci-build-tmp
+          chmod 1777 /var/tmp/cci-build-tmp
+          mount --bind /var/tmp/cci-build-tmp /tmp
+          chmod 1777 /tmp
+          echo CHANGED
+        fi
+      register: tmp_bind_mount
+      changed_when: "'CHANGED' in tmp_bind_mount.stdout"
+
     - name: Suppress apt progress output during provisioning
       become: true
       ansible.builtin.copy:
@@ -50,3 +72,19 @@
       ansible.builtin.file:
         path: /etc/apt/apt.conf.d/99-cci-quiet
         state: absent
+
+    # Pair of the /tmp bind-mount set up in pre_tasks: unmount and remove the
+    # scratch dir so the captured image doesn't carry build leftovers under
+    # /var/tmp/cci-build-tmp. Lazy umount (-l) detaches even if something
+    # still has a file open in /tmp at this point.
+    - name: Tear down /tmp bind-mount
+      become: true
+      ansible.builtin.shell: |
+        set -e
+        if findmnt -n -o SOURCE /tmp 2>/dev/null | grep -q cci-build-tmp; then
+          umount -l /tmp
+          rm -rf /var/tmp/cci-build-tmp
+          echo CHANGED
+        fi
+      register: tmp_unmount
+      changed_when: "'CHANGED' in tmp_unmount.stdout"
