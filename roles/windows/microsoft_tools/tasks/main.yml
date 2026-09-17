@@ -80,7 +80,6 @@
   ansible.windows.win_path:
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
-  when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
 
 - name: Ensure that VS 2026 msbuild is in the path
   ansible.windows.win_path:

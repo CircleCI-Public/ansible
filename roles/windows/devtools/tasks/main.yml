@@ -81,12 +81,6 @@
     nvm install {{ nodejs_version }}
     nvm use {{ nodejs_version }}
 
-- name: Register a variable
-  ansible.windows.win_powershell:
-    script: |
-      systeminfo | findstr /B /C:"OS Name"
-  register: win_version
-
 - name: Install docker with new script
   ansible.windows.win_powershell:
     script: |

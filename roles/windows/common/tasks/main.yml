@@ -1,4 +1,10 @@
 ---
+- name: Register OS version
+  ansible.windows.win_powershell:
+    script: |
+      systeminfo | findstr /B /C:"OS Name"
+  register: win_version
+
 - name: Disable windows services
   include_tasks: 'roles/windows/disable_services/tasks/main.yml'
 

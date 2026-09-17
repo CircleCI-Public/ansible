@@ -12,4 +12,6 @@
       - 890830 # (maybe) causing an update loop
       - 5070881 # (maybe) causing an update loop
       - 5007651 # (maybe) causing an update loop
+      - 5120233 # Aug 2026 security update — reboots mid-install, breaks WinRM
+      - 5120708 # Aug 2026 .NET security update — reboots mid-install, breaks WinRM
     skip_optional: true
