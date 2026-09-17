@@ -1,7 +1,4 @@
 ---
-- name: Install windows updates
-  include_tasks: 'roles/windows/windows_updates/tasks/main.yml'
-
 - name: Disable windows services
   include_tasks: 'roles/windows/disable_services/tasks/main.yml'
 

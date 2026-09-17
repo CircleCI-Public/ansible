@@ -163,6 +163,3 @@
     data: 1
     type: dword
     state: present
-
-- name: Reboot the machine
-  ansible.windows.win_reboot:
