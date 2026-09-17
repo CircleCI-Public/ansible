@@ -69,15 +69,12 @@
     version: '{{ rust_version }}'
     force: yes
 
-- name: Copy nvm-installer
-  ansible.windows.win_copy:
-    src: ../files/nvm-installer.ps1
-    dest: C:\nvm-installer.ps1
-
-- name: Run nvm-installer
-  ansible.windows.win_shell: |
-    $Version = "{{ nvm_version }}"
-    . C:\nvm-installer.ps1 -Version $Version
+- name: Install nvm
+  win_chocolatey:
+    name: nvm
+    state: '{{ package_state }}'
+    version: '{{ nvm_version }}'
+    force: yes
 
 - name: Install node
   ansible.windows.win_shell: |
