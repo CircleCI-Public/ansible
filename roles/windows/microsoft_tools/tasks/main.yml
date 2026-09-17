@@ -53,20 +53,39 @@
       choco install vcredist140 --force --yes
 
 - name: Install Visual Studio 2022 Community Edition
-  ansible.windows.win_powershell:
-    script: |
-      choco install visualstudio2022community --params "--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US" --yes --timeout 0 --force
+  win_chocolatey:
+    name: visualstudio2022community
+    state: '{{ package_state }}'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    timeout: 0
+    force: yes
 
 - name: Install Visual Studio 2022 Build Tools
-  ansible.windows.win_powershell:
-    script: |
-      choco install visualstudio2022buildtools --params "--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US" --yes --timeout 0 --force
+  win_chocolatey:
+    name: visualstudio2022buildtools
+    state: '{{ package_state }}'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    timeout: 0
+    force: yes
 
-- name: Ensure that msbuild is in the path
+- name: Install Visual Studio 2026 Build Tools
+  win_chocolatey:
+    name: visualstudio2026buildtools
+    state: '{{ package_state }}'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    timeout: 0
+    force: yes
+
+- name: Ensure that VS 2022 msbuild is in the path
   ansible.windows.win_path:
     elements:
     - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
   when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+
+- name: Ensure that VS 2026 msbuild is in the path
+  ansible.windows.win_path:
+    elements:
+    - 'C:\Program Files\Microsoft Visual Studio\2026\BuildTools\MSBuild\Current\Bin'
 
 - name: Install Visual Studio 2019 Community Edition
   win_chocolatey:
