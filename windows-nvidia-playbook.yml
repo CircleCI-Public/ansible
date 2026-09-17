@@ -6,6 +6,9 @@
     - role: windows/create_users
       tags:
         - 'create_users'
+    - role: windows/windows_updates
+      tags:
+        - 'windows_updates'
     - role: windows/common
       tags:
         - 'common'

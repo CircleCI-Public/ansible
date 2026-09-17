@@ -1,8 +1,9 @@
 - name: Install Critical, Security, and Update Rollups
   ansible.windows.win_updates:
-    category_names: "*"
+    category_names:
+      - CriticalUpdates
+      - SecurityUpdates
     reboot: no
-    reboot_timeout: 7200
     reject_list:
       - 5019081
       - 4052623
@@ -14,10 +15,3 @@
       - 5120233 # Aug 2026 security update — reboots mid-install, breaks WinRM
       - 5120708 # Aug 2026 .NET security update — reboots mid-install, breaks WinRM
     skip_optional: true
-  register: update_result
-
-- name: Reboot after updates if required
-  ansible.windows.win_reboot:
-    reboot_timeout: 7200
-    post_reboot_delay: 60
-  when: update_result.reboot_required | default(false)

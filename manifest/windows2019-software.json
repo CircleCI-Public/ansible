@@ -22,7 +22,7 @@
     "rust_version": "1.68.0",
     "docker_version": "20.10.24",
     "docker_desktop_version": "4.19.0",
-    "nvm_version": "1.1.9",
+    "nvm_version": "1.2.2",
     "nodejs_dir": "C:\\Program Files\\nodejs",
     "dotnet_sdk_version_6": "6.0.410",
     "dotnet_sdk_version_7": "7.0.304",

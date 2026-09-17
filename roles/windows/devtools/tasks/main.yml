@@ -69,40 +69,20 @@
     version: '{{ rust_version }}'
     force: yes
 
-- name: Copy nvm-installer
-  ansible.windows.win_copy:
-    src: ../files/nvm-installer.ps1
-    dest: C:\nvm-installer.ps1
-
-- name: Run nvm-installer
-  ansible.windows.win_shell: |
-    $Version = "{{ nvm_version }}"
-    . C:\nvm-installer.ps1 -Version $Version
+- name: Install nvm
+  win_chocolatey:
+    name: nvm
+    state: '{{ package_state }}'
+    version: '{{ nvm_version }}'
+    force: yes
 
 - name: Install node
   ansible.windows.win_shell: |
     nvm install {{ nodejs_version }}
     nvm use {{ nodejs_version }}
 
-- name: Register a variable
-  ansible.windows.win_powershell:
-    script: |
-      systeminfo | findstr /B /C:"OS Name"
-  register: win_version
-
-- name: Install docker engine
-  win_chocolatey:
-    name: docker-engine
-    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
-    state: '{{ package_state }}'
-    version: '{{ docker_version }}'
-    force: yes
-
 - name: Install docker with new script
   ansible.windows.win_powershell:
     script: |
       Invoke-WebRequest -UseBasicParsing "https://raw.githubusercontent.com/microsoft/Windows-Containers/Main/helpful_tools/Install-DockerCE/install-docker-ce.ps1" -o install-docker-ce.ps1
       .\install-docker-ce.ps1 -NoRestart
-
-- name: Docker requires a reboot. Reboot the machine
-  ansible.windows.win_reboot:
