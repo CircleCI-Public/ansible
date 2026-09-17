@@ -87,14 +87,6 @@
       systeminfo | findstr /B /C:"OS Name"
   register: win_version
 
-- name: Install docker engine
-  win_chocolatey:
-    name: docker-engine
-    package_params: 'Containers Microsoft-Hyper-V --source windowsfeatures'
-    state: '{{ package_state }}'
-    version: '{{ docker_version }}'
-    force: yes
-
 - name: Install docker with new script
   ansible.windows.win_powershell:
     script: |
