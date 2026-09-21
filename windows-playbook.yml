@@ -29,6 +29,6 @@
       tags:
         - 'syft'
         - 'build'
-      when: '"OS Name:                   Microsoft Windows Server 2022 Datacenter" in win_version.output'
+      when: "'Windows Server 2022' in ansible_distribution"
   vars_files:
     - group_vars/windows_configure_vars.yml
