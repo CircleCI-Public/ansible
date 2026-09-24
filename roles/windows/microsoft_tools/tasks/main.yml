@@ -12,6 +12,27 @@
     version: '{{ dotnet_sdk_version_7 }}'
     force: yes
 
+- name: Install dotnet sdk 8
+  win_chocolatey:
+    name: dotnet-8.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_8 }}'
+    force: yes
+
+- name: Install dotnet sdk 9
+  win_chocolatey:
+    name: dotnet-9.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_9 }}'
+    force: yes
+
+- name: Install dotnet sdk 10
+  win_chocolatey:
+    name: dotnet-10.0-sdk
+    state: '{{ package_state }}'
+    version: '{{ dotnet_sdk_version_10 }}'
+    force: yes
+
 - name: Install netcore-sdk2-2
   win_chocolatey:
     name: dotnetcore-sdk
@@ -51,7 +72,8 @@
   win_chocolatey:
     name: visualstudio2022community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --quiet --locale en-US'
+    version: '{{ visualstudio_2022_community_version }}'
     timeout: 0
     force: yes
 
@@ -59,7 +81,8 @@
   win_chocolatey:
     name: visualstudio2022buildtools
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --quiet --locale en-US'
+    version: '{{ visualstudio_2022_buildtools_version }}'
     timeout: 0
     force: yes
 
@@ -68,6 +91,7 @@
     name: visualstudio2026buildtools
     state: '{{ package_state }}'
     package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    version: '{{ visualstudio_2026_buildtools_version }}'
     timeout: 0
     force: yes
 
