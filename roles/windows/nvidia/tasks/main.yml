@@ -5,11 +5,17 @@
     state: '{{ package_state }}'
     force: true
 
+- name: Create CUDA installer log directory
+  ansible.windows.win_file:
+    path: C:\cuda-logs
+    state: directory
+
 - name: Install CUDA Toolkit
   win_chocolatey:
     name: cuda
     state: '{{ package_state }}'
     version: '{{ cuda_version }}'
+    install_args: '-log:C:\cuda-logs -loglevel:6'
     force: true
 
 - name: Verify NVIDIA Installation
