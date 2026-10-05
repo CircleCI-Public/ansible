@@ -72,7 +72,7 @@
   win_chocolatey:
     name: visualstudio2022community
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --nocache --quiet --locale en-US'
     version: '{{ visualstudio_2022_community_version }}'
     timeout: 0
     force: yes
@@ -81,7 +81,7 @@
   win_chocolatey:
     name: visualstudio2022buildtools
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --nocache --quiet --locale en-US'
     version: '{{ visualstudio_2022_buildtools_version }}'
     timeout: 0
     force: yes
@@ -90,7 +90,7 @@
   win_chocolatey:
     name: visualstudio2026buildtools
     state: '{{ package_state }}'
-    package_params: '--allWorkloads --includeRecommended --includeOptional --quiet --locale en-US'
+    package_params: '--allWorkloads --includeRecommended --includeOptional --nocache --quiet --locale en-US'
     version: '{{ visualstudio_2026_buildtools_version }}'
     timeout: 0
     force: yes

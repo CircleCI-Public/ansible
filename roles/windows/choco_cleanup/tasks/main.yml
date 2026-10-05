@@ -1,0 +1,5 @@
+---
+- name: Remove Chocolatey download cache
+  ansible.windows.win_file:
+    path: '{{ ansible_env.TEMP }}\chocolatey'
+    state: absent

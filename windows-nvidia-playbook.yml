@@ -33,5 +33,9 @@
         - 'syft'
         - 'build'
       when: "'Windows Server 2022' in ansible_distribution"
+    - role: windows/choco_cleanup
+      tags:
+        - 'choco_cleanup'
+        - 'build'
   vars_files:
     - group_vars/windows_configure_vars.yml
