@@ -103,7 +103,7 @@
 - name: Ensure that VS 2026 msbuild is in the path
   ansible.windows.win_path:
     elements:
-    - 'C:\Program Files\Microsoft Visual Studio\2026\BuildTools\MSBuild\Current\Bin'
+    - 'C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\MSBuild\Current\Bin'
 
 - name: Install Visual Studio 2019 Community Edition
   win_chocolatey:
