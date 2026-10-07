@@ -71,7 +71,7 @@
 
 - name: Install nvm
   win_chocolatey:
-    name: nvm
+    name: nvm.install
     state: '{{ package_state }}'
     version: '{{ nvm_version }}'
     force: yes
