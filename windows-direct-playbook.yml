@@ -1,0 +1,47 @@
+---
+# Same roles and tags as windows-playbook.yml and windows-nvidia-playbook.yml,
+# but every tool is installed from its vendor download (pinned version and
+# checksum) instead of from the Chocolatey community feed. Chocolatey itself
+# stays installed on the image for customers.
+- name: Configure windows node
+  hosts: default
+  connection: local
+  roles:
+    - role: windows/create_users
+      tags:
+        - 'create_users'
+    - role: windows/windows_updates
+      tags:
+        - 'windows_updates'
+    - role: windows_direct/chocolatey
+      tags:
+        - 'chocolatey'
+        - 'build'
+    - role: windows_direct/common
+      tags:
+        - 'common'
+        - 'build'
+    - role: windows_direct/cloudtools
+      tags:
+        - 'cloudtools'
+        - 'build'
+    - role: windows_direct/devtools
+      tags:
+        - 'devtools'
+        - 'build'
+    - role: windows_direct/microsoft_tools
+      tags:
+        - 'ms_tools'
+        - 'build'
+    - role: windows_direct/nvidia
+      tags:
+        - 'nvidia'
+    - role: windows_direct/cleanup
+      tags:
+        - 'cleanup'
+        - 'build'
+        - 'nvidia'
+  vars:
+    direct_download_dir: 'C:\Windows\Temp\direct-installs'
+  vars_files:
+    - group_vars/windows_configure_vars.yml

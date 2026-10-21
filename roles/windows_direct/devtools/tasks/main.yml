@@ -1,0 +1,217 @@
+- name: Install python 3.x
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: python
+      url: '{{ python_3_url }}'
+      checksum: '{{ python_3_sha256 }}'
+      args: '/quiet InstallAllUsers=1 PrependPath=1 TargetDir="{{ python_dir }}"'
+      creates_path: '{{ python_dir }}\python.exe'
+
+# The Chocolatey python package locked the folder down to Administrators and
+# SYSTEM (full) and Users (read), and added a python3.X command.
+- name: Restrict access to the python folder
+  ansible.windows.win_shell: |
+    icacls '{{ python_dir }}' /inheritance:r /grant:r '*S-1-5-32-544:(OI)(CI)F' '*S-1-5-18:(OI)(CI)F' '*S-1-5-32-545:(OI)(CI)RX'
+    icacls '{{ python_dir }}' /setowner '*S-1-5-32-544'
+
+- name: Add the python3.X command
+  ansible.windows.win_copy:
+    src: '{{ python_dir }}\python.exe'
+    dest: '{{ python_dir }}\python{{ python_3_version.split(".")[0:2] | join(".") }}.exe'
+    remote_src: true
+
+- name: Install nunit-console-runner
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: nunit-console
+      url: '{{ nunit_console_runner_url }}'
+      file: 'nunit-console-runner.zip'
+      checksum: '{{ nunit_console_runner_sha256 }}'
+      path_entry: 'C:\tools\nunit-console\tools'
+
+- name: Install nano
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: nano
+      url: '{{ nano_url }}'
+      checksum: '{{ nano_sha256 }}'
+
+- name: Install vim
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: vim
+      url: '{{ vim_url }}'
+      checksum: '{{ vim_sha256 }}'
+      dest: 'C:\tools'
+      path_entry: ''
+
+# vim's own installer writes vim.bat and friends into C:\Windows, the same as
+# the Chocolatey vim package. vim92 itself must not go on PATH: its diff.exe
+# and tee.exe would hide Git's.
+- name: Create the vim batch files
+  ansible.windows.win_command:
+    cmd: '{{ vim_dir }}\install.exe -create-batfiles vim gvim evim view gview vimdiff gvimdiff vimtutor -install-openwith -add-start-menu -create-vimrc -vimrc-remap no -vimrc-behave default -vimrc-compat all -install-popup -install-icons'
+    chdir: '{{ vim_dir }}'
+    creates: 'C:\Windows\vim.bat'
+
+- name: Install jq
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: jq
+      url: '{{ jq_url }}'
+      checksum: '{{ jq_sha256 }}'
+      exe: jq.exe
+
+- name: Install golang
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: golang
+      url: '{{ golang_url }}'
+      checksum: '{{ golang_sha256 }}'
+      creates_path: 'C:\Program Files\Go\bin\go.exe'
+
+- name: Install openjdk (java)
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: openjdk
+      url: '{{ openjdk_url }}'
+      checksum: '{{ openjdk_sha256 }}'
+      dest: 'C:\Program Files\OpenJDK'
+      path_entry: '{{ java_home }}\bin'
+
+- name: Set JAVA_HOME
+  ansible.windows.win_environment:
+    name: JAVA_HOME
+    value: '{{ java_home }}'
+    level: machine
+
+- name: Install ruby
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: ruby
+      url: '{{ ruby_url }}'
+      checksum: '{{ ruby_sha256 }}'
+      args: '/verysilent /allusers /dir="{{ ruby_dir }}" /tasks="assocfiles,noridkinstall,modpath"'
+      creates_path: '{{ ruby_dir }}\bin\ruby.exe'
+
+# The Chocolatey rust package is the GNU toolchain unpacked from the
+# component tarballs (no rustup), so this does the same.
+- name: Download rust components
+  ansible.windows.win_get_url:
+    url: '{{ item.url }}'
+    dest: '{{ direct_download_dir }}\{{ item.url | basename }}'
+    checksum: '{{ item.sha256 }}'
+    checksum_algorithm: sha256
+    url_timeout: 300
+  loop: '{{ rust_components }}'
+  loop_control:
+    label: '{{ item.component }}'
+  register: download_result
+  until: download_result is succeeded
+  retries: 3
+  delay: 30
+
+- name: Create the rust folder
+  ansible.windows.win_file:
+    path: '{{ rust_dir }}'
+    state: directory
+
+- name: Unpack rust components
+  ansible.windows.win_command:
+    cmd: >-
+      C:\Windows\System32\tar.exe -xzf "{{ direct_download_dir }}\{{ item.url | basename }}"
+      -C "{{ rust_dir }}" --strip-components 2 --exclude manifest.in
+      {{ item.url | basename | regex_replace('\.tar\.gz$', '') }}/{{ item.component }}
+  loop: '{{ rust_components }}'
+  loop_control:
+    label: '{{ item.component }}'
+
+- name: Delete the rust downloads
+  ansible.windows.win_file:
+    path: '{{ direct_download_dir }}\{{ item.url | basename }}'
+    state: absent
+  loop: '{{ rust_components }}'
+  loop_control:
+    label: '{{ item.component }}'
+
+- name: Ensure that rust is in the path
+  ansible.windows.win_path:
+    elements:
+      - '{{ rust_dir }}\bin'
+
+- name: Install nvm
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: nvm
+      url: '{{ nvm_url }}'
+      checksum: '{{ nvm_sha256 }}'
+      args: '/VERYSILENT /SUPPRESSMSGBOXES /DIR={{ nvm_home }}'
+      creates_path: '{{ nvm_home }}\nvm.exe'
+
+# The WinRM shell started before nvm set NVM_HOME, NVM_SYMLINK and PATH.
+- name: Install node
+  ansible.windows.win_shell: |
+    $env:NVM_HOME = '{{ nvm_home }}'
+    $env:NVM_SYMLINK = '{{ nvm_symlink }}'
+    $env:Path = "$env:NVM_HOME;$env:NVM_SYMLINK;$env:Path"
+    nvm install {{ nodejs_version }}
+    nvm use {{ nodejs_version }}
+
+- name: Install docker engine
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: docker
+      url: '{{ docker_url }}'
+      checksum: '{{ docker_sha256 }}'
+      dest: 'C:\Program Files'
+      path_entry: '{{ docker_dir }}'
+
+# The same group and daemon.json as the Chocolatey docker-engine package.
+- name: Create the docker-users group
+  ansible.windows.win_group:
+    name: docker-users
+    description: Users of Docker
+    state: present
+
+- name: Add the build user to docker-users
+  ansible.windows.win_group_membership:
+    name: docker-users
+    members:
+      - '{{ ansible_user }}'
+    state: present
+
+- name: Create the docker config folder
+  ansible.windows.win_file:
+    path: 'C:\ProgramData\docker\config'
+    state: directory
+
+- name: Configure the docker daemon group
+  ansible.windows.win_copy:
+    content: '{"group":"docker-users"}'
+    dest: 'C:\ProgramData\docker\config\daemon.json'
+    force: false
+
+- name: Register the docker service
+  ansible.windows.win_command:
+    cmd: '"{{ docker_dir }}\dockerd.exe" --register-service'
+
+- name: Install docker compose
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: docker-compose
+      url: '{{ docker_compose_url }}'
+      checksum: '{{ docker_compose_sha256 }}'
+      dest: '{{ docker_dir }}\cli-plugins'
+      exe: docker-compose.exe
+      path_entry: ''

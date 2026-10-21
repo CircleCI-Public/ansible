@@ -1,0 +1,45 @@
+---
+# Downloads one installer, runs it, and deletes it at once, so a large
+# installer does not stay on the disk while the next tool installs.
+#
+# pkg:
+#   name: display name
+#   url: vendor download URL
+#   file: file name to save the download as (default: last part of the url)
+#   checksum: hash of the download (omit only for unversioned vendor URLs)
+#   checksum_algorithm: sha256 (default) or sha512
+#   args: silent install arguments (optional)
+#   creates_path: a path that exists once the tool is installed (optional)
+#   return_codes: success exit codes (default [0, 3010])
+- name: "Install {{ pkg.name }}"
+  vars:
+    download_path: "{{ direct_download_dir }}\\{{ pkg.file | default(pkg.url | urlsplit('path') | basename) }}"
+  block:
+    - name: "Create the download folder for {{ pkg.name }}"
+      ansible.windows.win_file:
+        path: "{{ direct_download_dir }}"
+        state: directory
+
+    - name: "Download {{ pkg.name }}"
+      ansible.windows.win_get_url:
+        url: "{{ pkg.url }}"
+        dest: "{{ download_path }}"
+        checksum: "{{ pkg.checksum | default(omit) }}"
+        checksum_algorithm: "{{ pkg.checksum_algorithm | default('sha256') }}"
+        url_timeout: 300
+      register: download_result
+      until: download_result is succeeded
+      retries: 3
+      delay: 30
+
+    - name: "Run the installer for {{ pkg.name }}"
+      ansible.windows.win_package:
+        path: "{{ download_path }}"
+        arguments: "{{ pkg.args | default(omit) }}"
+        creates_path: "{{ pkg.creates_path | default(omit) }}"
+        expected_return_code: "{{ pkg.return_codes | default([0, 3010]) }}"
+
+    - name: "Delete the installer for {{ pkg.name }}"
+      ansible.windows.win_file:
+        path: "{{ download_path }}"
+        state: absent

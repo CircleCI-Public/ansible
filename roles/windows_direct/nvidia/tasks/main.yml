@@ -1,0 +1,63 @@
+---
+- name: Check free space on C
+  ansible.windows.win_shell: '[math]::Floor((Get-PSDrive C).Free / 1GB)'
+  register: c_free_gb
+  changed_when: false
+
+- name: Make sure C has room for the NVIDIA driver and CUDA
+  ansible.builtin.assert:
+    that: c_free_gb.stdout | int >= 20
+    fail_msg: >-
+      C: has {{ c_free_gb.stdout | trim }} GB free. The NVIDIA driver and CUDA
+      need at least 20 GB; with less, CUDA fails with error 0xE0E00064.
+
+# Extract the driver package with 7-Zip and run its setup.exe, the same as the
+# Chocolatey nvidia-display-driver package. The cleanup role deletes C:\NVIDIA.
+- name: Download NVIDIA Display Driver
+  ansible.windows.win_get_url:
+    url: '{{ nvidia_driver_url }}'
+    dest: '{{ direct_download_dir }}\nvidia-driver.exe'
+    checksum: '{{ nvidia_driver_sha256 }}'
+    checksum_algorithm: sha256
+    url_timeout: 300
+  register: download_result
+  until: download_result is succeeded
+  retries: 3
+  delay: 30
+
+- name: Extract NVIDIA Display Driver
+  ansible.windows.win_command:
+    cmd: '"C:\Program Files\7-Zip\7z.exe" x "{{ direct_download_dir }}\nvidia-driver.exe" -o"{{ nvidia_driver_dir }}" -y'
+
+- name: Delete the NVIDIA Display Driver download
+  ansible.windows.win_file:
+    path: '{{ direct_download_dir }}\nvidia-driver.exe'
+    state: absent
+
+- name: Install NVIDIA Display Driver
+  ansible.windows.win_package:
+    path: '{{ nvidia_driver_dir }}\setup.exe'
+    arguments: '-s -noreboot'
+    expected_return_code: [0, 1]
+
+- name: Install CUDA Toolkit
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: CUDA toolkit
+      url: '{{ cuda_url }}'
+      checksum: '{{ cuda_sha256 }}'
+      args: '-s'
+      creates_path: 'C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v{{ cuda_version.split(".")[0:2] | join(".") }}\bin\nvcc.exe'
+      return_codes: [0]
+
+- name: Verify NVIDIA Installation
+  ansible.windows.win_command:
+    cmd: nvidia-smi --query-gpu=driver_version --format=csv,noheader
+  register: nvidia_check
+  changed_when: false
+
+- name: Make sure the pinned NVIDIA driver is the one in use
+  ansible.builtin.assert:
+    that: nvidia_check.stdout_lines[0] | trim == nvidia_driver_version
+    fail_msg: 'nvidia-smi reports driver {{ nvidia_check.stdout | trim }}, expected {{ nvidia_driver_version }}.'

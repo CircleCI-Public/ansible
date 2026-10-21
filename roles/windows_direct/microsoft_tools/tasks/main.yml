@@ -1,0 +1,247 @@
+# The same redistributables as the Chocolatey vcredist packages (x64 and
+# x86). The .NET SDKs and Visual Studio need the v14 runtime first.
+# 1638 (and 5100 for 2010) mean a same or newer version is already installed.
+- name: Install vcredist 140 x64
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 140 x64
+      url: '{{ vcredist140_x64_url }}'
+      file: vcredist140_x64.exe
+      checksum: '{{ vcredist140_x64_sha256 }}'
+      args: '/install /quiet /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install vcredist 140 x86
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 140 x86
+      url: '{{ vcredist140_x86_url }}'
+      file: vcredist140_x86.exe
+      checksum: '{{ vcredist140_x86_sha256 }}'
+      args: '/install /quiet /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install vcredist 2013 x64
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2013 x64
+      url: '{{ vcredist2013_x64_url }}'
+      file: vcredist2013_x64.exe
+      checksum: '{{ vcredist2013_x64_sha256 }}'
+      args: '/Q /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install vcredist 2013 x86
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2013 x86
+      url: '{{ vcredist2013_x86_url }}'
+      file: vcredist2013_x86.exe
+      checksum: '{{ vcredist2013_x86_sha256 }}'
+      args: '/Q /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install vcredist 2010 x64
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2010 x64
+      url: '{{ vcredist2010_x64_url }}'
+      file: vcredist2010_x64.exe
+      checksum: '{{ vcredist2010_x64_sha256 }}'
+      args: '/q /norestart'
+      return_codes: [0, 1638, 3010, 5100]
+
+- name: Install vcredist 2010 x86
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2010 x86
+      url: '{{ vcredist2010_x86_url }}'
+      file: vcredist2010_x86.exe
+      checksum: '{{ vcredist2010_x86_sha256 }}'
+      args: '/q /norestart'
+      return_codes: [0, 1638, 3010, 5100]
+
+- name: Install vcredist 2008 x64
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2008 x64
+      url: '{{ vcredist2008_x64_url }}'
+      file: vcredist2008_x64.exe
+      checksum: '{{ vcredist2008_x64_sha256 }}'
+      args: '/q /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install vcredist 2008 x86
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: vcredist 2008 x86
+      url: '{{ vcredist2008_x86_url }}'
+      file: vcredist2008_x86.exe
+      checksum: '{{ vcredist2008_x86_sha256 }}'
+      args: '/q /norestart'
+      return_codes: [0, 1638, 3010]
+
+- name: Install dotnet sdk 6
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: dotnet sdk 6
+      url: '{{ dotnet_sdk_6_url }}'
+      checksum: '{{ dotnet_sdk_6_sha512 }}'
+      checksum_algorithm: sha512
+      args: '/install /quiet /norestart'
+      creates_path: 'C:\Program Files\dotnet\sdk\{{ dotnet_sdk_6_version }}\dotnet.dll'
+
+- name: Install dotnet sdk 7
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: dotnet sdk 7
+      url: '{{ dotnet_sdk_7_url }}'
+      checksum: '{{ dotnet_sdk_7_sha512 }}'
+      checksum_algorithm: sha512
+      args: '/install /quiet /norestart'
+      creates_path: 'C:\Program Files\dotnet\sdk\{{ dotnet_sdk_7_version }}\dotnet.dll'
+
+- name: Install dotnet sdk 8
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: dotnet sdk 8
+      url: '{{ dotnet_sdk_8_url }}'
+      checksum: '{{ dotnet_sdk_8_sha512 }}'
+      checksum_algorithm: sha512
+      args: '/install /quiet /norestart'
+      creates_path: 'C:\Program Files\dotnet\sdk\{{ dotnet_sdk_8_version }}\dotnet.dll'
+
+- name: Install dotnet sdk 9
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: dotnet sdk 9
+      url: '{{ dotnet_sdk_9_url }}'
+      checksum: '{{ dotnet_sdk_9_sha512 }}'
+      checksum_algorithm: sha512
+      args: '/install /quiet /norestart'
+      creates_path: 'C:\Program Files\dotnet\sdk\{{ dotnet_sdk_9_version }}\dotnet.dll'
+
+- name: Install dotnet sdk 10
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: dotnet sdk 10
+      url: '{{ dotnet_sdk_10_url }}'
+      checksum: '{{ dotnet_sdk_10_sha512 }}'
+      checksum_algorithm: sha512
+      args: '/install /quiet /norestart'
+      creates_path: 'C:\Program Files\dotnet\sdk\{{ dotnet_sdk_10_version }}\dotnet.dll'
+
+- name: Install .NET Framework 4.8.1 via Windows Features
+  ansible.windows.win_feature:
+    name: NET-Framework-45-Features
+    state: present
+    include_sub_features: true
+  when: "'Windows Server 2022' in ansible_distribution"
+
+- name: Install Visual Studio 2022 Community Edition
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: Visual Studio 2022 Community
+      url: '{{ visualstudio_2022_community_url }}'
+      checksum: '{{ visualstudio_2022_community_sha256 }}'
+      args: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --nocache --quiet --wait --norestart --locale en-US'
+      creates_path: 'C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\devenv.exe'
+
+- name: Install Visual Studio 2022 Build Tools
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: Visual Studio 2022 Build Tools
+      url: '{{ visualstudio_2022_buildtools_url }}'
+      checksum: '{{ visualstudio_2022_buildtools_sha256 }}'
+      args: '--allWorkloads --remove Microsoft.Net.Component.4.8.1.TargetingPack --remove Microsoft.Net.ComponentGroup.4.8.1.DeveloperTools --includeRecommended --includeOptional --nocache --quiet --wait --norestart --locale en-US'
+      creates_path: 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe'
+
+- name: Install Visual Studio 2026 Build Tools
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: Visual Studio 2026 Build Tools
+      url: '{{ visualstudio_2026_buildtools_url }}'
+      checksum: '{{ visualstudio_2026_buildtools_sha256 }}'
+      args: '--allWorkloads --includeRecommended --includeOptional --nocache --quiet --wait --norestart --locale en-US'
+      creates_path: 'C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\MSBuild\Current\Bin\MSBuild.exe'
+
+- name: Ensure that VS 2022 msbuild is in the path
+  ansible.windows.win_path:
+    elements:
+    - 'C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin'
+
+- name: Ensure that VS 2026 msbuild is in the path
+  ansible.windows.win_path:
+    elements:
+    - 'C:\Program Files (x86)\Microsoft Visual Studio\18\BuildTools\MSBuild\Current\Bin'
+
+- name: Ensure microsoft default java is not on path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\Program Files\Microsoft\jdk-11.0.16.101-hotspot\bin'
+    state: absent
+
+- name: Install Nuget command line interface
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: nuget
+      url: '{{ nuget_cli_url }}'
+      checksum: '{{ nuget_cli_sha256 }}'
+
+- name: Install Windows Application Driver
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: winappdriver
+      url: '{{ winappdriver_url }}'
+      checksum: '{{ winappdriver_sha256 }}'
+      creates_path: 'C:\Program Files (x86)\Windows Application Driver\WinAppDriver.exe'
+
+- name: Disable Visual Studio background downloads
+  win_regedit:
+    path: HKLM:\Software\Microsoft\VisualStudio\Setup
+    name: BackgroundDownloadDisabled
+    data: 00000001
+    type: dword
+    state: present
+
+# - name: Disable Visual Studio Update
+# win_regedit:
+#    path: HKLM:\Policies\Microsoft\VisualStudio
+#    name: SQM
+#    data: 0
+#    type: dword
+#    state: present
+
+- name: Enable Windows Development Mode
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowDevelopmentWithoutDevLicense
+    data: 1
+    type: dword
+    state: present
+
+- name: Enable Sideloading
+  win_regedit:
+    path: HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelUnlock
+    name: AllowAllTrustedApps
+    data: 1
+    type: dword
+    state: present

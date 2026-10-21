@@ -1,0 +1,30 @@
+---
+# Runs last in each Packer ansible step. The image disk is fixed at 200 GB,
+# so nothing the installers leave behind may stay in the image.
+# Do not delete C:\ProgramData\Package Cache or C:\Windows\Installer: MSI and
+# Burn installers need them to repair and uninstall.
+- name: Delete the direct downloads folder
+  ansible.windows.win_file:
+    path: "{{ direct_download_dir }}"
+    state: absent
+
+# Installers extract into the user temp folder, and CUDA into C:\Windows\Temp.
+- name: Delete the contents of the temp folders
+  ansible.windows.win_shell: |
+    Get-ChildItem -LiteralPath '{{ item }}' -Force |
+      Remove-Item -Recurse -Force -ErrorAction SilentlyContinue
+    exit 0
+  loop:
+    - '{{ ansible_env.TEMP }}'
+    - 'C:\Windows\Temp'
+
+- name: Delete the NVIDIA driver extraction folder
+  ansible.windows.win_file:
+    path: 'C:\NVIDIA'
+    state: absent
+  when: "'nvidia' in ansible_run_tags"
+
+- name: Report free space on C
+  ansible.windows.win_shell: |
+    Get-PSDrive C | ForEach-Object { "C: free {0:N2} GB, used {1:N2} GB" -f ($_.Free / 1GB), ($_.Used / 1GB) }
+  changed_when: false

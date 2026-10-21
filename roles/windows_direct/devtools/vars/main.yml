@@ -1,0 +1,24 @@
+python_dir: 'C:\Python{{ python_3_version.split(".")[0:2] | join("") }}'
+vim_dir: 'C:\tools\vim\vim{{ vim_version.split(".")[0:2] | join("") }}'
+java_home: 'C:\Program Files\OpenJDK\jdk-{{ openjdk_version }}'
+ruby_dir: 'C:\tools\ruby{{ ruby_version.split(".")[0:2] | join("") }}'
+rust_dir: 'C:\tools\rust'
+rust_components:
+  - component: rustc
+    url: '{{ rust_rustc_url }}'
+    sha256: '{{ rust_rustc_sha256 }}'
+  - component: cargo
+    url: '{{ rust_cargo_url }}'
+    sha256: '{{ rust_cargo_sha256 }}'
+  - component: rust-std-x86_64-pc-windows-gnu
+    url: '{{ rust_std_url }}'
+    sha256: '{{ rust_std_sha256 }}'
+  - component: rust-mingw
+    url: '{{ rust_mingw_url }}'
+    sha256: '{{ rust_mingw_sha256 }}'
+  - component: rust-src
+    url: '{{ rust_src_url }}'
+    sha256: '{{ rust_src_sha256 }}'
+nvm_home: 'C:\ProgramData\nvm'
+nvm_symlink: 'C:\nvm4w\nodejs'
+docker_dir: 'C:\Program Files\docker'

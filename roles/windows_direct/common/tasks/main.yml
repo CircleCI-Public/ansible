@@ -1,0 +1,6 @@
+---
+- name: Disable windows services
+  ansible.builtin.include_tasks: 'roles/windows/disable_services/tasks/main.yml'
+
+- name: Install Build Agent Prerequisites
+  ansible.builtin.include_tasks: 'roles/windows_direct/buildagent_prereq/tasks/main.yml'

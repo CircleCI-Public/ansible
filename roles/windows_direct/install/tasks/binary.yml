@@ -1,0 +1,67 @@
+---
+# Downloads one zip or single-file tool, puts it in its own folder, deletes
+# the download, and adds the folder to the machine PATH.
+#
+# pkg:
+#   name: short name, also the default folder name
+#   url: vendor download URL
+#   file: file name to save the download as (default: last part of the url);
+#     a .zip is extracted, any other file is copied
+#   checksum: hash of the download (omit only for unversioned vendor URLs)
+#   checksum_algorithm: sha256 (default) or sha512
+#   dest: install folder (default C:\tools\<name>)
+#   exe: file name to copy a single-file tool as (default: file)
+#   path_entry: folder to add to the machine PATH (default: dest; '' for none)
+- name: "Install {{ pkg.name }}"
+  vars:
+    download_file: "{{ pkg.file | default(pkg.url | urlsplit('path') | basename) }}"
+    download_path: "{{ direct_download_dir }}\\{{ download_file }}"
+    default_dir: 'C:\tools\{{ pkg.name }}'
+    install_dir: '{{ pkg.dest | default(default_dir) }}'
+    path_entry: "{{ pkg.path_entry | default(install_dir) }}"
+  block:
+    - name: "Create the download folder for {{ pkg.name }}"
+      ansible.windows.win_file:
+        path: "{{ direct_download_dir }}"
+        state: directory
+
+    - name: "Download {{ pkg.name }}"
+      ansible.windows.win_get_url:
+        url: "{{ pkg.url }}"
+        dest: "{{ download_path }}"
+        checksum: "{{ pkg.checksum | default(omit) }}"
+        checksum_algorithm: "{{ pkg.checksum_algorithm | default('sha256') }}"
+        url_timeout: 300
+      register: download_result
+      until: download_result is succeeded
+      retries: 3
+      delay: 30
+
+    - name: "Create the install folder for {{ pkg.name }}"
+      ansible.windows.win_file:
+        path: "{{ install_dir }}"
+        state: directory
+
+    - name: "Extract {{ pkg.name }}"
+      community.windows.win_unzip:
+        src: "{{ download_path }}"
+        dest: "{{ install_dir }}"
+      when: download_file is search('\.zip$')
+
+    - name: "Copy {{ pkg.name }}"
+      ansible.windows.win_copy:
+        src: "{{ download_path }}"
+        dest: "{{ install_dir }}\\{{ pkg.exe | default(download_file) }}"
+        remote_src: true
+      when: download_file is not search('\.zip$')
+
+    - name: "Delete the download for {{ pkg.name }}"
+      ansible.windows.win_file:
+        path: "{{ download_path }}"
+        state: absent
+
+    - name: "Add to the machine PATH: {{ pkg.name }}"
+      ansible.windows.win_path:
+        elements:
+          - "{{ path_entry }}"
+      when: path_entry | length > 0

@@ -1,0 +1,37 @@
+- name: Install awscli
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: awscli
+      url: '{{ awscli_url }}'
+      checksum: '{{ awscli_sha256 }}'
+      creates_path: 'C:\Program Files\Amazon\AWSCLIV2\aws.exe'
+
+- name: Install azure-cli
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: azure-cli
+      url: '{{ azurecli_url }}'
+      checksum: '{{ azurecli_sha256 }}'
+      creates_path: 'C:\Program Files\Microsoft SDKs\Azure\CLI2\wbin\az.cmd'
+
+- name: Install service fabric runtime
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: service fabric runtime
+      url: '{{ servicefabric_runtime_url }}'
+      checksum: '{{ servicefabric_runtime_sha256 }}'
+      args: '/quiet /accepteula'
+      creates_path: 'C:\Program Files\Microsoft Service Fabric\bin'
+      return_codes: [0]
+
+- name: Install service fabric sdk
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: service fabric sdk
+      url: '{{ servicefabricsdk_url }}'
+      checksum: '{{ servicefabricsdk_sha256 }}'
+      args: 'IACCEPTEULA=yes'

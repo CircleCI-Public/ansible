@@ -1,0 +1,122 @@
+- name: Install PowershellGet
+  ansible.windows.win_powershell:
+    script: |
+      Install-PackageProvider -Name NuGet -Force
+      Install-Module PowerShellGet -Force -AllowClobber -Confirm:$false
+
+- name: Register nuget repository
+  community.windows.win_psrepository:
+    name: Nuget
+    source_location: https://nuget.org/api/v2/
+    installation_policy: trusted
+    state: present
+
+# Git's usr\bin also has nano.exe, du.exe and sync.exe. On the Chocolatey image
+# the shims for nano and sysinternals came first on PATH, so these folders go
+# on PATH before the Git installer appends its own folders.
+- name: Put nano and sysinternals ahead of Git on the path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\tools\sysinternals'
+      - 'C:\tools\nano'
+
+# The same components and options as the Chocolatey git package with
+# /GitAndUnixToolsOnPath. Git's usr\bin also provides gzip.
+- name: Install git
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: git
+      url: '{{ git_url }}'
+      checksum: '{{ git_sha256 }}'
+      args: '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /NOCANCEL /SP- /COMPONENTS="icons,assoc,assoc_sh,scalar,ext,ext\shellhere,ext\guihere,gitlfs" /o:PathOption=CmdTools'
+      creates_path: 'C:\Program Files\Git\cmd\git.exe'
+
+- name: Install git-lfs
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: git-lfs
+      url: '{{ gitlfs_url }}'
+      checksum: '{{ gitlfs_sha256 }}'
+      args: '/VERYSILENT /SUPPRESSMSGBOXES /NORESTART'
+      creates_path: 'C:\Program Files\Git LFS\git-lfs.exe'
+
+- name: Install 7zip
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/installer.yml'
+  vars:
+    pkg:
+      name: 7zip
+      url: '{{ sevenzip_url }}'
+      checksum: '{{ sevenzip_sha256 }}'
+      creates_path: 'C:\Program Files\7-Zip\7z.exe'
+
+- name: Ensure that 7zip is in the path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\Program Files\7-Zip'
+
+# The 7-Zip MSI has no 7za.exe; the standalone build is in the "extra" archive.
+- name: Download 7zip extra
+  ansible.windows.win_get_url:
+    url: '{{ sevenzip_extra_url }}'
+    dest: '{{ direct_download_dir }}\7zip-extra.7z'
+    checksum: '{{ sevenzip_extra_sha256 }}'
+    checksum_algorithm: sha256
+  register: download_result
+  until: download_result is succeeded
+  retries: 3
+  delay: 30
+
+- name: Install 7za
+  ansible.windows.win_command:
+    cmd: '"C:\Program Files\7-Zip\7z.exe" e "{{ direct_download_dir }}\7zip-extra.7z" -o"C:\tools\7za" x64\7za.exe -y'
+    creates: 'C:\tools\7za\7za.exe'
+
+- name: Delete the 7zip extra download
+  ansible.windows.win_file:
+    path: '{{ direct_download_dir }}\7zip-extra.7z'
+    state: absent
+
+- name: Ensure that 7za is in the path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\tools\7za'
+
+# Microsoft replaces this download in place without a version, so it cannot
+# be pinned to a checksum (Chocolatey also ignored the checksum).
+- name: Install sysinternals
+  ansible.builtin.include_tasks: 'roles/windows_direct/install/tasks/binary.yml'
+  vars:
+    pkg:
+      name: sysinternals
+      url: '{{ sysinternals_url }}'
+
+# Without these, the tools wait for a click on their EULA dialog. This is the
+# list from the Chocolatey sysinternals package. HKCU is the circleci user.
+- name: Accept the sysinternals EULAs
+  ansible.windows.win_powershell:
+    script: |
+      $tools = @(
+        'AccessChk', 'Active Directory Explorer', 'ADInsight', 'Autologon', 'AutoRuns',
+        'BGInfo', 'CacheSet', 'ClockRes', 'Coreinfo', 'Ctrl2cap',
+        'DbgView', 'Desktops', 'Disk2Vhd', 'Diskmon', 'DiskView',
+        'Du', 'EFSDump', 'FindLinks', 'Handle', 'Hex2Dec',
+        'Junction', 'LdmDump', 'ListDLLs', 'LoadOrder', 'Movefile',
+        'PageDefrag', 'PendMove', 'PipeList', 'Portmon', 'ProcDump',
+        'Process Explorer', 'Process Monitor', 'PsExec', 'psfile', 'PsGetSid',
+        'PsInfo', 'PsKill', 'PsList', 'PsLoggedon', 'PsLoglist',
+        'PsPasswd', 'PsService', 'PsShutdown', 'PsSuspend', 'RamMap',
+        'RegDelNull', 'Regjump', 'Regsize', 'RootkitRevealer', 'Share Enum',
+        'ShellRunas - Sysinternals: www.sysinternals.com',
+        'EulaAccepted', 'SigCheck', 'Streams', 'Strings', 'Sync',
+        'System Monitor', 'TCPView', 'VMMap', 'VolumeID', 'Whois',
+        'Winobj', 'ZoomIt'
+      )
+      $root = 'HKCU:\SOFTWARE\Sysinternals'
+      foreach ($tool in $tools) {
+        New-Item -Path "$root\$tool" -Force | Out-Null
+        New-ItemProperty -Path "$root\$tool" -Name EulaAccepted -Value 1 -PropertyType DWord -Force | Out-Null
+      }
+      New-Item -Path "$root\SigCheck\VirusTotal" -Force | Out-Null
+      New-ItemProperty -Path "$root\SigCheck\VirusTotal" -Name VirusTotalTermsAccepted -Value 1 -PropertyType DWord -Force | Out-Null
