@@ -78,6 +78,13 @@
 
 - name: Install node
   ansible.windows.win_shell: |
+    $deadline = (Get-Date).AddMinutes(5)
+    while (-not ([Environment]::GetEnvironmentVariable('NVM_SYMLINK', 'Machine') -and (Test-Path (Join-Path ([Environment]::GetEnvironmentVariable('NVM_HOME', 'Machine')) 'nvm.exe')))) {
+        if ((Get-Date) -gt $deadline) {
+            throw 'nvm installer did not finish within 5 minutes'
+        }
+        Start-Sleep -Seconds 5
+    }
     foreach ($name in 'Path', 'NVM_HOME', 'NVM_SYMLINK') {
         Set-Item -Path "env:$name" -Value ([Environment]::GetEnvironmentVariable($name, 'Machine'))
     }
