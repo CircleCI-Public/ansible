@@ -78,8 +78,15 @@
 
 - name: Install node
   ansible.windows.win_shell: |
+    foreach ($name in 'Path', 'NVM_HOME', 'NVM_SYMLINK') {
+        Set-Item -Path "env:$name" -Value ([Environment]::GetEnvironmentVariable($name, 'Machine'))
+    }
     nvm install {{ nodejs_version }}
     nvm use {{ nodejs_version }}
+    $installed = node --version
+    if ($installed -ne 'v{{ nodejs_version }}') {
+        throw "expected node v{{ nodejs_version }}, found '$installed'"
+    }
 
 - name: Install docker engine
   win_chocolatey:
