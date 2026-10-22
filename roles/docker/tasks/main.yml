@@ -46,7 +46,7 @@
 
     - name: Install docker compose switch
       ansible.builtin.shell: |
-        curl -fL https://raw.githubusercontent.com/docker/compose-switch/master/install_on_linux.sh | sh
+        curl -fL "https://github.com/docker/compose-switch/releases/download/v1.0.5/docker-compose-linux-$(dpkg --print-architecture)" -o /usr/local/bin/compose-switch
         chmod +x /usr/local/bin/compose-switch
         update-alternatives --install /usr/local/bin/docker-compose docker-compose /usr/local/bin/compose-switch 99
 
