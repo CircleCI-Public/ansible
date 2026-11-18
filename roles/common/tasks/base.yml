@@ -42,8 +42,8 @@
     - name: Add universe repository
       ansible.builtin.shell: add-apt-repository universe
 
-    - name: Add git-core repository from PPA
-      ansible.builtin.command: add-apt-repository -y ppa:git-core/ppa
+    - name: Add the git-core PPA
+      ansible.builtin.import_tasks: git.yml
 
     - name: Install core packages
       ansible.builtin.apt:
