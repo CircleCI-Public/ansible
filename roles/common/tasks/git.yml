@@ -1,0 +1,23 @@
+- name: Create the apt keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Install the git-core PPA signing keys
+  ansible.builtin.copy:
+    src: git-core-ppa.asc
+    dest: /etc/apt/keyrings/git-core-ppa.asc
+    mode: "0644"
+
+- name: Add git-core repository from PPA
+  ansible.builtin.copy:
+    dest: /etc/apt/sources.list.d/git-core-ppa.sources
+    mode: "0644"
+    content: |
+      Types: deb
+      URIs: https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/
+      Suites: {{ ansible_facts['distribution_release'] }}
+      Components: main
+      Architectures: {{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}
+      Signed-By: /etc/apt/keyrings/git-core-ppa.asc
