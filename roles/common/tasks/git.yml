@@ -4,11 +4,18 @@
     state: directory
     mode: "0755"
 
-- name: Install the git-core PPA signing keys
-  ansible.builtin.copy:
-    src: git-core-ppa.asc
-    dest: /etc/apt/keyrings/git-core-ppa.asc
+- name: Download the git-core PPA signing keys
+  ansible.builtin.get_url:
+    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ item }}"
+    dest: "/etc/apt/keyrings/git-core-ppa-{{ item }}.asc"
     mode: "0644"
+  loop:
+    - F911AB184317630C59970973E363C90F8F1B6217
+    - E1DD270288B4E6030699E45FA1715D88E1DF1F24
+  retries: 5
+  delay: 5
+  register: git_ppa_key
+  until: git_ppa_key is succeeded
 
 - name: Add git-core repository from PPA
   ansible.builtin.copy:
@@ -20,4 +27,5 @@
       Suites: {{ ansible_facts['distribution_release'] }}
       Components: main
       Architectures: {{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}
-      Signed-By: /etc/apt/keyrings/git-core-ppa.asc
+      Signed-By: /etc/apt/keyrings/git-core-ppa-F911AB184317630C59970973E363C90F8F1B6217.asc,
+       /etc/apt/keyrings/git-core-ppa-E1DD270288B4E6030699E45FA1715D88E1DF1F24.asc
