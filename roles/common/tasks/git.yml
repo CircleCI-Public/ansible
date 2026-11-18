@@ -9,13 +9,18 @@
     url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ item }}"
     dest: "/etc/apt/keyrings/git-core-ppa-{{ item }}.asc"
     mode: "0644"
-  loop:
-    - F911AB184317630C59970973E363C90F8F1B6217
-    - E1DD270288B4E6030699E45FA1715D88E1DF1F24
+    force: false
+  loop: "{{ git_ppa_key_fingerprints }}"
   retries: 5
   delay: 5
   register: git_ppa_key
   until: git_ppa_key is succeeded
+
+- name: Check the downloaded keys have the expected fingerprints
+  ansible.builtin.shell: >-
+    gpg --show-keys --with-colons /etc/apt/keyrings/git-core-ppa-{{ item }}.asc | grep -q '^fpr:::::::::{{ item }}:'
+  loop: "{{ git_ppa_key_fingerprints }}"
+  changed_when: false
 
 - name: Add git-core repository from PPA
   ansible.builtin.copy:
@@ -27,5 +32,4 @@
       Suites: {{ ansible_facts['distribution_release'] }}
       Components: main
       Architectures: {{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else 'arm64' }}
-      Signed-By: /etc/apt/keyrings/git-core-ppa-F911AB184317630C59970973E363C90F8F1B6217.asc,
-       /etc/apt/keyrings/git-core-ppa-E1DD270288B4E6030699E45FA1715D88E1DF1F24.asc
+      Signed-By: {% for fingerprint in git_ppa_key_fingerprints %}/etc/apt/keyrings/git-core-ppa-{{ fingerprint }}.asc{{ ',' if not loop.last else '' }}{{ ' ' if not loop.last else '' }}{% endfor %}
