@@ -42,10 +42,8 @@
     - name: Add universe repository
       ansible.builtin.shell: add-apt-repository universe
 
-    - name: Add git-core repository from PPA
-      ansible.builtin.apt_repository:
-        repo: ppa:git-core/ppa
-      when: ansible_facts['distribution_major_version'] not in ["24", "26"] # git-core/ppa does not install on 24.04+
+    - name: Add the git-core PPA
+      ansible.builtin.import_tasks: git.yml
 
     - name: Install core packages
       ansible.builtin.apt:
@@ -74,6 +72,17 @@
           - zip
         state: latest
         update_cache: true
+
+    - name: Read installed git version
+      ansible.builtin.command: git --version
+      register: git_version_output
+      changed_when: false
+
+    - name: Require git 2.56.1 or newer
+      ansible.builtin.assert:
+        that:
+          - git_version_output.stdout.split()[2] is version('2.56.1', '>=')
+        fail_msg: "{{ git_version_output.stdout }} is older than 2.56.1 (CVE-2026-111760)"
 
     - name: Grab uuid for extra kernel modules
       ansible.builtin.shell: |
