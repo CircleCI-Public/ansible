@@ -47,6 +47,16 @@
     version: '{{ openjdk_version }}'
     force: yes
 
+# Interim mitigation for CVE-2026-114938 (Java4Shell): disable the x86-64 Base64
+# intrinsic for every JDK on the image (including Visual Studio's bundled Android
+# JDK 17) until fixed builds ship. Read by the JDK 9+ java launcher only.
+- name: Configure Java4Shell mitigation (JDK_JAVA_OPTIONS)
+  ansible.windows.win_environment:
+    name: JDK_JAVA_OPTIONS
+    value: '-XX:-UseBASE64Intrinsics'
+    level: machine
+    state: present
+
 # - name: Install miniconda3
 #   win_chocolatey:
 #     name: miniconda3
