@@ -33,6 +33,23 @@
   collections:
     - community.general.alternatives
 
+# Interim mitigation for CVE-2026-114938 (Java4Shell): disable the x86-64 Base64
+# intrinsic until fixed openjdk-17/21/25 packages ship. JDK_JAVA_OPTIONS (not
+# JAVA_TOOL_OPTIONS) because only the JDK 9+ java launcher reads it; JDK 8 is not
+# affected and refuses to start with this flag. Remove once apt packages are fixed.
+- name: Configure Java4Shell mitigation in .circlerc
+  ansible.builtin.blockinfile:
+    path: "{{ circleci_home }}/.circlerc"
+    marker_begin: "JAVA4SHELL BEGIN"
+    marker_end: "JAVA4SHELL END"
+    create: yes
+    owner: "{{ circleci_user }}"
+    group: "{{ circleci_user }}"
+    mode: '0664'
+    block: |
+      export JDK_JAVA_OPTIONS="-XX:-UseBASE64Intrinsics"
+  become: true
+
 # maven and gradle are consistently used with gradle, therefore we will include them together
 - block:
   - name: Download maven
