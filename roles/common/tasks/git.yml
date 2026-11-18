@@ -5,16 +5,21 @@
     mode: "0755"
 
 - name: Download the git-core PPA signing keys
-  ansible.builtin.get_url:
-    url: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ item }}"
-    dest: "/etc/apt/keyrings/git-core-ppa-{{ item }}.asc"
-    mode: "0644"
-    force: false
+  ansible.builtin.command:
+    argv:
+      - curl
+      - --fail
+      - --silent
+      - --show-error
+      - --location
+      - --retry
+      - "5"
+      - --retry-all-errors
+      - --output
+      - "/etc/apt/keyrings/git-core-ppa-{{ item }}.asc"
+      - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x{{ item }}"
+    creates: "/etc/apt/keyrings/git-core-ppa-{{ item }}.asc"
   loop: "{{ git_ppa_key_fingerprints }}"
-  retries: 5
-  delay: 5
-  register: git_ppa_key
-  until: git_ppa_key is succeeded
 
 - name: Check the downloaded keys have the expected fingerprints
   ansible.builtin.shell: >-
