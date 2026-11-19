@@ -1,3 +1,6 @@
 ---
 circleci_user: circleci
 circleci_home: /home/circleci
+git_ppa_key_fingerprints:
+  - F911AB184317630C59970973E363C90F8F1B6217
+  - E1DD270288B4E6030699E45FA1715D88E1DF1F24
