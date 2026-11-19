@@ -1,8 +1,16 @@
 ---
 - block:
+
+# Upstream's 2.13.x tags ship a bin/lein whose LEIN_VERSION/LEIN_CHECKSUM
+# still point at the in-dev 2.12.1-SNAPSHOT, so self-install 404s. Rewrite
+# both to the real release we pinned.
+
     - name: Download clojure
       ansible.builtin.shell: |
-        sudo curl -sSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs
+        sudo curl -sSL -o /usr/local/bin/lein https://raw.githubusercontent.com/technomancy/leiningen/{{ lein_version }}/bin/lein --create-dirs 
+        jar_sha=$(curl -sSL https://github.com/technomancy/leiningen/releases/download/{{ lein_version }}/leiningen-{{ lein_version }}-standalone.jar | sha256sum | cut -d' ' -f1)
+        sudo sed -i -E 's|^export LEIN_VERSION=.*|export LEIN_VERSION="{{ lein_version }}"|' /usr/local/bin/lein
+        sudo sed -i -E "s|^export LEIN_CHECKSUM=.*|export LEIN_CHECKSUM='${jar_sha}'|" /usr/local/bin/lein
       args:
         stdin_add_newline: false
 
